@@ -1,0 +1,70 @@
+tags:
+  # Расы
+  - name: "Эльф"
+    slug: "elf"
+    category: "race"
+    icon: "🧝"
+    color_hex: "#00FF00"
+
+  - name: "Орк"
+    slug: "orc"
+    category: "race"
+    icon: "🦷"
+    color_hex: "#FF0000"
+
+  - name: "Дракон"
+    slug: "dragon"
+    category: "race"
+    icon: "🐉"
+    color_hex: "#FF4500"
+
+  # Элементы
+  - name: "Огонь"
+    slug: "fire"
+    category: "element"
+    icon: "🔥"
+    color_hex: "#FF4500"
+
+  - name: "Вода"
+    slug: "water"
+    category: "element"
+    icon: "💧"
+    color_hex: "#4169E1"
+
+  - name: "Тьма"
+    slug: "darkness"
+    category: "element"
+    icon: "🖤"
+    color_hex: "#2F2F2F"
+
+  # Механики
+  - name: "Провокация"
+    slug: "taunt"
+    category: "mechanic"
+    icon: "🛡️"
+    color_hex: "#00BFFF"
+
+  - name: "Полет"
+    slug: "flying"
+    category: "mechanic"
+    icon: "🦅"
+    color_hex: "#87CEEB"
+
+  - name: "Щит"
+    slug: "shield"
+    category: "mechanic"
+    icon: "🔰"
+    color_hex: "#FFD700"
+
+  # Редкости
+  - name: "Легендарный"
+    slug: "legendary"
+    category: "rarity"
+    icon: "⭐"
+    color_hex: "#FF8000"
+
+  - name: "Эпический"
+    slug: "epic"
+    category: "rarity"
+    icon: "🌟"
+    color_hex: "#A335EE"

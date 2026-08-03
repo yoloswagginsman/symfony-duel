@@ -1,0 +1,24 @@
+abilities:
+  - type: "Taunt"
+    description: "Заставляет врагов атаковать эту карту"
+
+  - type: "Charge"
+    description: "Может атаковать в первый ход"
+
+  - type: "Shield"
+    description: "Блокирует урон"
+
+  - type: "Flying"
+    description: "Не может быть атакован наземными юнитами"
+
+  - type: "Heal"
+    description: "Восстанавливает здоровье"
+
+  - type: "Poison"
+    description: "Наносит урон в начале хода врага"
+
+  - type: "Frenzy"
+    description: "Увеличивает атаку при получении урона"
+
+  - type: "AoE_Damage"
+    description: "Наносит урон всем врагам"

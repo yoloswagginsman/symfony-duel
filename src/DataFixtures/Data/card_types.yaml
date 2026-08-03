@@ -1,0 +1,17 @@
+card_types:
+  - name: "Существо"
+    slug: "creature"
+
+  - name: "Заклинание"
+    slug: "spell"
+
+  - name: "Артефакт"
+    slug: "artifact"
+
+  # карта для получения 1 из 3 разных карт на выбор (например)
+  - name: "Действие"
+    slug: "action"
+
+  # карты с постоянным действием на карте
+  - name: "Поддержка"
+    slug: "support"

@@ -1,0 +1,28 @@
+races:
+  - name: "Эльфы"
+    slug: "elves"
+    description: "Древние лесные существа"
+
+  - name: "Орки"
+    slug: "orcs"
+    description: "Дикие воины"
+
+  - name: "Люди с севера"
+    slug: "people-from-the-north"
+    description: "Доблестные воины севера"
+
+  - name: "Нежить"
+    slug: "undead"
+    description: "Проклятые существа"
+
+  - name: "Элементали"
+    slug: "elementals"
+    description: "Духи стихий"
+
+  - name: "Рожденные лесом"
+    slug: "ancient-forest"
+    description: "Существа леса и природы"
+
+  - name: "Драконы"
+    slug: "dragons"
+    description: "Могучие создания"

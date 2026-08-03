@@ -1,0 +1,133 @@
+#yaml-language-server: $schema=./card-schema.json
+cards:
+  - name: "Лесной Страж"
+    description: "Древний эльф, охраняющий лес."
+    manaCost: 5
+    attack: 4
+    health: 6
+    race: elves
+    type: creature
+    rarity: rare
+    tags: [elf, taunt, shield]
+    abilities: [Taunt, Shield]
+
+  - name: "Орк-Берсеркер"
+    description: "Впадает в ярость при виде врага."
+    manaCost: 3
+    attack: 5
+    health: 3
+    race: orcs
+    type: creature
+    rarity: common
+    tags: [orc]
+    abilities: [Charge, Frenzy]
+
+  - name: "Древний Дракон"
+    description: "Огнедышащий дракон, правящий небом."
+    manaCost: 9
+    attack: 8
+    health: 10
+    race: dragons
+    type: creature
+    rarity: rare
+    tags: [dragon, fire, flying, legendary]
+    abilities: [Flying, AoE_Damage]
+
+  - name: "Паладин Света"
+    description: "Святой воин, исцеляющий союзников."
+    manaCost: 4
+    attack: 3
+    health: 5
+    race: dragons
+    type: creature
+    rarity: rare
+    tags: []
+    abilities: [Heal]
+
+  - name: "Молния Небес"
+    description: "Мощное заклинание, поражающее всех врагов."
+    manaCost: 6
+    attack: null
+    health: null
+    race: people-from-the-north
+    type: spell
+    rarity: epic
+    tags: [epic]
+    abilities: [AoE_Damage]
+
+  - name: "Проклятие Тьмы"
+    description: "Наносит урон всем врагам тёмной магией."
+    manaCost: 4
+    attack: null
+    health: null
+    race: undead
+    type: spell
+    rarity: epic
+    tags: []
+    abilities: [AoE_Damage, Poison]
+
+  - name: "Эльфийский Лучник"
+    description: "Меткий стрелок, поражающий цель издалека."
+    manaCost: 2
+    attack: 2
+    health: 2
+    race: elves
+    type: creature
+    rarity: common
+    tags: [elf]
+    abilities: []
+
+  - name: "Огненный Элементаль"
+    description: "Существо из чистого пламени."
+    manaCost: 4
+    attack: 5
+    health: 3
+    race: dragons
+    type: creature
+    rarity: rare
+    tags: [fire]
+    abilities: []
+
+  - name: "Некромант"
+    description: "Повелитель мёртвых, поднимающий павших."
+    manaCost: 5
+    attack: 2
+    health: 5
+    race: undead
+    type: creature
+    rarity: rare
+    tags: []
+    abilities: [Poison]
+
+  - name: "Каменный Голем"
+    description: "Непробиваемая каменная стена."
+    manaCost: 4
+    attack: 1
+    health: 8
+    race: elementals
+    type: creature
+    rarity: common
+    tags: [taunt]
+    abilities: [Taunt]
+
+  - name: "Элементаль Огня"
+    description: "Дух чистого пламени."
+    manaCost: 4
+    attack: 5
+    health: 4
+    race: elementals
+    type: creature
+    rarity: rare
+    tags: [fire]
+    abilities: []
+
+  - name: "Лесной Дух"
+    description: "Хранитель древнего леса."
+    manaCost: 3
+    attack: 2
+    health: 4
+    race: ancient-forest
+    type: creature
+    rarity: common
+    tags: []
+    abilities: [Heal]

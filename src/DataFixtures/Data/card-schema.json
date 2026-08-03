@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "cards": {
+      "type": "array",
+      "additionalProperties": false,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "manaCost": { "type": "integer" },
+          "attack": { "type": ["integer", "null"] },
+          "health": { "type": ["integer", "null"] },
+          "race": {
+            "type": "string",
+            "enum": ["elves", "orcs", "people-from-the-north", "undead", "elementals", "ancient-forest", "dragons"]
+          },
+          "type": {
+            "type": "string",
+            "enum": ["creature", "spell", "artifact"]
+          },
+          "rarity": {
+            "type": "string",
+            "enum": ["common", "uncommon", "rare", "epic", "legendary"]
+          },
+          "tags": {
+            "type": "array",
+            "additionalProperties": false,
+            "items": {
+              "type": "string"
+            }
+          },
+          "abilities": {
+            "type": "array",
+            "additionalProperties": false,
+            "items": {
+              "oneOf": [
+                {
+                  "type": "string",
+                  "enum": ["Taunt", "Charge", "Shield", "Flying", "Heal", "Poison", "Frenzy", "AoE_Damage"]
+                },
+                {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "enum": ["Taunt", "Charge", "Shield", "Flying", "Heal", "Poison", "Frenzy", "AoE_Damage"]
+                    },
+                    "value": {
+                      "type": ["integer", "null"]
+                    }
+                  },
+                  "required": ["name"]
+                }
+              ]
+            }
+          }
+        },
+        "required": ["name", "manaCost", "race", "type", "rarity"]
+      }
+    }
+  }
+}

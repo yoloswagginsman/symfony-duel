@@ -1,0 +1,25 @@
+rarities:
+  - name: "Обычный"
+    slug: "common"
+    color_hex: "#FFFFFF"
+    drop_chance: 57.5
+
+  - name: "Необычный"
+    slug: "uncommon"
+    color_hex: "#1EFF00"
+    drop_chance: 25
+
+  - name: "Редкий"
+    slug: "rare"
+    color_hex: "#0070DD"
+    drop_chance: 10
+
+  - name: "Эпический"
+    slug: "epic"
+    color_hex: "#A335EE"
+    drop_chance: 5
+
+  - name: "Легендарный"
+    slug: "legendary"
+    color_hex: "#FF8000"
+    drop_chance: 2.5
