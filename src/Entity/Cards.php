@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 
 #[ORM\Entity(repositoryClass: CardsRepository::class)]
 #[ORM\Index(name: 'idx_cards_race', columns: ['race_id'])]
@@ -39,6 +40,25 @@ class Cards
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imagePath = null;
+
+    private ?File $imageFile = null;
+
+    /**
+     * Получить файл изображения
+     */
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    /**
+     * Установить файл изображения
+     */
+    public function setImageFile(?File $imageFile): static
+    {
+        $this->imageFile = $imageFile;
+        return $this;
+    }
 
     #[ORM\Column]
     private ?bool $isActive = null;

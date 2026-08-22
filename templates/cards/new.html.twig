@@ -1,0 +1,8 @@
+{% block title %}Создать новую карту{% endblock %}
+
+{% extends ('cards/form.html.twig') %}
+
+{% block form_actions %}
+    <button type="submit" class="btn btn-primary">💾 Сохранить</button>
+    <a href="{{ path('app_cards_index') }}" class="btn btn-secondary">📋 К списку</a>
+{% endblock %}

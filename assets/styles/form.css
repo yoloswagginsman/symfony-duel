@@ -1,0 +1,606 @@
+/* assets/styles/edit.css */
+
+/* ============================================
+   ОСНОВНОЙ КОНТЕЙНЕР
+   ============================================ */
+
+.edit-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #1a1a2e;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+    color: #f0f0f0;
+}
+
+.edit-container h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+    color: #f0f0f0;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 15px;
+}
+
+/* ============================================
+   ГРУППЫ ПОЛЕЙ
+   ============================================ */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    font-size: 14px;
+    color: #a0a0b0;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
+}
+
+.form-group label .label-icon {
+    margin-right: 8px;
+}
+
+/* ============================================
+   INPUT И TEXTAREA
+   ============================================ */
+
+.form-control {
+    width: 100%;
+    padding: 10px 14px;
+    background: #0a0a1a;
+    border: 2px solid #2a2a4e;
+    border-radius: 8px;
+    color: #f0f0f0;
+    font-size: 15px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #4a90d9;
+    box-shadow: 0 0 20px rgba(74, 144, 217, 0.2);
+}
+
+.form-control:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.form-control::placeholder {
+    color: #4a4a6a;
+}
+
+textarea.form-control {
+    min-height: 100px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+input[type="number"].form-control {
+    -moz-appearance: textfield;
+}
+
+input[type="number"].form-control::-webkit-outer-spin-button,
+input[type="number"].form-control::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* ============================================
+   ВЫПАДАЮЩИЕ СПИСКИ (SELECT)
+   ============================================ */
+
+.form-select {
+    width: 100%;
+    padding: 10px 14px;
+    background: #0a0a1a;
+    border: 2px solid #2a2a4e;
+    border-radius: 8px;
+    color: #f0f0f0;
+    font-size: 15px;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236a6a8a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 20px;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-select:focus {
+    outline: none;
+    border-color: #4a90d9;
+    box-shadow: 0 0 20px rgba(74, 144, 217, 0.2);
+}
+
+.form-select:hover {
+    border-color: #4a6a8a;
+}
+
+.form-select option {
+    background: #1a1a2e;
+    color: #f0f0f0;
+    padding: 10px;
+}
+
+.form-select option:hover,
+.form-select option:checked {
+    background: #2a2a4e;
+}
+
+/* Стиль для выбранного option */
+.form-select option:checked {
+    background: #4a90d9;
+    color: white;
+}
+
+/* ============================================
+   СПОСОБНОСТИ (ЧЕКБОКСЫ)
+   ============================================ */
+
+.abilities-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    background: #0a0a1a;
+    padding: 15px;
+    border-radius: 8px;
+    border: 2px solid #2a2a4e;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.abilities-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.abilities-container::-webkit-scrollbar-track {
+    background: #0a0a1a;
+    border-radius: 4px;
+}
+
+.abilities-container::-webkit-scrollbar-thumb {
+    background: #2a2a4e;
+    border-radius: 4px;
+}
+
+.abilities-container::-webkit-scrollbar-thumb:hover {
+    background: #4a6a8a;
+}
+
+.ability-checkbox {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    background: #1a1a2e;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.ability-checkbox:hover {
+    background: #2a2a4e;
+    border-color: rgba(74, 144, 217, 0.3);
+    transform: translateX(4px);
+}
+
+.ability-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    accent-color: #4a90d9;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.ability-checkbox input[type="checkbox"]:checked {
+    filter: drop-shadow(0 0 5px rgba(74, 144, 217, 0.5));
+}
+
+.ability-checkbox .ability-name {
+    flex: 1;
+    font-size: 14px;
+    color: #d0d0e0;
+}
+
+.ability-checkbox .ability-value-label {
+    font-size: 12px;
+    color: #6a6a8a;
+    margin-right: 6px;
+}
+
+.ability-checkbox .ability-value-input {
+    width: 60px;
+    padding: 4px 8px;
+    background: #0a0a1a;
+    border: 1px solid #2a2a4e;
+    border-radius: 4px;
+    color: #f0f0f0;
+    text-align: center;
+    font-size: 13px;
+    transition: border-color 0.3s ease;
+}
+
+.ability-checkbox .ability-value-input:focus {
+    outline: none;
+    border-color: #4a90d9;
+}
+
+.ability-checkbox .ability-value-input:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* ============================================
+   ПРЕДПРОСМОТР КАРТЫ
+   ============================================ */
+
+.card-preview-section {
+    margin: 30px 0;
+    padding: 20px;
+    background: #0a0a1a;
+    border-radius: 12px;
+    border: 1px solid #2a2a4e;
+}
+
+.card-preview-section h3 {
+    color: #a0a0b0;
+    font-size: 14px;
+    margin-bottom: 15px;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.mini-card-preview {
+    max-width: 200px;
+    margin: 0 auto;
+    padding: 15px;
+    background: #1a1a2e;
+    border-radius: 10px;
+    border: 2px solid #2a2a4e;
+    text-align: center;
+}
+
+.mini-card-preview .mini-name {
+    color: #f0f0f0;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.mini-card-preview .mini-type {
+    color: #a0a0b0;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.mini-card-preview .mini-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 8px;
+    font-size: 13px;
+    color: #a0a0b0;
+}
+
+.mini-card-preview .mini-stats span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* ============================================
+   ИЗОБРАЖЕНИЕ В ФОРМЕ
+   ============================================ */
+
+.image-preview-container {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.image-preview-container img {
+    max-width: 150px;
+    max-height: 150px;
+    border-radius: 8px;
+    border: 2px solid #2a2a4e;
+    object-fit: cover;
+}
+
+.image-preview-container .image-info {
+    font-size: 12px;
+    color: #6a6a8a;
+}
+
+.image-preview-container .image-info .filename {
+    color: #a0a0b0;
+    font-weight: bold;
+}
+
+.image-upload-wrapper {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.image-upload-wrapper input[type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.image-upload-wrapper .upload-label {
+    display: inline-block;
+    padding: 8px 16px;
+    background: #2a2a4e;
+    border-radius: 6px;
+    color: #a0a0b0;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    border: 1px dashed #4a4a6a;
+}
+
+.image-upload-wrapper:hover .upload-label {
+    background: #3a3a5e;
+    border-color: #4a90d9;
+    color: #f0f0f0;
+}
+
+/* ============================================
+   ТЕГИ (MULTI-SELECT)
+   ============================================ */
+
+.form-select[multiple] {
+    min-height: 100px;
+    background-image: none;
+    padding: 8px;
+}
+
+.form-select[multiple] option {
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-bottom: 2px;
+    transition: background 0.2s ease;
+}
+
+.form-select[multiple] option:checked {
+    background: #4a90d9 linear-gradient(0deg, #4a90d9 0%, #4a90d9 100%);
+    color: white;
+}
+
+/* ============================================
+   КНОПКИ
+   ============================================ */
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 10px 30px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: #4a90d9;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #5aa0e9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(74, 144, 217, 0.4);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-secondary {
+    background: #6a6a8a;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #7a7a9a;
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background: #d94a4a;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #e95a5a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(217, 74, 74, 0.4);
+}
+
+.btn-success {
+    background: #51cf66;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #61d976;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(81, 207, 102, 0.4);
+}
+
+/* ============================================
+   ОШИБКИ ФОРМЫ
+   ============================================ */
+
+.form-error {
+    color: #d94a4a;
+    font-size: 13px;
+    margin-top: 4px;
+    display: block;
+}
+
+.form-error-icon {
+    margin-right: 4px;
+}
+
+.form-group.has-error .form-control,
+.form-group.has-error .form-select {
+    border-color: #d94a4a;
+}
+
+.form-group.has-error .form-control:focus,
+.form-group.has-error .form-select:focus {
+    box-shadow: 0 0 20px rgba(217, 74, 74, 0.2);
+}
+
+/* ============================================
+   FLASH MESSAGES
+   ============================================ */
+
+.alert {
+    padding: 12px 18px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.alert-success {
+    background: rgba(81, 207, 102, 0.15);
+    border: 1px solid #51cf66;
+    color: #51cf66;
+}
+
+.alert-danger {
+    background: rgba(217, 74, 74, 0.15);
+    border: 1px solid #d94a4a;
+    color: #d94a4a;
+}
+
+.alert-warning {
+    background: rgba(255, 193, 7, 0.15);
+    border: 1px solid #ffc107;
+    color: #ffc107;
+}
+
+/* ============================================
+   АДАПТИВНОСТЬ
+   ============================================ */
+
+@media (max-width: 768px) {
+    .edit-container {
+        margin: 20px 10px;
+        padding: 15px;
+    }
+
+    .edit-container h1 {
+        font-size: 22px;
+    }
+
+    .abilities-container {
+        grid-template-columns: 1fr;
+        max-height: 200px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .form-actions .btn {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .image-preview-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .image-preview-container img {
+        max-width: 100%;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-control,
+    .form-select {
+        font-size: 16px; /* Предотвращает зум на iOS */
+    }
+}
+
+@media (max-width: 480px) {
+    .edit-container {
+        margin: 10px 5px;
+        padding: 10px;
+    }
+
+    .ability-checkbox {
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    .ability-checkbox .ability-value-input {
+        width: 100%;
+        margin-top: 4px;
+    }
+}
+
+/* ============================================
+   АНИМАЦИИ
+   ============================================ */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.edit-container {
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
+}
+
+.btn-primary:active {
+    animation: pulse 0.3s ease;
+}

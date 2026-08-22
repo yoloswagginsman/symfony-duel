@@ -117,7 +117,7 @@ cards:
     health: 4
     race: elementals
     type: creature
-    rarity: rare
+    rarity: uncommon
     tags: [fire]
     abilities: []
 
