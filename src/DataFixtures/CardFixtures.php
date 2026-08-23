@@ -38,6 +38,7 @@ class CardFixtures extends Fixture implements FixtureGroupInterface, DependentFi
                 ->setManaCost($item['manaCost'])
                 ->setAttack($item['attack'])
                 ->setHealth($item['health'])
+                ->setImagePath($item['imagePath'] ?? null)
                 ->setRace($raceRepo->findOneBy(['slug' => $item['race']]))
                 ->setCardType($typeRepo->findOneBy(['slug' => $item['type']]))
                 ->setRarity($rarityRepo->findOneBy(['slug' => $item['rarity']]))
@@ -50,10 +51,26 @@ class CardFixtures extends Fixture implements FixtureGroupInterface, DependentFi
                 }
             }
 
-            foreach ($item['abilities'] as $abilityName) {
-                $ability = $abilityRepo->findOneBy(['name' => $abilityName]);
-                if ($ability) {
-                    $card->addAbilityWithValue($ability, 0);
+            if (isset($item['abilities']) && is_array($item['abilities'])) {
+                foreach ($item['abilities'] as $abilityData) {
+                    $abilityName = null;
+                    $abilityValue = null;
+
+                    if (is_string($abilityData)) {
+                        $abilityName = $abilityData;
+                    } else {
+                        if (is_array($abilityData)) {
+                            $abilityName = $abilityData['name'] ?? null;
+                            $abilityValue = $abilityData['value'] ?? null;
+                        }
+                    }
+
+                    if ($abilityName) {
+                        $ability = $abilityRepo->findOneBy(['name' => $abilityName]);
+                        if ($ability) {
+                            $card->addAbilityWithValue($ability, $abilityValue);
+                        }
+                    }
                 }
             }
 

@@ -24,12 +24,13 @@ cards:
 
   - name: "Древний Дракон"
     description: "Огнедышащий дракон, правящий небом."
+    imagePath: "drakony/drevnij-drakon.webp"
     manaCost: 9
     attack: 8
     health: 10
     race: dragons
     type: creature
-    rarity: rare
+    rarity: legendary
     tags: [dragon, fire, flying, legendary]
     abilities: [Flying, AoE_Damage]
 
@@ -123,11 +124,14 @@ cards:
 
   - name: "Лесной Дух"
     description: "Хранитель древнего леса."
+    imagePath: "rozdennye-lesom/lesnoj-duh.webp"
     manaCost: 3
     attack: 2
     health: 4
     race: ancient-forest
     type: creature
-    rarity: common
+    rarity: uncommon
     tags: []
-    abilities: [Heal]
+    abilities:
+      - name: 'Heal'
+        value: 2
