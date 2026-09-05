@@ -2,19 +2,19 @@
 
 namespace App\EventListener;
 
-use App\Entity\Cards;
+use App\Entity\Card;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsEntityListener;
 use Doctrine\ORM\Events;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-#[AsEntityListener(event: Events::prePersist, entity: Cards::class)]
+#[AsEntityListener(event: Events::prePersist, entity: Card::class)]
 readonly class CardVendorCodeListener
 {
     public function __construct(
         private SluggerInterface $slugger
     ) {}
 
-    public function prePersist(Cards $card): void
+    public function prePersist(Card $card): void
     {
         if ($card->getVendorCode() !== null) {
             return;

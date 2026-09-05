@@ -2,7 +2,7 @@
 
 namespace App\Controller\Card;
 
-use App\Entity\Cards;
+use App\Entity\Card;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class DeleteController extends AbstractController
 {
     #[Route(path: '/cards/{id}', name: 'app_cards_delete', methods: ['POST'])]
-    public function delete(Request $request, Cards $card, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Card $card, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$card->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($card);

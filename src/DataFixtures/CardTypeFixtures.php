@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\CardTypes;
+use App\Entity\CardType;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -19,7 +19,7 @@ class CardTypeFixtures extends Fixture implements FixtureGroupInterface
         $data = Yaml::parseFile(__DIR__ . '/Data/card_types.yaml');
 
         foreach ($data['card_types'] as $item) {
-            $type = new CardTypes();
+            $type = new CardType();
             $type->setName($item['name'])
                 ->setSlug($item['slug']);
             $manager->persist($type);

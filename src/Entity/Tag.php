@@ -2,22 +2,25 @@
 
 namespace App\Entity;
 
-use App\Repository\AbilitiesRepository;
+use App\Enum\TagCategory;
+use App\Repository\TagsRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: AbilitiesRepository::class)]
-class Abilities
+#[ORM\Entity(repositoryClass: TagsRepository::class)]
+#[ORM\Table(name: 'tags')]
+class Tag
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 100, nullable: false)]
+    #[ORM\Column(length: 50)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 100, nullable: false)]
+    #[ORM\Column(length: 50)]
     private ?string $slug = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -26,8 +29,20 @@ class Abilities
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $icon = null;
 
+    #[ORM\Column(length: 7)]
+    private ?string $colorHex = null;
+
     #[ORM\Column]
     private ?bool $isActive = null;
+
+    #[ORM\Column(nullable: false)]
+    private ?\DateTime $createdAt = null;
+
+    #[ORM\Column(enumType: TagCategory::class)]
+    private ?TagCategory $category = null;
+
+    #[ORM\ManyToMany(targetEntity: Card::class, mappedBy: 'tags')]
+    private Collection $cards;
 
     public function getId(): ?int
     {
@@ -51,7 +66,7 @@ class Abilities
         return $this->slug;
     }
 
-    public function setSlug(?string $slug): static
+    public function setSlug(string $slug): static
     {
         $this->slug = $slug;
 
@@ -82,6 +97,18 @@ class Abilities
         return $this;
     }
 
+    public function getColorHex(): ?string
+    {
+        return $this->colorHex;
+    }
+
+    public function setColorHex(string $colorHex): static
+    {
+        $this->colorHex = $colorHex;
+
+        return $this;
+    }
+
     public function isActive(): ?bool
     {
         return $this->isActive;
@@ -90,6 +117,30 @@ class Abilities
     public function setIsActive(bool $isActive): static
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTime
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTime $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getCategory(): ?TagCategory
+    {
+        return $this->category;
+    }
+
+    public function setCategory(TagCategory $category): static
+    {
+        $this->category = $category;
 
         return $this;
     }

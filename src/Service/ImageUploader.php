@@ -3,7 +3,7 @@
 
 namespace App\Service;
 
-use App\Entity\Cards;
+use App\Entity\Card;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -21,7 +21,7 @@ class ImageUploader
     /**
      * Загрузить изображение для карты
      */
-    public function upload(Cards $card, UploadedFile $file): ?string
+    public function upload(Card $card, UploadedFile $file): ?string
     {
         // Генерируем пути для файла
         $paths = $this->generatePaths($card, $file);
@@ -49,7 +49,7 @@ class ImageUploader
     /**
      * Генерирует пути для файла
      */
-    private function generatePaths(Cards $card, UploadedFile $file): array
+    private function generatePaths(Card $card, UploadedFile $file): array
     {
         $raceName = $card->getRace() ? $card->getRace()->getName() : 'default';
         $raceSlug = $this->slugger->slug($raceName)->lower()->toString();
@@ -140,7 +140,7 @@ class ImageUploader
     /**
      * Удаляет старый файл если он существует и отличается от нового
      */
-    private function removeOldFile(Cards $card, string $newFullPath): void
+    private function removeOldFile(Card $card, string $newFullPath): void
     {
         if (!$card->getImagePath()) {
             return;

@@ -3,10 +3,10 @@
 namespace App\Form;
 
 use App\Dto\CreateCardFormDto;
-use App\Entity\CardTypes;
-use App\Entity\Races;
-use App\Entity\Rarities;
-use App\Entity\Tags;
+use App\Entity\CardType;
+use App\Entity\Race;
+use App\Entity\Rarity;
+use App\Entity\Tag;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -49,7 +49,7 @@ class CardsType extends AbstractType
                 'required' => false,
             ])
             ->add('cardType', EntityType::class, [
-                'class' => CardTypes::class,
+                'class' => CardType::class,
                 'choice_label' => 'name',
                 'label' => 'Тип карты',
                 'placeholder' => 'Выберите тип',
@@ -57,7 +57,7 @@ class CardsType extends AbstractType
                 'attr' => ['class' => 'form-select'],
             ])
             ->add('race', EntityType::class, [
-                'class' => Races::class,
+                'class' => Race::class,
                 'choice_label' => 'name',
                 'label' => 'Раса',
                 'placeholder' => 'Выберите расу',
@@ -65,7 +65,7 @@ class CardsType extends AbstractType
                 'attr' => ['class' => 'form-select'],
             ])
             ->add('rarity', EntityType::class, [
-                'class' => Rarities::class,
+                'class' => Rarity::class,
                 'choice_label' => 'name',
                 'label' => 'Редкость',
                 'placeholder' => 'Выберите редкость',
@@ -73,7 +73,7 @@ class CardsType extends AbstractType
                 'attr' => ['class' => 'form-select'],
             ])
             ->add('tags', EntityType::class, [
-                'class' => Tags::class,
+                'class' => Tag::class,
                 'choice_label' => 'name',
                 'multiple' => true,
                 'expanded' => false,

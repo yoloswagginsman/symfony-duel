@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\EventListener\CardVendorCodeListener;
 use App\Repository\CardsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,6 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 
 #[ORM\Entity(repositoryClass: CardsRepository::class)]
+#[ORM\Table(name: 'cards')]
 #[ORM\Index(name: 'idx_cards_race', columns: ['race_id'])]
 #[ORM\Index(name: 'idx_cards_type', columns: ['card_type_id'])]
 #[ORM\Index(name: 'idx_cards_rarity', columns: ['rarity_id'])]
@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\File\File;
 #[ORM\UniqueConstraint(name: 'uniq_cards_vendor_code', columns: ['vendor_code'])]
 #[UniqueEntity(fields: ['name'], message: 'Карта с таким названием уже существует.')]
 #[UniqueEntity(fields: ['vendorCode'], message: 'Карта с таким артикулом уже существует.')]
-class Cards
+class Card
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -122,7 +122,7 @@ class Cards
     #[ORM\Column]
     private ?\DateTime $updatedAt = null;
 
-    #[ORM\ManyToMany(targetEntity: Tags::class, inversedBy: 'cards')]
+    #[ORM\ManyToMany(targetEntity: Tag::class, inversedBy: 'cards')]
     #[ORM\JoinTable(name: 'card_tags')]
     #[ORM\JoinColumn(name: 'card_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'tag_id', referencedColumnName: 'id')]
@@ -130,20 +130,20 @@ class Cards
 
     #[ORM\ManyToOne(inversedBy: 'raceCards')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Races $race = null;
+    private ?Race $race = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?CardTypes $cardType = null;
+    private ?CardType $cardType = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Rarities $rarity = null;
+    private ?Rarity $rarity = null;
 
     /**
-     * @var Collection<int, CardAbilities>
+     * @var Collection<int, CardAbility>
      */
-    #[ORM\OneToMany(targetEntity: CardAbilities::class, mappedBy: 'card', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: CardAbility::class, mappedBy: 'card', cascade: ['persist'], orphanRemoval: true)]
     private Collection $abilities;
 
     #[ORM\Column(type: 'string', length: 100)]
@@ -288,36 +288,36 @@ class Cards
         return $this;
     }
 
-    public function getRace(): ?Races
+    public function getRace(): ?Race
     {
         return $this->race;
     }
 
-    public function setRace(?Races $race): static
+    public function setRace(?Race $race): static
     {
         $this->race = $race;
 
         return $this;
     }
 
-    public function getCardType(): ?CardTypes
+    public function getCardType(): ?CardType
     {
         return $this->cardType;
     }
 
-    public function setCardType(?CardTypes $cardType): static
+    public function setCardType(?CardType $cardType): static
     {
         $this->cardType = $cardType;
 
         return $this;
     }
 
-    public function getRarity(): ?Rarities
+    public function getRarity(): ?Rarity
     {
         return $this->rarity;
     }
 
-    public function setRarity(?Rarities $rarity): static
+    public function setRarity(?Rarity $rarity): static
     {
         $this->rarity = $rarity;
 
@@ -329,7 +329,7 @@ class Cards
         return $this->tags;
     }
 
-    public function addTag(Tags $tag): static
+    public function addTag(Tag $tag): static
     {
         if (!$this->tags->contains($tag)) {
             $this->tags->add($tag);
@@ -338,7 +338,7 @@ class Cards
         return $this;
     }
 
-    public function removeTag(Tags $tag): static
+    public function removeTag(Tag $tag): static
     {
         $this->tags->removeElement($tag);
 
@@ -346,14 +346,14 @@ class Cards
     }
 
     /**
-     * @return Collection<int, CardAbilities>
+     * @return Collection<int, CardAbility>
      */
     public function getAbilities(): Collection
     {
         return $this->abilities;
     }
 
-    public function addAbility(CardAbilities $ability): static
+    public function addAbility(CardAbility $ability): static
     {
         if (!$this->abilities->contains($ability)) {
             $this->abilities->add($ability);
@@ -363,7 +363,7 @@ class Cards
         return $this;
     }
 
-    public function removeAbility(CardAbilities $ability): static
+    public function removeAbility(CardAbility $ability): static
     {
         if ($this->abilities->removeElement($ability)) {
             // set the owning side to null (unless already changed)
@@ -375,7 +375,7 @@ class Cards
         return $this;
     }
 
-    public function addAbilityWithValue(Abilities $ability, ?int $value = null): static
+    public function addAbilityWithValue(Ability $ability, ?int $value = null): static
     {
         // Проверяем, есть ли уже такая способность у карты
         foreach ($this->abilities as $existingAbility) {
@@ -387,7 +387,7 @@ class Cards
         }
 
         // Если способности нет, создаём новую
-        $cardAbility = new CardAbilities();
+        $cardAbility = new CardAbility();
         $cardAbility->setCard($this);
         $cardAbility->setAbility($ability);
         $cardAbility->setValue($value);
@@ -400,7 +400,7 @@ class Cards
     /**
      * Удобный метод для получения значения способности
      */
-    public function getAbilityValue(Abilities $ability): ?int
+    public function getAbilityValue(Ability $ability): ?int
     {
         foreach ($this->abilities as $cardAbility) {
             if ($cardAbility->getAbility() === $ability) {
@@ -414,7 +414,7 @@ class Cards
     /**
      * Удобный метод для удаления способности
      */
-    public function removeAbilityByName(Abilities $ability): static
+    public function removeAbilityByName(Ability $ability): static
     {
         foreach ($this->abilities as $cardAbility) {
             if ($cardAbility->getAbility() === $ability) {
@@ -430,7 +430,7 @@ class Cards
     /**
      * Проверяет, есть ли у карты определённая способность
      */
-    public function hasAbility(Abilities $ability): bool
+    public function hasAbility(Ability $ability): bool
     {
         foreach ($this->abilities as $cardAbility) {
             if ($cardAbility->getAbility() === $ability) {

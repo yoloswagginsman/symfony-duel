@@ -9,7 +9,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RacesRepository::class)]
-class Races
+#[ORM\Table(name: 'races')]
+class Race
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -26,9 +27,9 @@ class Races
     private ?string $slug = null;
 
     /**
-     * @var Collection<int, Cards>
+     * @var Collection<int, Card>
      */
-    #[ORM\OneToMany(targetEntity: Cards::class, mappedBy: 'race')]
+    #[ORM\OneToMany(targetEntity: Card::class, mappedBy: 'race')]
     private Collection $raceCards;
 
     public function __construct()
@@ -78,14 +79,14 @@ class Races
     }
 
     /**
-     * @return Collection<int, Cards>
+     * @return Collection<int, Card>
      */
     public function getRaceCards(): Collection
     {
         return $this->raceCards;
     }
 
-    public function addRaceCard(Cards $raceCard): static
+    public function addRaceCard(Card $raceCard): static
     {
         if (!$this->raceCards->contains($raceCard)) {
             $this->raceCards->add($raceCard);
@@ -95,7 +96,7 @@ class Races
         return $this;
     }
 
-    public function removeRaceCard(Cards $raceCard): static
+    public function removeRaceCard(Card $raceCard): static
     {
         if ($this->raceCards->removeElement($raceCard)) {
             // set the owning side to null (unless already changed)

@@ -2,9 +2,9 @@
 
 namespace App\Dto;
 
-use App\Entity\CardTypes;
-use App\Entity\Races;
-use App\Entity\Rarities;
+use App\Entity\CardType;
+use App\Entity\Race;
+use App\Entity\Rarity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -49,13 +49,13 @@ class CreateCardFormDto
     public ?int $health = 1;
 
     #[Assert\NotNull(message: 'Выберите тип карты.')]
-    public ?CardTypes $cardType = null;
+    public ?CardType $cardType = null;
 
     #[Assert\NotNull(message: 'Выберите расу.')]
-    public ?Races $race = null;
+    public ?Race $race = null;
 
     #[Assert\NotNull(message: 'Выберите редкость.')]
-    public ?Rarities $rarity = null;
+    public ?Rarity $rarity = null;
 
     /** @var Collection<int, mixed> */
     public Collection $tags;

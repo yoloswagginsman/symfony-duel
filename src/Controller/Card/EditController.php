@@ -2,7 +2,7 @@
 
 namespace App\Controller\Card;
 
-use App\Entity\Cards;
+use App\Entity\Card;
 use App\Form\CardsType;
 use App\Repository\AbilitiesRepository;
 use App\Service\ImageUploader;
@@ -17,7 +17,7 @@ class EditController extends AbstractController
     #[Route(path: '/cards/{id}/edit', name: 'app_cards_edit', methods: ['GET', 'POST'])]
     public function edit(
         Request $request,
-        Cards $card,
+        Card $card,
         EntityManagerInterface $entityManager,
         ImageUploader $imageUploader,
         AbilitiesRepository $abilitiesRepository

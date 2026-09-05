@@ -6,7 +6,7 @@ use App\Repository\CardAbilitiesRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CardAbilitiesRepository::class)]
-class CardAbilities
+class CardAbility
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -15,11 +15,11 @@ class CardAbilities
 
     #[ORM\ManyToOne(inversedBy: 'abilities')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Cards $card = null;
+    private ?Card $card = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Abilities $ability = null;
+    private ?Ability $ability = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $value = null;
@@ -29,12 +29,12 @@ class CardAbilities
         return $this->id;
     }
 
-    public function getAbility(): ?Abilities
+    public function getAbility(): ?Ability
     {
         return $this->ability;
     }
 
-    public function setAbility(?Abilities $ability): static
+    public function setAbility(?Ability $ability): static
     {
         $this->ability = $ability;
 
@@ -53,12 +53,12 @@ class CardAbilities
         return $this;
     }
 
-    public function getCard(): ?Cards
+    public function getCard(): ?Card
     {
         return $this->card;
     }
 
-    public function setCard(?Cards $card): static
+    public function setCard(?Card $card): static
     {
         $this->card = $card;
 

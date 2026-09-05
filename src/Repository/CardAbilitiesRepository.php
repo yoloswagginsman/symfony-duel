@@ -2,18 +2,18 @@
 
 namespace App\Repository;
 
-use App\Entity\CardAbilities;
+use App\Entity\CardAbility;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<CardAbilities>
+ * @extends ServiceEntityRepository<CardAbility>
  */
 class CardAbilitiesRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, CardAbilities::class);
+        parent::__construct($registry, CardAbility::class);
     }
 
     //    /**

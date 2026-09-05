@@ -6,7 +6,7 @@ use App\Repository\CardTypesRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CardTypesRepository::class)]
-class CardTypes
+class CardType
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

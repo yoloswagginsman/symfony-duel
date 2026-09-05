@@ -6,7 +6,8 @@ use App\Repository\RaritiesRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RaritiesRepository::class)]
-class Rarities
+#[ORM\Table(name: 'rarities')]
+class Rarity
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

@@ -2,13 +2,13 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Abilities;
-use App\Entity\CardAbilities;
-use App\Entity\Cards;
-use App\Entity\CardTypes;
-use App\Entity\Races;
-use App\Entity\Rarities;
-use App\Entity\Tags;
+use App\Entity\Ability;
+use App\Entity\CardAbility;
+use App\Entity\Card;
+use App\Entity\CardType;
+use App\Entity\Race;
+use App\Entity\Rarity;
+use App\Entity\Tag;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -25,14 +25,14 @@ class CardFixtures extends Fixture implements FixtureGroupInterface, DependentFi
     {
         $data = Yaml::parseFile(__DIR__ . '/Data/cards.yaml');
 
-        $raceRepo = $manager->getRepository(Races::class);
-        $typeRepo = $manager->getRepository(CardTypes::class);
-        $rarityRepo = $manager->getRepository(Rarities::class);
-        $tagRepo = $manager->getRepository(Tags::class);
-        $abilityRepo = $manager->getRepository(Abilities::class);
+        $raceRepo = $manager->getRepository(Race::class);
+        $typeRepo = $manager->getRepository(CardType::class);
+        $rarityRepo = $manager->getRepository(Rarity::class);
+        $tagRepo = $manager->getRepository(Tag::class);
+        $abilityRepo = $manager->getRepository(Ability::class);
 
         foreach ($data['cards'] as $item) {
-            $card = new Cards();
+            $card = new Card();
             $card->setName($item['name'])
                 ->setDescription($item['description'])
                 ->setManaCost($item['manaCost'])

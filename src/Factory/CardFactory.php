@@ -3,7 +3,7 @@
 namespace App\Factory;
 
 use App\Dto\CreateCardFormDto;
-use App\Entity\Cards;
+use App\Entity\Card;
 use App\Service\ImageUploader;
 
 readonly class CardFactory
@@ -12,9 +12,9 @@ readonly class CardFactory
         private ImageUploader $imageUploader
     ) {}
 
-    public function createFromFormDto(CreateCardFormDto $dto): Cards
+    public function createFromFormDto(CreateCardFormDto $dto): Card
     {
-        $card = new Cards();
+        $card = new Card();
         $card->setName($dto->name);
         $card->setDescription($dto->description);
         $card->setManaCost($dto->manaCost);
