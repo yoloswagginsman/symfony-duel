@@ -1,14 +1,5 @@
 {# templates/cards/edit.html.twig #}
 
-{% block title %}Редактировать карту: {{ card.name }}{% endblock %}
+{% extends 'cards/form.html.twig' %}
 
-{% extends ('cards/form.html.twig') %}
-{% block form_actions %}
-  <button type="submit" class="btn btn-primary">
-      {% if card.id %}💾 Сохранить{% else %}➕ Создать{% endif %}
-  </button>
-  <a href="{{ path('app_cards_show', {'id': card.id}) }}" class="btn btn-secondary" {% if not card.id %}style="display: none;"{% endif %}>
-      ↩️ Отмена
-  </a>
-  <a href="{{ path('app_cards_index') }}" class="btn btn-secondary">📋 К списку</a>
-{% endblock %}
+{% block title %}Редактировать карту: {{ card.name }}{% endblock %}

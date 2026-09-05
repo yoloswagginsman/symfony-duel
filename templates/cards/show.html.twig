@@ -2,135 +2,113 @@
 
 {% extends 'base.html.twig' %}
 
-{% block title %}Карта: {{ card.name }}{% endblock %}
+{% block title %}{{ card.name }} - Symfony Duel{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('styles/card.css') }}">
-    <link rel="stylesheet" href="{{ asset('styles/effects.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/card-detail.css') }}">
 {% endblock %}
 
 {% block body %}
-    <div class="card-container">
-        {# Используем slug из БД для CSS класса #}
-        <div class="card card-{{ card.rarity.slug|lower }}">
+    <div class="card-detail-container">
+        <!-- Кнопка назад с крестиком -->
+        <a href="{{ path('app_cards_index') }}" class="back-button">
+            <span class="cross">✕</span>
+            Вернуться в коллекцию
+        </a>
 
-            <!-- Заголовок карты -->
-            <div class="card-header">
-                <div class="card-name">
-                    <span class="rarity-icon">★</span>
-                    {{ card.name }}
-                </div>
-                <div class="card-mana">{{ card.manaCost }}</div>
-            </div>
-
+        <div class="card-detail" data-rarity="{{ card.rarity ? card.rarity.slug|lower : 'common' }}">
             <!-- Изображение -->
-            <div class="card-image-container">
+            <div class="card-detail-image">
                 {% if card.imagePath %}
-                    <img class="card-image" src="{{ asset('upload/cards/' ~ card.imagePath) }}" alt="{{ card.name }}">
+                    <img src="/upload/cards/{{ card.imagePath }}" alt="{{ card.name }}">
                 {% else %}
-                    <div class="card-image-placeholder">
-                        <span>🃏</span>
-                        <span style="font-size: 14px; margin-top: 10px; display: block; color: #6a6a8a;">
-                        {{ card.name }}
-                    </span>
+                    <div class="card-detail-image-placeholder">
+                        ⚔️
+                        <span>{{ card.name }}</span>
                     </div>
                 {% endif %}
             </div>
 
-            <!-- Тип, раса и редкость -->
-            <div class="card-type-race-rarity">
-            <span class="card-type">
-                {% if card.cardType %}
-                    {{ card.cardType.name }}
-                {% else %}
-                    Без типа
+            <!-- Информация -->
+            <div class="card-detail-info">
+                <!-- Название -->
+                <div class="card-detail-name">
+                    {{ card.name }}
+                    <span class="mana-cost">✦ {{ card.manaCost }}</span>
+                </div>
+
+                <!-- Редкость -->
+                <div class="card-detail-rarity rarity-{{ card.rarity ? card.rarity.slug|lower : 'common' }}">
+                    {{ card.rarity ? card.rarity.name : 'Нет' }}
+                </div>
+
+                <!-- Тип и раса -->
+                <div class="card-detail-type-race">
+                    <span><strong>Тип:</strong> {{ card.cardType ? card.cardType.name : '—' }}</span>
+                    <span><strong>Раса:</strong> {{ card.race ? card.race.name : '—' }}</span>
+                </div>
+
+                <!-- Описание -->
+                <div class="card-detail-description">
+                    {{ card.description ? card.description|nl2br : 'Нет описания' }}
+                </div>
+
+                <!-- Характеристики -->
+                <div class="card-detail-stats">
+                    <div class="card-detail-stat">
+                        <span class="stat-label">⚔️ Атака</span>
+                        <span class="stat-value">{{ card.attack ?? '—' }}</span>
+                    </div>
+                    <div class="card-detail-stat">
+                        <span class="stat-label">❤️ Здоровье</span>
+                        <span class="stat-value">{{ card.health ?? '—' }}</span>
+                    </div>
+                    <div class="card-detail-stat">
+                        <span class="stat-label">✦ Мана</span>
+                        <span class="stat-value">{{ card.manaCost }}</span>
+                    </div>
+                </div>
+
+                <!-- Способности -->
+                {% if card.abilities is not empty %}
+                    <div class="card-detail-abilities">
+                        <div class="abilities-title">✦ Способности</div>
+                        {% for ability in card.abilities %}
+                            <div class="card-detail-ability">
+                                <span class="ability-name">{{ ability.ability.name }}</span>
+                                {% if ability.value is not null %}
+                                    <span class="ability-value">+{{ ability.value }}</span>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
                 {% endif %}
-            </span>
-                <span class="card-race">
-                {% if card.race %}
-                    {{ card.race.name }}
-                {% else %}
-                    Без расы
+
+                <!-- Теги -->
+                {% if card.tags is not empty %}
+                    <div class="card-detail-tags">
+                        {% for tag in card.tags %}
+                            <span class="card-detail-tag">#{{ tag.name }}</span>
+                        {% endfor %}
+                    </div>
                 {% endif %}
-            </span>
-                <span class="card-rarity">
-                {{ card.rarity.name }}
-            </span>
-            </div>
 
-            <!-- Тело карты -->
-            <div class="card-body">
-                <div class="card-description">
-                    {% if card.description %}
-                        {{ card.description|nl2br }}
-                    {% else %}
-                        <em style="color: #6a6a8a;">Нет описания</em>
-                    {% endif %}
+                <!-- Действия -->
+                <div class="card-detail-actions">
+                    <a href="{{ path('app_cards_edit', {'id': card.id}) }}" class="btn-action btn-action-edit">
+                        ✎ Редактировать
+                    </a>
+                    <form method="post" action="{{ path('app_cards_delete', {'id': card.id}) }}"
+                          onsubmit="return confirm('Удалить карту «{{ card.name }}»?');"
+                          style="display: inline;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ card.id) }}">
+                        <button type="submit" class="btn-action btn-action-delete">
+                            ✕ Удалить
+                        </button>
+                    </form>
                 </div>
             </div>
-
-            <!-- Характеристики -->
-            <div class="card-stats">
-                <div class="card-stat stat-attack">
-                    <span class="stat-icon">⚔️</span>
-                    <span class="stat-value">{{ card.attack ?? '—' }}</span>
-                </div>
-                <div class="card-stat stat-health">
-                    <span class="stat-icon">❤️</span>
-                    <span class="stat-value">{{ card.health ?? '—' }}</span>
-                </div>
-            </div>
-
-            <!-- Способности -->
-            {% if card.abilities is not empty %}
-                <div class="card-abilities">
-                    <div class="abilities-title">✦ Способности</div>
-                    {% for ability in card.abilities %}
-                        <div class="ability-item">
-                            <span class="ability-name">{{ ability.ability.name }}</span>
-                            {% if ability.value is not null %}
-                                <span class="ability-value">+{{ ability.value }}</span>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-
-            <!-- Теги -->
-            {% if card.tags is not empty %}
-                <div class="card-tags">
-                    {% for tag in card.tags %}
-                        <span class="card-tag">#{{ tag.name }}</span>
-                    {% endfor %}
-                </div>
-            {% endif %}
-
-            <div class="card-actions">
-                <a href="{{ path('app_cards_index') }}"
-                   class="btn-icon btn-back-icon"
-                   data-tooltip="Назад к списку">
-                    ←
-                </a>
-
-                <a href="{{ path('app_cards_edit', {'id': card.id}) }}"
-                   class="btn-icon btn-edit-icon"
-                   data-tooltip="Редактировать">
-                    ✏️
-                </a>
-
-                <form method="post" action="{{ path('app_cards_delete', {'id': card.id}) }}"
-                      style="display: inline-block;"
-                      onsubmit="return confirm('⚠️ Удалить карту «{{ card.name }}»?');">
-                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ card.id) }}">
-                    <button type="submit"
-                            class="btn-delete-icon-form"
-                            data-tooltip="Удалить карту">
-                        🗑️
-                    </button>
-                </form>
-            </div>
-
         </div>
     </div>
 {% endblock %}

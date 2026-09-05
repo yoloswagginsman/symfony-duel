@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use App\EventListener\CardVendorCodeListener;
 use App\Repository\CardsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 
 #[ORM\Entity(repositoryClass: CardsRepository::class)]
@@ -15,7 +17,11 @@ use Symfony\Component\HttpFoundation\File\File;
 #[ORM\Index(name: 'idx_cards_rarity', columns: ['rarity_id'])]
 #[ORM\Index(name: 'idx_cards_race_type', columns: ['race_id', 'card_type_id'])]
 #[ORM\Index(name: 'idx_cards_mana_type', columns: ['mana_cost', 'card_type_id'])]
+#[ORM\Index(name: 'idx_cards_archived_at', columns: ['archived_at'])]
 #[ORM\UniqueConstraint(name: 'uniq_cards_name', columns: ['name'])]
+#[ORM\UniqueConstraint(name: 'uniq_cards_vendor_code', columns: ['vendor_code'])]
+#[UniqueEntity(fields: ['name'], message: 'Карта с таким названием уже существует.')]
+#[UniqueEntity(fields: ['vendorCode'], message: 'Карта с таким артикулом уже существует.')]
 class Cards
 {
     #[ORM\Id]
@@ -42,6 +48,53 @@ class Cards
     private ?string $imagePath = null;
 
     private ?File $imageFile = null;
+
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $archivedAt = null;
+
+    public function getArchivedAt(): ?\DateTimeImmutable
+    {
+        return $this->archivedAt;
+    }
+
+    public function setArchivedAt(?\DateTimeInterface $archivedAt): static
+    {
+        if ($archivedAt instanceof \DateTime) {
+            $archivedAt = \DateTimeImmutable::createFromMutable($archivedAt);
+        }
+
+        $this->archivedAt = $archivedAt;
+
+        return $this;
+    }
+
+    /**
+     * Вспомогательный метод: проверяет, заархивирована ли карта
+     */
+    public function isArchived(): bool
+    {
+        return $this->archivedAt !== null;
+    }
+
+    /**
+     * Вспомогательный метод: отправляет карту в архив
+     */
+    public function archive(): static
+    {
+        $this->archivedAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    /**
+     * Вспомогательный метод: достает карту из архива
+     */
+    public function unarchive(): static
+    {
+        $this->archivedAt = null;
+
+        return $this;
+    }
 
     /**
      * Получить файл изображения
@@ -93,13 +146,22 @@ class Cards
     #[ORM\OneToMany(targetEntity: CardAbilities::class, mappedBy: 'card', cascade: ['persist'], orphanRemoval: true)]
     private Collection $abilities;
 
+    #[ORM\Column(type: 'string', length: 100)]
+    private ?string $vendorCode = null;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
         $this->abilities = new ArrayCollection();
         $this->createdAt = new \DateTime();
-        $this->isActive = true;
+        $this->isActive = false;
         $this->manaCost = 0;
+    }
+
+    #[ORM\PreUpdate]
+    public function onPreUpdate(): void
+    {
+        $this->updatedAt = new \DateTime();
     }
 
     public function getId(): ?int
@@ -116,6 +178,17 @@ class Cards
     {
         $this->name = $name;
 
+        return $this;
+    }
+
+    public function getVendorCode(): ?string
+    {
+        return $this->vendorCode;
+    }
+
+    public function setVendorCode(?string $vendorCode): self
+    {
+        $this->vendorCode = $vendorCode;
         return $this;
     }
 

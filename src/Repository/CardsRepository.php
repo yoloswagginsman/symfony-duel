@@ -32,4 +32,25 @@ class CardsRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function countByRarity(): array
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select('r.name, COUNT(c.id) as count')
+            ->join('c.rarity', 'r')
+            ->groupBy('r.id')
+            ->orderBy('count', 'DESC');
+
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findByRace(string $raceSlug): array
+    {
+        return $this->createQueryBuilder('c')
+            ->join('c.race', 'r')
+            ->where('r.slug = :slug')
+            ->setParameter('slug', $raceSlug)
+            ->getQuery()
+            ->getResult();
+    }
 }

@@ -5,5 +5,7 @@
  * which should already be in your base.html.twig.
  */
 import './styles/app.css';
+import './js/card-form.js';
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+console.log('⚔️ Symfony Duel - Card Game');
+console.log('📦 Приложение загружено');

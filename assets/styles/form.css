@@ -1,333 +1,548 @@
-/* assets/styles/edit.css */
+/* assets/styles/form.css */
 
 /* ============================================
-   ОСНОВНОЙ КОНТЕЙНЕР
+   КОНТЕЙНЕР
    ============================================ */
 
-.edit-container {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 30px;
-    background: #1a1a2e;
-    border-radius: 16px;
+.form-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+    height: calc(100vh - 40px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* ============================================
+   КНОПКА НАЗАД
+   ============================================ */
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #8a7a6a;
+    text-decoration: none;
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    padding: 6px 14px;
+    border: 1px solid rgba(180, 140, 100, 0.12);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    margin-bottom: 16px;
+    background: rgba(20, 12, 15, 0.5);
+    align-self: flex-start;
+    flex-shrink: 0;
+}
+
+.back-button:hover {
+    color: #f0d8a0;
+    border-color: rgba(180, 140, 100, 0.35);
+    background: rgba(30, 20, 18, 0.8);
+    transform: translateX(-4px);
+}
+
+.back-button .cross {
+    font-size: 16px;
+    font-weight: 300;
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+.back-button:hover .cross {
+    transform: rotate(90deg);
+}
+
+/* ============================================
+   ОСНОВНОЙ КОНТЕЙНЕР ФОРМЫ
+   ============================================ */
+
+.form-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 0;
+    background: linear-gradient(160deg, #1a1218 0%, #0f0a12 100%);
+    border: 1px solid rgba(180, 140, 100, 0.08);
+    border-radius: 12px;
+    overflow: hidden;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
-    color: #f0f0f0;
+    max-height: 85vh;
+    min-height: 400px;
+    animation: formAppear 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.edit-container h1 {
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: 28px;
-    color: #f0f0f0;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 15px;
+@keyframes formAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
 /* ============================================
-   ГРУППЫ ПОЛЕЙ
+   ПРЕВЬЮ КАРТЫ
    ============================================ */
+
+.form-preview {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    min-height: 400px;
+}
+
+/* Шапка крафта */
+.craft-header {
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: #f0d8a0;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(180, 140, 100, 0.06);
+    margin-bottom: 12px;
+    width: 100%;
+    text-transform: uppercase;
+}
+
+.craft-footer {
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #6a5a4a;
+    padding: 8px 0;
+    border-top: 1px solid rgba(180, 140, 100, 0.04);
+    margin-top: 12px;
+    width: 100%;
+}
+
+/* Карта превью */
+.card-preview {
+    width: 100%;
+    max-width: 320px;
+    background: transparent;
+    border: none;
+    transition: all 0.4s ease;
+}
+
+/* Рамки редкости для превью */
+.card-preview.rarity-common {
+    border: 2px solid rgba(157, 157, 157, 0.15);
+    border-radius: 8px;
+    padding: 4px;
+}
+.card-preview.rarity-uncommon {
+    border: 2px solid rgba(30, 255, 0, 0.15);
+    border-radius: 8px;
+    padding: 4px;
+}
+.card-preview.rarity-rare {
+    border: 2px solid rgba(0, 112, 221, 0.15);
+    border-radius: 8px;
+    padding: 4px;
+}
+.card-preview.rarity-epic {
+    border: 2px solid rgba(163, 53, 238, 0.15);
+    border-radius: 8px;
+    padding: 4px;
+}
+.card-preview.rarity-legendary {
+    border: 2px solid rgba(255, 128, 0, 0.2);
+    border-radius: 8px;
+    padding: 4px;
+    animation: craftLegendaryGlow 2s ease-in-out infinite;
+}
+
+@keyframes craftLegendaryGlow {
+    0%, 100% { box-shadow: 0 0 20px rgba(255, 128, 0, 0.05); }
+    50% { box-shadow: 0 0 40px rgba(255, 128, 0, 0.12); }
+}
+
+/* Изображение */
+.card-preview-image {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    background: transparent;
+    border-radius: 8px;
+}
+
+.card-preview-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.card-preview-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a1218, #2a1a20);
+    color: #5a4a3a;
+    font-size: 40px;
+    gap: 8px;
+    border-radius: 8px;
+}
+
+.card-preview-placeholder span {
+    font-size: 14px;
+    font-family: 'Cinzel', serif;
+    color: #4a3a2a;
+}
+
+/* Контент карты */
+.card-preview-content {
+    padding: 12px 14px;
+}
+
+.card-preview-name {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(180, 140, 100, 0.06);
+    margin-bottom: 4px;
+}
+
+.card-preview-name .preview-name {
+    color: #e8dcc8;
+    font-size: 17px;
+    font-weight: 700;
+    font-family: 'Cinzel', serif;
+}
+
+.card-preview-name .preview-mana {
+    color: #f0d8a0;
+    font-size: 15px;
+    font-family: 'Cinzel', serif;
+    background: rgba(20, 12, 15, 0.3);
+    padding: 2px 10px;
+    border-radius: 4px;
+}
+
+/* Редкость */
+.card-preview-rarity {
+    display: inline-block;
+    padding: 2px 12px;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.rarity-common {
+    color: #9d9d9d;
+    background: rgba(157, 157, 157, 0.06);
+    border: 1px solid rgba(157, 157, 157, 0.06);
+}
+.rarity-uncommon {
+    color: #1EFF00;
+    background: rgba(30, 255, 0, 0.04);
+    border: 1px solid rgba(30, 255, 0, 0.04);
+}
+.rarity-rare {
+    color: #0070DD;
+    background: rgba(0, 112, 221, 0.04);
+    border: 1px solid rgba(0, 112, 221, 0.04);
+}
+.rarity-epic {
+    color: #A335EE;
+    background: rgba(163, 53, 238, 0.04);
+    border: 1px solid rgba(163, 53, 238, 0.04);
+}
+.rarity-legendary {
+    color: #FF8000;
+    background: rgba(255, 128, 0, 0.04);
+    border: 1px solid rgba(255, 128, 0, 0.06);
+}
+
+/* Тип и раса */
+.card-preview-type-race {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+}
+
+.card-preview-type-race span {
+    font-size: 11px;
+    color: #8a7a6a;
+    font-family: 'Cinzel', serif;
+    padding: 2px 10px;
+    background: rgba(20, 12, 15, 0.2);
+    border-radius: 4px;
+}
+
+.card-preview-type-race span strong {
+    color: #b0a090;
+}
+
+/* Описание */
+.card-preview-description {
+    background: rgba(20, 12, 15, 0.2);
+    border-radius: 4px;
+    padding: 6px 10px;
+    color: #b0a090;
+    font-size: 12px;
+    line-height: 1.4;
+    font-style: italic;
+    min-height: 32px;
+    margin-bottom: 6px;
+}
+
+/* Характеристики */
+.card-preview-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+}
+
+.card-preview-stats .preview-stat {
+    background: rgba(20, 12, 15, 0.2);
+    border-radius: 4px;
+    padding: 4px 6px;
+    text-align: center;
+}
+
+.card-preview-stats .preview-stat .stat-label {
+    font-size: 9px;
+    color: #6a5a4a;
+    font-family: 'Cinzel', serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.card-preview-stats .preview-stat .stat-value {
+    font-size: 17px;
+    font-weight: 700;
+    color: #f0d8a0;
+    font-family: 'Cinzel', serif;
+    display: block;
+}
+
+/* ============================================
+   ФОРМА (ПРАВАЯ ЧАСТЬ)
+   ============================================ */
+
+.form-content {
+    padding: 20px 24px 16px;
+    overflow-y: auto;
+    max-height: 100%;
+}
+
+.form-content::-webkit-scrollbar {
+    width: 4px;
+}
+.form-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+.form-content::-webkit-scrollbar-thumb {
+    background: rgba(180, 140, 100, 0.12);
+    border-radius: 4px;
+}
+
+.form-content h1 {
+    font-size: 18px;
+    color: #e8dcc8;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(180, 140, 100, 0.04);
+    padding-bottom: 6px;
+}
+
+/* Строки формы */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .form-group label {
     display: block;
-    font-weight: bold;
-    font-size: 14px;
-    color: #a0a0b0;
-    margin-bottom: 6px;
+    font-weight: 700;
+    font-size: 12px;
+    color: #b0a090;
+    margin-bottom: 3px;
     letter-spacing: 0.5px;
+    font-family: 'Cinzel', serif;
 }
 
-.form-group label .label-icon {
-    margin-right: 8px;
-}
-
-/* ============================================
-   INPUT И TEXTAREA
-   ============================================ */
-
-.form-control {
+/* Поля ввода */
+.form-control,
+.form-select {
     width: 100%;
-    padding: 10px 14px;
-    background: #0a0a1a;
-    border: 2px solid #2a2a4e;
-    border-radius: 8px;
-    color: #f0f0f0;
-    font-size: 15px;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    padding: 6px 12px;
+    background: rgba(20, 12, 15, 0.6);
+    border: 1px solid rgba(180, 140, 100, 0.06);
+    border-radius: 4px;
+    color: #e8dcc8;
+    font-size: 14px;
+    transition: all 0.3s ease;
     box-sizing: border-box;
+    height: 36px;
 }
 
-.form-control:focus {
+.form-control:focus,
+.form-select:focus {
     outline: none;
-    border-color: #4a90d9;
-    box-shadow: 0 0 20px rgba(74, 144, 217, 0.2);
-}
-
-.form-control:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+    border-color: rgba(180, 140, 100, 0.15);
+    background: rgba(20, 12, 15, 0.8);
 }
 
 .form-control::placeholder {
-    color: #4a4a6a;
+    color: #4a3a2a;
 }
-
-textarea.form-control {
-    min-height: 100px;
-    resize: vertical;
-    font-family: inherit;
-}
-
-input[type="number"].form-control {
-    -moz-appearance: textfield;
-}
-
-input[type="number"].form-control::-webkit-outer-spin-button,
-input[type="number"].form-control::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-/* ============================================
-   ВЫПАДАЮЩИЕ СПИСКИ (SELECT)
-   ============================================ */
 
 .form-select {
-    width: 100%;
-    padding: 10px 14px;
-    background: #0a0a1a;
-    border: 2px solid #2a2a4e;
-    border-radius: 8px;
-    color: #f0f0f0;
-    font-size: 15px;
     appearance: none;
-    -webkit-appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236a6a8a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236a5a4a' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
     background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 20px;
-    cursor: pointer;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    box-sizing: border-box;
-}
-
-.form-select:focus {
-    outline: none;
-    border-color: #4a90d9;
-    box-shadow: 0 0 20px rgba(74, 144, 217, 0.2);
-}
-
-.form-select:hover {
-    border-color: #4a6a8a;
+    background-position: right 10px center;
+    background-size: 14px;
 }
 
 .form-select option {
-    background: #1a1a2e;
-    color: #f0f0f0;
-    padding: 10px;
+    background: #1a1218;
+    color: #e8dcc8;
 }
 
-.form-select option:hover,
 .form-select option:checked {
-    background: #2a2a4e;
+    background: rgba(180, 140, 100, 0.08);
+    color: #f0d8a0;
 }
 
-/* Стиль для выбранного option */
-.form-select option:checked {
-    background: #4a90d9;
-    color: white;
+textarea.form-control {
+    resize: vertical;
+    min-height: 50px;
+    height: auto;
+    font-family: inherit;
 }
 
 /* ============================================
-   СПОСОБНОСТИ (ЧЕКБОКСЫ)
+   ТЕГИ (раскрытые)
+   ============================================ */
+
+.tags-container {
+    position: relative;
+}
+
+.tags-select {
+    min-height: 60px !important;
+    height: auto !important;
+    padding: 6px;
+}
+
+.tags-select option {
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.tags-select option:checked {
+    background: rgba(180, 140, 100, 0.08);
+    color: #f0d8a0;
+}
+
+/* ============================================
+   СПОСОБНОСТИ
    ============================================ */
 
 .abilities-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 10px;
-    background: #0a0a1a;
-    padding: 15px;
-    border-radius: 8px;
-    border: 2px solid #2a2a4e;
-    max-height: 300px;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 4px;
+    background: rgba(20, 12, 15, 0.2);
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(180, 140, 100, 0.04);
+    max-height: 120px;
     overflow-y: auto;
 }
 
 .abilities-container::-webkit-scrollbar {
-    width: 8px;
+    width: 4px;
 }
-
 .abilities-container::-webkit-scrollbar-track {
-    background: #0a0a1a;
-    border-radius: 4px;
+    background: transparent;
 }
-
 .abilities-container::-webkit-scrollbar-thumb {
-    background: #2a2a4e;
+    background: rgba(180, 140, 100, 0.08);
     border-radius: 4px;
-}
-
-.abilities-container::-webkit-scrollbar-thumb:hover {
-    background: #4a6a8a;
 }
 
 .ability-checkbox {
     display: flex;
     align-items: center;
-    padding: 8px 12px;
-    background: #1a1a2e;
-    border-radius: 6px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    gap: 6px;
+    padding: 3px 8px;
+    background: rgba(20, 12, 15, 0.2);
+    border-radius: 4px;
+    border: 1px solid rgba(180, 140, 100, 0.02);
     transition: all 0.3s ease;
-    cursor: pointer;
 }
 
 .ability-checkbox:hover {
-    background: #2a2a4e;
-    border-color: rgba(74, 144, 217, 0.3);
-    transform: translateX(4px);
+    background: rgba(30, 20, 18, 0.4);
 }
 
 .ability-checkbox input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    margin-right: 10px;
-    accent-color: #4a90d9;
+    width: 14px;
+    height: 14px;
+    accent-color: #f0d8a0;
     cursor: pointer;
     flex-shrink: 0;
 }
 
-.ability-checkbox input[type="checkbox"]:checked {
-    filter: drop-shadow(0 0 5px rgba(74, 144, 217, 0.5));
-}
-
 .ability-checkbox .ability-name {
     flex: 1;
-    font-size: 14px;
-    color: #d0d0e0;
-}
-
-.ability-checkbox .ability-value-label {
     font-size: 12px;
-    color: #6a6a8a;
-    margin-right: 6px;
+    color: #b0a090;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
 }
 
 .ability-checkbox .ability-value-input {
-    width: 60px;
-    padding: 4px 8px;
-    background: #0a0a1a;
-    border: 1px solid #2a2a4e;
+    width: 44px;
+    padding: 2px 4px;
+    background: rgba(20, 12, 15, 0.4);
+    border: 1px solid rgba(180, 140, 100, 0.04);
     border-radius: 4px;
-    color: #f0f0f0;
+    color: #f0d8a0;
     text-align: center;
-    font-size: 13px;
-    transition: border-color 0.3s ease;
-}
-
-.ability-checkbox .ability-value-input:focus {
-    outline: none;
-    border-color: #4a90d9;
+    font-size: 12px;
+    height: 26px;
 }
 
 .ability-checkbox .ability-value-input:disabled {
-    opacity: 0.4;
+    opacity: 0.3;
     cursor: not-allowed;
 }
 
 /* ============================================
-   ПРЕДПРОСМОТР КАРТЫ
+   ЗАГРУЗКА ИЗОБРАЖЕНИЯ
    ============================================ */
-
-.card-preview-section {
-    margin: 30px 0;
-    padding: 20px;
-    background: #0a0a1a;
-    border-radius: 12px;
-    border: 1px solid #2a2a4e;
-}
-
-.card-preview-section h3 {
-    color: #a0a0b0;
-    font-size: 14px;
-    margin-bottom: 15px;
-    text-align: center;
-    letter-spacing: 1px;
-}
-
-.mini-card-preview {
-    max-width: 200px;
-    margin: 0 auto;
-    padding: 15px;
-    background: #1a1a2e;
-    border-radius: 10px;
-    border: 2px solid #2a2a4e;
-    text-align: center;
-}
-
-.mini-card-preview .mini-name {
-    color: #f0f0f0;
-    font-weight: bold;
-    font-size: 16px;
-}
-
-.mini-card-preview .mini-type {
-    color: #a0a0b0;
-    font-size: 12px;
-    margin-top: 4px;
-}
-
-.mini-card-preview .mini-stats {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 8px;
-    font-size: 13px;
-    color: #a0a0b0;
-}
-
-.mini-card-preview .mini-stats span {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-/* ============================================
-   ИЗОБРАЖЕНИЕ В ФОРМЕ
-   ============================================ */
-
-.image-preview-container {
-    margin-top: 10px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.image-preview-container img {
-    max-width: 150px;
-    max-height: 150px;
-    border-radius: 8px;
-    border: 2px solid #2a2a4e;
-    object-fit: cover;
-}
-
-.image-preview-container .image-info {
-    font-size: 12px;
-    color: #6a6a8a;
-}
-
-.image-preview-container .image-info .filename {
-    color: #a0a0b0;
-    font-weight: bold;
-}
 
 .image-upload-wrapper {
     position: relative;
     display: inline-block;
     cursor: pointer;
+    width: 100%;
 }
 
 .image-upload-wrapper input[type="file"] {
@@ -341,42 +556,23 @@ input[type="number"].form-control::-webkit-inner-spin-button {
 }
 
 .image-upload-wrapper .upload-label {
-    display: inline-block;
-    padding: 8px 16px;
-    background: #2a2a4e;
-    border-radius: 6px;
-    color: #a0a0b0;
-    font-size: 14px;
+    display: block;
+    padding: 6px 14px;
+    background: rgba(20, 12, 15, 0.3);
+    border: 1px dashed rgba(180, 140, 100, 0.06);
+    border-radius: 4px;
+    color: #8a7a6a;
+    font-size: 13px;
     transition: all 0.3s ease;
-    border: 1px dashed #4a4a6a;
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    height: 36px;
+    line-height: 22px;
 }
 
 .image-upload-wrapper:hover .upload-label {
-    background: #3a3a5e;
-    border-color: #4a90d9;
-    color: #f0f0f0;
-}
-
-/* ============================================
-   ТЕГИ (MULTI-SELECT)
-   ============================================ */
-
-.form-select[multiple] {
-    min-height: 100px;
-    background-image: none;
-    padding: 8px;
-}
-
-.form-select[multiple] option {
-    padding: 8px 12px;
-    border-radius: 4px;
-    margin-bottom: 2px;
-    transition: background 0.2s ease;
-}
-
-.form-select[multiple] option:checked {
-    background: #4a90d9 linear-gradient(0deg, #4a90d9 0%, #4a90d9 100%);
-    color: white;
+    background: rgba(30, 20, 18, 0.5);
+    border-color: rgba(180, 140, 100, 0.1);
 }
 
 /* ============================================
@@ -385,73 +581,91 @@ input[type="number"].form-control::-webkit-inner-spin-button {
 
 .form-actions {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     justify-content: center;
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(180, 140, 100, 0.04);
     flex-wrap: wrap;
 }
 
 .btn {
-    padding: 10px 30px;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 16px;
+    padding: 6px 18px;
+    border: 1px solid rgba(180, 140, 100, 0.1);
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 13px;
     cursor: pointer;
     transition: all 0.3s ease;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
+    font-family: 'Cinzel', serif;
+    height: 36px;
 }
 
 .btn-primary {
-    background: #4a90d9;
-    color: white;
+    background: rgba(20, 12, 15, 0.5);
+    color: #f0d8a0;
+    border-color: rgba(180, 140, 100, 0.12);
 }
 
 .btn-primary:hover {
-    background: #5aa0e9;
+    background: rgba(30, 20, 18, 0.7);
+    border-color: rgba(180, 140, 100, 0.2);
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(74, 144, 217, 0.4);
-}
-
-.btn-primary:active {
-    transform: translateY(0);
 }
 
 .btn-secondary {
-    background: #6a6a8a;
-    color: white;
+    background: rgba(20, 12, 15, 0.3);
+    color: #8a7a6a;
+    border-color: rgba(180, 140, 100, 0.04);
 }
 
 .btn-secondary:hover {
-    background: #7a7a9a;
+    background: rgba(30, 20, 18, 0.5);
+    color: #b0a090;
     transform: translateY(-2px);
 }
 
 .btn-danger {
-    background: #d94a4a;
-    color: white;
+    background: rgba(217, 74, 74, 0.04);
+    color: #8a4a4a;
+    border-color: rgba(180, 80, 80, 0.04);
 }
 
 .btn-danger:hover {
-    background: #e95a5a;
+    background: rgba(217, 74, 74, 0.08);
+    color: #d94a4a;
+    border-color: rgba(180, 80, 80, 0.1);
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(217, 74, 74, 0.4);
 }
 
-.btn-success {
-    background: #51cf66;
-    color: white;
+/* ============================================
+   FLASH СООБЩЕНИЯ
+   ============================================ */
+
+.alert {
+    padding: 8px 14px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    border: 1px solid transparent;
 }
 
-.btn-success:hover {
-    background: #61d976;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(81, 207, 102, 0.4);
+.alert-success {
+    background: rgba(30, 255, 0, 0.04);
+    border-color: rgba(30, 255, 0, 0.08);
+    color: #1EFF00;
+}
+
+.alert-danger {
+    background: rgba(217, 74, 74, 0.04);
+    border-color: rgba(217, 74, 74, 0.08);
+    color: #d94a4a;
 }
 
 /* ============================================
@@ -460,147 +674,190 @@ input[type="number"].form-control::-webkit-inner-spin-button {
 
 .form-error {
     color: #d94a4a;
-    font-size: 13px;
-    margin-top: 4px;
+    font-size: 11px;
+    margin-top: 2px;
     display: block;
-}
-
-.form-error-icon {
-    margin-right: 4px;
+    font-family: 'Cinzel', serif;
 }
 
 .form-group.has-error .form-control,
 .form-group.has-error .form-select {
-    border-color: #d94a4a;
-}
-
-.form-group.has-error .form-control:focus,
-.form-group.has-error .form-select:focus {
-    box-shadow: 0 0 20px rgba(217, 74, 74, 0.2);
-}
-
-/* ============================================
-   FLASH MESSAGES
-   ============================================ */
-
-.alert {
-    padding: 12px 18px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    font-weight: bold;
-}
-
-.alert-success {
-    background: rgba(81, 207, 102, 0.15);
-    border: 1px solid #51cf66;
-    color: #51cf66;
-}
-
-.alert-danger {
-    background: rgba(217, 74, 74, 0.15);
-    border: 1px solid #d94a4a;
-    color: #d94a4a;
-}
-
-.alert-warning {
-    background: rgba(255, 193, 7, 0.15);
-    border: 1px solid #ffc107;
-    color: #ffc107;
+    border-color: rgba(217, 74, 74, 0.15);
 }
 
 /* ============================================
    АДАПТИВНОСТЬ
    ============================================ */
 
+@media (max-width: 1024px) {
+    .form-wrapper {
+        max-height: 80vh;
+    }
+}
+
 @media (max-width: 768px) {
-    .edit-container {
-        margin: 20px 10px;
-        padding: 15px;
+    .form-container {
+        height: auto;
+        margin: 10px auto;
+        justify-content: flex-start;
     }
 
-    .edit-container h1 {
-        font-size: 22px;
+    .form-wrapper {
+        grid-template-columns: 1fr;
+        max-height: none;
+        min-height: auto;
+    }
+
+    .form-preview {
+        padding: 16px;
+        min-height: auto;
+        max-height: 320px;
+    }
+
+    .card-preview {
+        max-width: 100%;
+    }
+    .card-preview-image {
+        height: 150px;
+    }
+
+    .form-content {
+        padding: 14px;
+        max-height: none;
+        overflow-y: visible;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
     }
 
     .abilities-container {
-        grid-template-columns: 1fr;
-        max-height: 200px;
+        grid-template-columns: 1fr 1fr;
+        max-height: 150px;
     }
 
     .form-actions {
         flex-direction: column;
-        align-items: stretch;
     }
-
     .form-actions .btn {
         justify-content: center;
         width: 100%;
     }
 
-    .image-preview-container {
-        flex-direction: column;
-        align-items: flex-start;
+    .craft-header {
+        font-size: 11px;
     }
-
-    .image-preview-container img {
-        max-width: 100%;
-    }
-
-    .form-group {
-        margin-bottom: 15px;
-    }
-
-    .form-control,
-    .form-select {
-        font-size: 16px; /* Предотвращает зум на iOS */
+    .craft-footer {
+        font-size: 10px;
     }
 }
 
 @media (max-width: 480px) {
-    .edit-container {
-        margin: 10px 5px;
+    .form-preview {
+        max-height: 280px;
+        padding: 12px;
+    }
+
+    .card-preview-image {
+        height: 130px;
+    }
+
+    .card-preview-name .preview-name {
+        font-size: 15px;
+    }
+    .card-preview-stats .preview-stat .stat-value {
+        font-size: 15px;
+    }
+
+    .form-content {
         padding: 10px;
     }
-
-    .ability-checkbox {
-        flex-wrap: wrap;
-        gap: 5px;
+    .form-content h1 {
+        font-size: 16px;
     }
 
-    .ability-checkbox .ability-value-input {
-        width: 100%;
-        margin-top: 4px;
+    .form-control,
+    .form-select {
+        font-size: 13px;
+        padding: 5px 10px;
+        height: 32px;
+    }
+
+    .btn {
+        font-size: 12px;
+        padding: 5px 14px;
+        height: 32px;
+    }
+
+    .abilities-container {
+        grid-template-columns: 1fr;
+        max-height: 120px;
+    }
+
+    .craft-header {
+        font-size: 10px;
+        padding: 4px 0;
+    }
+    .craft-footer {
+        font-size: 9px;
+        padding: 4px 0;
     }
 }
+
+/* assets/styles/form.css - добавить в конец */
 
 /* ============================================
-   АНИМАЦИИ
+   ОШИБКИ ФОРМЫ
    ============================================ */
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.form-error {
+    color: #d94a4a;
+    font-size: 12px;
+    margin-top: 4px;
+    display: block;
+    font-family: 'Cinzel', serif;
+    padding: 4px 8px;
+    background: rgba(217, 74, 74, 0.04);
+    border-radius: 4px;
+    border: 1px solid rgba(217, 74, 74, 0.04);
 }
 
-.edit-container {
-    animation: fadeIn 0.4s ease-out;
+.form-error div {
+    margin-bottom: 2px;
 }
 
-@keyframes pulse {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.02);
-    }
+.form-error div:last-child {
+    margin-bottom: 0;
 }
 
-.btn-primary:active {
-    animation: pulse 0.3s ease;
+.form-group.has-error .form-control,
+.form-group.has-error .form-select {
+    border-color: rgba(217, 74, 74, 0.15);
+}
+
+.form-group.has-error .form-control:focus,
+.form-group.has-error .form-select:focus {
+    border-color: rgba(217, 74, 74, 0.3);
+    box-shadow: 0 0 20px rgba(217, 74, 74, 0.05);
+}
+
+/* Глобальные ошибки */
+.alert-danger {
+    background: rgba(217, 74, 74, 0.04);
+    border: 1px solid rgba(217, 74, 74, 0.08);
+    color: #d94a4a;
+    padding: 10px 14px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+}
+
+.alert-danger div {
+    margin-bottom: 2px;
+}
+
+.alert-danger div:last-child {
+    margin-bottom: 0;
 }

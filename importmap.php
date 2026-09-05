@@ -16,4 +16,7 @@ return [
         'path' => './assets/app.js',
         'entrypoint' => true,
     ],
+    'card-form' => [
+        'path' => './assets/js/card-form.js',
+    ],
 ];

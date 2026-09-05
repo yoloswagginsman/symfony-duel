@@ -1,23 +1,16 @@
 {# templates/base.html.twig #}
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Card Game{% endblock %}</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>🃏</text></svg>">
+    <title>{% block title %}Symfony Duel{% endblock %}</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚔️</text></svg>">
 
     {% block stylesheets %}
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-        {# Базовые стили #}
-        <style>
-            * { margin: 0; padding: 0; box-sizing: border-box; }
-            body {
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                background: #0a0a1a;
-                min-height: 100vh;
-            }
-        </style>
+        <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=MedievalSharp&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
     {% endblock %}
 
     {% block javascripts %}
@@ -25,6 +18,8 @@
     {% endblock %}
 </head>
 <body>
-{% block body %}{% endblock %}
+<div class="content-wrapper">
+    {% block body %}{% endblock %}
+</div>
 </body>
 </html>

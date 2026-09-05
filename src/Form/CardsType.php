@@ -1,23 +1,19 @@
 <?php
-// src/Form/CardsType.php
 
 namespace App\Form;
 
-use App\Entity\Cards;
+use App\Dto\CreateCardFormDto;
 use App\Entity\CardTypes;
 use App\Entity\Races;
 use App\Entity\Rarities;
 use App\Entity\Tags;
-use App\Entity\Abilities;
-use App\Entity\CardAbilities;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Image;
@@ -88,7 +84,7 @@ class CardsType extends AbstractType
             ->add('imageFile', FileType::class, [
                 'label' => 'Изображение карты',
                 'required' => false,
-                'mapped' => false,
+                // 'mapped' => false,  <-- УБРАНО! Данные сразу пишутся в $dto->imageFile
                 'attr' => ['accept' => 'image/*'],
                 'constraints' => [
                     new Image([
@@ -108,7 +104,7 @@ class CardsType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Cards::class,
+            'data_class' => CreateCardFormDto::class,
         ]);
     }
 }
