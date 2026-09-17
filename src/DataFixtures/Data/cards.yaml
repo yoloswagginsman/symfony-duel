@@ -13,6 +13,7 @@ cards:
 
   - name: "Орк-Берсеркер"
     description: "Впадает в ярость при виде врага."
+    imagePath: "orki/ork-berserker.webp"
     manaCost: 3
     attack: 5
     health: 3
@@ -35,11 +36,12 @@ cards:
     abilities: [Flying, AoE_Damage]
 
   - name: "Паладин Света"
-    description: "Святой воин, исцеляющий союзников."
+    description: "Святой воин, исцеляющий союзников.Страж цитадели"
+    imagePath: "ludi-s-severa/paladin-sveta.webp"
     manaCost: 4
     attack: 3
     health: 5
-    race: dragons
+    race: people-from-the-north
     type: creature
     rarity: rare
     tags: []

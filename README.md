@@ -6,25 +6,43 @@
 
 ## Примеры карты
 
-<table>
-  <tr>
-    <td align="center">
-      <img src=".github/images/card1.png" height="400" alt="Лесной Дух">
-      <br>
-      <b>🌿 Лесной Дух</b>
-      <br>
-      <sub>⚔️ 2 ❤️ 4 💎 3</sub>
-    </td>
-    <td align="center">
-      <img src=".github/images/card2.png" height="400" alt="Древний Дракон">
-      <br>
-      <b>🐉 Древний Дракон</b>
-      <br>
-      <sub>⚔️ 8 ❤️ 10 💎 9</sub>
-    </td>
-  </tr>
-</table>
+<div align="center">
+  <img src=".github/images/card1-new.png" width="100%" alt="Лесной Дух">
+  <br>
+  <b>🌿 Лесной Дух</b>
+  <br>
+  <sub>⚔️ 2 ❤️ 4 💎 3</sub>
+</div>
 
+<br>
+
+<div align="center">
+  <img src=".github/images/card2-new.png" width="100%" alt="Древний Дракон">
+  <br>
+  <b>🐉 Древний Дракон</b>
+  <br>
+  <sub>⚔️ 8 ❤️ 10 💎 9</sub>
+</div>
+
+<br>
+
+<div align="center">
+  <img src=".github/images/card3-new.png" width="100%" alt="Паладин Света">
+  <br>
+  <b>⚔️ Паладин Света</b>
+  <br>
+  <sub>⚔️ 3 ❤️ 5 💎 4</sub>
+</div>
+
+<br>
+
+<div align="center">
+  <img src=".github/images/card4-new.png" width="100%" alt="Орк-Берсеркер">
+  <br>
+  <b>💀 Орк-Берсеркер</b>
+  <br>
+  <sub>⚔️ 5 ❤️ 3 💎 3</sub>
+</div>
 
 ## Установка проекта
 
