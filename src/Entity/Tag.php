@@ -3,12 +3,12 @@
 namespace App\Entity;
 
 use App\Enum\TagCategory;
-use App\Repository\TagsRepository;
+use App\Repository\TagRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: TagsRepository::class)]
+#[ORM\Entity(repositoryClass: TagRepository::class)]
 #[ORM\Table(name: 'tags')]
 class Tag
 {

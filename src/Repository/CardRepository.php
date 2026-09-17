@@ -3,19 +3,14 @@
 namespace App\Repository;
 
 use App\Entity\Card;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @extends ServiceEntityRepository<Card>
- */
-class CardsRepository extends ServiceEntityRepository
+class CardRepository extends AbstractRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Card::class);
     }
-
     /**
      * Найти карты по редкости (по slug)
      * Использует: idx_cards_rarity
@@ -52,5 +47,16 @@ class CardsRepository extends ServiceEntityRepository
             ->setParameter('slug', $raceSlug)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * Сохраняем в БД карту
+     *
+     * @param Card $card
+     * @return int
+     */
+    public function create(Card $card): int
+    {
+        return $this->store($card);
     }
 }

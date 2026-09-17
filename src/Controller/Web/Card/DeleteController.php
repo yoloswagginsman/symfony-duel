@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Card;
+namespace App\Controller\Web\Card;
 
 use App\Entity\Card;
 use Doctrine\ORM\EntityManagerInterface;

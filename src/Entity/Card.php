@@ -2,16 +2,18 @@
 
 namespace App\Entity;
 
-use App\Repository\CardsRepository;
+use App\Contract\Entity\ArchiveInterface;
+use App\Contract\Entity\EntityInterface;
+use App\Repository\CardRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\HttpFoundation\File\File;
 
-#[ORM\Entity(repositoryClass: CardsRepository::class)]
+#[ORM\Entity(repositoryClass: CardRepository::class)]
 #[ORM\Table(name: 'cards')]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Index(name: 'idx_cards_race', columns: ['race_id'])]
 #[ORM\Index(name: 'idx_cards_type', columns: ['card_type_id'])]
 #[ORM\Index(name: 'idx_cards_rarity', columns: ['rarity_id'])]
@@ -22,7 +24,7 @@ use Symfony\Component\HttpFoundation\File\File;
 #[ORM\UniqueConstraint(name: 'uniq_cards_vendor_code', columns: ['vendor_code'])]
 #[UniqueEntity(fields: ['name'], message: 'Карта с таким названием уже существует.')]
 #[UniqueEntity(fields: ['vendorCode'], message: 'Карта с таким артикулом уже существует.')]
-class Card
+class Card implements EntityInterface, ArchiveInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -36,7 +38,7 @@ class Card
     private ?string $description = null;
 
     #[ORM\Column]
-    private ?int $manaCost = null;
+    private ?int $manaCost;
 
     #[ORM\Column(nullable: true)]
     private ?int $attack = null;
@@ -47,77 +49,14 @@ class Card
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imagePath = null;
 
-    private ?File $imageFile = null;
-
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $archivedAt = null;
 
-    public function getArchivedAt(): ?\DateTimeImmutable
-    {
-        return $this->archivedAt;
-    }
-
-    public function setArchivedAt(?\DateTimeInterface $archivedAt): static
-    {
-        if ($archivedAt instanceof \DateTime) {
-            $archivedAt = \DateTimeImmutable::createFromMutable($archivedAt);
-        }
-
-        $this->archivedAt = $archivedAt;
-
-        return $this;
-    }
-
-    /**
-     * Вспомогательный метод: проверяет, заархивирована ли карта
-     */
-    public function isArchived(): bool
-    {
-        return $this->archivedAt !== null;
-    }
-
-    /**
-     * Вспомогательный метод: отправляет карту в архив
-     */
-    public function archive(): static
-    {
-        $this->archivedAt = new \DateTimeImmutable();
-
-        return $this;
-    }
-
-    /**
-     * Вспомогательный метод: достает карту из архива
-     */
-    public function unarchive(): static
-    {
-        $this->archivedAt = null;
-
-        return $this;
-    }
-
-    /**
-     * Получить файл изображения
-     */
-    public function getImageFile(): ?File
-    {
-        return $this->imageFile;
-    }
-
-    /**
-     * Установить файл изображения
-     */
-    public function setImageFile(?File $imageFile): static
-    {
-        $this->imageFile = $imageFile;
-        return $this;
-    }
+    #[ORM\Column]
+    private ?bool $isActive;
 
     #[ORM\Column]
-    private ?bool $isActive = null;
-
-    #[ORM\Column]
-    private ?\DateTime $createdAt = null;
+    private ?\DateTime $createdAt;
 
     #[ORM\Column]
     private ?\DateTime $updatedAt = null;
@@ -159,9 +98,18 @@ class Card
     }
 
     #[ORM\PreUpdate]
-    public function onPreUpdate(): void
+    public function setUpdatedAtValue(): void
     {
         $this->updatedAt = new \DateTime();
+    }
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $now = new \DateTime();
+
+        $this->createdAt ??= $now;
+        $this->updatedAt = $now;
     }
 
     public function getId(): ?int
@@ -329,18 +277,56 @@ class Card
         return $this->tags;
     }
 
+    /**
+     * @param Collection<int, Tag>|array<int, Tag> $tags
+     */
+    public function setTags(Collection|array $tags): static
+    {
+        $newTags = $tags instanceof Collection ? $tags->toArray() : (array) $tags;
+
+        $newTagIds = [];
+        foreach ($newTags as $tag) {
+            if ($tag instanceof Tag && $tag->getId() !== null) {
+                $newTagIds[$tag->getId()] = $tag;
+            }
+        }
+
+        foreach ($this->tags as $existingTag) {
+            if (!isset($newTagIds[$existingTag->getId()])) {
+                $this->removeTag($existingTag);
+            }
+        }
+
+        foreach ($newTags as $tag) {
+            if ($tag instanceof Tag) {
+                $this->addTag($tag);
+            }
+        }
+
+        return $this;
+    }
+
     public function addTag(Tag $tag): static
     {
-        if (!$this->tags->contains($tag)) {
-            $this->tags->add($tag);
+        foreach ($this->tags as $existingTag) {
+            if ($existingTag->getId() === $tag->getId()) {
+                return $this;
+            }
         }
+
+        $this->tags->add($tag);
 
         return $this;
     }
 
     public function removeTag(Tag $tag): static
     {
-        $this->tags->removeElement($tag);
+        foreach ($this->tags as $key => $existingTag) {
+            if ($existingTag->getId() === $tag->getId()) {
+                $this->tags->remove($key);
+                break;
+            }
+        }
 
         return $this;
     }
@@ -353,7 +339,12 @@ class Card
         return $this->abilities;
     }
 
-    public function addAbility(CardAbility $ability): static
+    public function addAbility(Ability $ability): static
+    {
+        return $this->addAbilityWithValue($ability, null);
+    }
+
+    public function addCardAbility(CardAbility $ability): static
     {
         if (!$this->abilities->contains($ability)) {
             $this->abilities->add($ability);
@@ -363,10 +354,9 @@ class Card
         return $this;
     }
 
-    public function removeAbility(CardAbility $ability): static
+    public function removeCardAbility(CardAbility $ability): static
     {
         if ($this->abilities->removeElement($ability)) {
-            // set the owning side to null (unless already changed)
             if ($ability->getCard() === $this) {
                 $ability->setCard(null);
             }
@@ -375,26 +365,27 @@ class Card
         return $this;
     }
 
+    public function clearAbilities(): static
+    {
+        $this->abilities->clear();
+
+        return $this;
+    }
+
     public function addAbilityWithValue(Ability $ability, ?int $value = null): static
     {
-        // Проверяем, есть ли уже такая способность у карты
-        foreach ($this->abilities as $existingAbility) {
-            if ($existingAbility->getAbility() === $ability) {
-                // Если способность уже есть, просто обновляем значение
-                $existingAbility->setValue($value);
+        foreach ($this->abilities as $existingCardAbility) {
+            if ($existingCardAbility->getAbility() === $ability) {
+                $existingCardAbility->setValue($value);
                 return $this;
             }
         }
 
-        // Если способности нет, создаём новую
         $cardAbility = new CardAbility();
-        $cardAbility->setCard($this);
         $cardAbility->setAbility($ability);
         $cardAbility->setValue($value);
 
-        $this->abilities->add($cardAbility);
-
-        return $this;
+        return $this->addCardAbility($cardAbility);
     }
 
     /**
@@ -452,5 +443,49 @@ class Card
         }
 
         return $result;
+    }
+
+    public function getArchivedAt(): ?\DateTimeImmutable
+    {
+        return $this->archivedAt;
+    }
+
+    public function setArchivedAt(?\DateTimeInterface $archivedAt): static
+    {
+        if ($archivedAt instanceof \DateTime) {
+            $archivedAt = \DateTimeImmutable::createFromMutable($archivedAt);
+        }
+
+        $this->archivedAt = $archivedAt;
+
+        return $this;
+    }
+
+    /**
+     * Вспомогательный метод: проверяет, заархивирована ли карта
+     */
+    public function isArchived(): bool
+    {
+        return $this->archivedAt !== null;
+    }
+
+    /**
+     * Вспомогательный метод: отправляет карту в архив
+     */
+    public function archive(): static
+    {
+        $this->archivedAt = new \DateTimeImmutable();
+
+        return $this;
+    }
+
+    /**
+     * Вспомогательный метод: достает карту из архива
+     */
+    public function unarchive(): static
+    {
+        $this->archivedAt = null;
+
+        return $this;
     }
 }

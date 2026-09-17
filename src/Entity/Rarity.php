@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\RaritiesRepository;
+use App\Repository\RarityRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: RaritiesRepository::class)]
+#[ORM\Entity(repositoryClass: RarityRepository::class)]
 #[ORM\Table(name: 'rarities')]
 class Rarity
 {

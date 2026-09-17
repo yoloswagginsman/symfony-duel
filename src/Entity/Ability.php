@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\AbilitiesRepository;
+use App\Repository\AbilityRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: AbilitiesRepository::class)]
+#[ORM\Entity(repositoryClass: AbilityRepository::class)]
 #[ORM\Table(name: 'abilities')]
 class Ability
 {

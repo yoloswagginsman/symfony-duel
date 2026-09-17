@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\CardAbilitiesRepository;
+use App\Repository\CardAbilityRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CardAbilitiesRepository::class)]
+#[ORM\Entity(repositoryClass: CardAbilityRepository::class)]
 class CardAbility
 {
     #[ORM\Id]

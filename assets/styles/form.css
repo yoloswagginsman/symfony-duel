@@ -861,3 +861,140 @@ textarea.form-control {
 .alert-danger div:last-child {
     margin-bottom: 0;
 }
+
+/* assets/styles/form.css - добавить в САМЫЙ КОНЕЦ файла */
+
+/* ============================================
+   КЛИКАБЕЛЬНОЕ ПРЕВЬЮ ИЗОБРАЖЕНИЯ
+   ============================================ */
+
+.card-preview-image {
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.card-preview-image:hover {
+    opacity: 0.9;
+    transform: scale(1.01);
+}
+
+/* Оверлей при наведении */
+.card-preview-image .preview-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    z-index: 2;
+}
+
+.card-preview-image:hover .preview-overlay {
+    opacity: 1;
+}
+
+.card-preview-image .preview-overlay span {
+    color: #f0d8a0;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.5);
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid rgba(180, 140, 100, 0.2);
+}
+
+/* Подсказка при наведении */
+.card-preview-image::after {
+    content: '🖱️ Нажмите чтобы выбрать изображение';
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: #f0d8a0;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-family: 'Cinzel', serif;
+    white-space: nowrap;
+    z-index: 3;
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.card-preview-image:hover::after {
+    opacity: 1;
+}
+
+/* Стили для загрузки файла */
+.image-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.image-input-wrapper input[type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.image-input-wrapper .upload-label {
+    display: block;
+    padding: 8px 14px;
+    background: rgba(20, 12, 15, 0.3);
+    border: 1px dashed rgba(180, 140, 100, 0.06);
+    border-radius: 4px;
+    color: #8a7a6a;
+    font-size: 13px;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-family: 'Cinzel', serif;
+}
+
+.image-input-wrapper:hover .upload-label {
+    background: rgba(30, 20, 18, 0.5);
+    border-color: rgba(180, 140, 100, 0.1);
+    color: #b0a090;
+}
+
+/* Индикатор загрузки */
+.image-loading {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    z-index: 5;
+}
+
+.image-loading.active {
+    display: flex;
+}
+
+.image-loading span {
+    color: #f0d8a0;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}

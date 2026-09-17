@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\RacesRepository;
+use App\Repository\RaceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: RacesRepository::class)]
+#[ORM\Entity(repositoryClass: RaceRepository::class)]
 #[ORM\Table(name: 'races')]
 class Race
 {

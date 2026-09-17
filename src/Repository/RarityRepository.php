@@ -2,39 +2,39 @@
 
 namespace App\Repository;
 
-use App\Entity\CardType;
+use App\Entity\Rarity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<CardType>
+ * @extends ServiceEntityRepository<Rarity>
  */
-class CardTypesRepository extends ServiceEntityRepository
+class RarityRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, CardType::class);
+        parent::__construct($registry, Rarity::class);
     }
 
     //    /**
-    //     * @return CardTypes[] Returns an array of CardTypes objects
+    //     * @return Rarities[] Returns an array of Rarities objects
     //     */
     //    public function findByExampleField($value): array
     //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
+    //        return $this->createQueryBuilder('r')
+    //            ->andWhere('r.exampleField = :val')
     //            ->setParameter('val', $value)
-    //            ->orderBy('c.id', 'ASC')
+    //            ->orderBy('r.id', 'ASC')
     //            ->setMaxResults(10)
     //            ->getQuery()
     //            ->getResult()
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?CardTypes
+    //    public function findOneBySomeField($value): ?Rarities
     //    {
-    //        return $this->createQueryBuilder('c')
-    //            ->andWhere('c.exampleField = :val')
+    //        return $this->createQueryBuilder('r')
+    //            ->andWhere('r.exampleField = :val')
     //            ->setParameter('val', $value)
     //            ->getQuery()
     //            ->getOneOrNullResult()

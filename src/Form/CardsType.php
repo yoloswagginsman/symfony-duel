@@ -2,24 +2,35 @@
 
 namespace App\Form;
 
+use App\Dto\CardAbilityFormDto;
 use App\Dto\CreateCardFormDto;
 use App\Entity\CardType;
 use App\Entity\Race;
 use App\Entity\Rarity;
 use App\Entity\Tag;
+use App\Form\EventSubscriber\CardAbilitiesFormSubscriber;
+use App\Repository\AbilityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Image;
 
 class CardsType extends AbstractType
 {
+    public function __construct(
+        private readonly CardAbilitiesFormSubscriber $abilitiesSubscriber
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -81,10 +92,16 @@ class CardsType extends AbstractType
                 'attr' => ['class' => 'form-select'],
                 'required' => false,
             ])
+            ->add('abilities', CollectionType::class, [
+                'entry_type' => CardAbilityType::class,
+                'allow_add' => false,
+                'allow_delete' => false,
+                'by_reference' => false,
+                'property_path' => 'abilitiesForm',
+            ])
             ->add('imageFile', FileType::class, [
                 'label' => 'Изображение карты',
                 'required' => false,
-                // 'mapped' => false,  <-- УБРАНО! Данные сразу пишутся в $dto->imageFile
                 'attr' => ['accept' => 'image/*'],
                 'constraints' => [
                     new Image([
@@ -99,12 +116,16 @@ class CardsType extends AbstractType
                 'label' => 'Карта активна',
                 'required' => false,
             ]);
+
+        $builder->addEventSubscriber($this->abilitiesSubscriber);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => CreateCardFormDto::class,
+            'empty_data' => new CreateCardFormDto(),
+            'isNew' => false,
         ]);
     }
 }

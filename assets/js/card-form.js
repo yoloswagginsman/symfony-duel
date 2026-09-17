@@ -1,60 +1,22 @@
 // assets/js/card-form.js
 
-/**
- * Карточный конструктор - управление превью карты в реальном времени
- */
-class CardFormPreview {
-    constructor() {
-        console.log('🏗️ CardFormPreview инициализирован');
+(function() {
+    'use strict';
 
-        this.elements = this.getElements();
+    function initCardForm() {
+        const elements = {
+            form: document.getElementById('cardForm'),
 
-        // Проверяем, что элементы найдены
-        if (!this.elements.cardForm) {
-            console.warn('⚠️ Форма не найдена, пропускаем инициализацию');
-            return;
-        }
+            name: document.getElementById('cards_name'),
+            mana: document.getElementById('cards_manaCost'),
+            description: document.getElementById('cards_description'),
+            type: document.getElementById('cards_cardType'),
+            race: document.getElementById('cards_race'),
+            rarity: document.getElementById('cards_rarity'),
+            attack: document.getElementById('cards_attack'),
+            health: document.getElementById('cards_health'),
+            image: document.getElementById('cards_imageFile'),
 
-        console.log('📋 Элементы формы:');
-        Object.keys(this.elements).forEach(key => {
-            console.log(`  ${key}: ${!!this.elements[key]}`);
-        });
-
-        // Проверяем конкретные поля
-        const fields = ['name', 'mana', 'description', 'type', 'race', 'rarity', 'attack', 'health', 'image'];
-        const missing = fields.filter(f => !this.elements[f]);
-
-        if (missing.length > 0) {
-            console.warn(`⚠️ Не найдены поля: ${missing.join(', ')}`);
-        }
-
-        this.initRarityBorder();
-        this.initEventListeners();
-        this.initAbilities();
-
-        console.log('✅ CardFormPreview готов');
-    }
-
-    /**
-     * Получение всех DOM элементов
-     */
-    getElements() {
-        return {
-            // Форма
-            cardForm: document.getElementById('cardForm'),
-
-            // Инпуты (используем ID из шаблона)
-            name: document.getElementById('inputName'),
-            mana: document.getElementById('inputMana'),
-            description: document.getElementById('inputDescription'),
-            type: document.getElementById('inputType'),
-            race: document.getElementById('inputRace'),
-            rarity: document.getElementById('inputRarity'),
-            attack: document.getElementById('inputAttack'),
-            health: document.getElementById('inputHealth'),
-            image: document.getElementById('inputImage'),
-
-            // Превью
             previewName: document.getElementById('previewName'),
             previewMana: document.getElementById('previewMana'),
             previewDescription: document.getElementById('previewDescription'),
@@ -68,203 +30,159 @@ class CardFormPreview {
             previewPlaceholder: document.getElementById('previewPlaceholder'),
             previewPlaceholderName: document.getElementById('previewPlaceholderName'),
             cardPreview: document.getElementById('cardPreview'),
-            uploadLabel: document.getElementById('uploadLabel')
+            uploadLabel: document.getElementById('uploadLabel'),
+            previewContainer: document.querySelector('.card-preview-image')
         };
-    }
 
-    /**
-     * Инициализация рамки редкости
-     */
-    initRarityBorder() {
-        const { rarity, cardPreview, previewRarity } = this.elements;
+        if (!elements.form) return;
 
-        if (rarity && cardPreview && previewRarity) {
-            const selected = rarity.options[rarity.selectedIndex];
-            if (selected) {
-                const slug = this.getRaritySlug(selected);
-                cardPreview.className = 'card-preview rarity-' + slug;
-                previewRarity.className = 'card-preview-rarity rarity-' + slug;
-                console.log('🎨 Установлена редкость:', slug);
-            }
-        }
-    }
-
-    /**
-     * Инициализация событий
-     */
-    initEventListeners() {
-        const {
-            name, mana, description, type, race, rarity,
-            attack, health, image,
-            previewName, previewMana, previewDescription,
-            previewType, previewRace, previewRarity,
-            previewAttack, previewHealth, previewManaStat,
-            previewPlaceholderName, cardPreview,
-            uploadLabel, previewImage, previewPlaceholder
-        } = this.elements;
-
-        // Название
-        if (name && previewName) {
-            console.log('✅ Привязано событие: Название');
-            name.addEventListener('input', () => {
-                const val = name.value || 'Название карты';
-                previewName.textContent = val;
-                if (previewPlaceholderName) previewPlaceholderName.textContent = val;
-            });
-        }
-
-        // Мана
-        if (mana && previewMana) {
-            console.log('✅ Привязано событие: Мана');
-            mana.addEventListener('input', () => {
-                const val = mana.value || 0;
-                previewMana.textContent = '✦ ' + val;
-                if (previewManaStat) previewManaStat.textContent = val;
-            });
-        }
-
-        // Описание
-        if (description && previewDescription) {
-            console.log('✅ Привязано событие: Описание');
-            description.addEventListener('input', () => {
-                previewDescription.textContent = description.value || 'Нет описания';
-            });
-        }
-
-        // Тип
-        if (type && previewType) {
-            console.log('✅ Привязано событие: Тип');
-            type.addEventListener('change', () => {
-                const val = type.options[type.selectedIndex]?.text || '—';
-                previewType.innerHTML = '<strong>Тип:</strong> ' + val;
-            });
-        }
-
-        // Раса
-        if (race && previewRace) {
-            console.log('✅ Привязано событие: Раса');
-            race.addEventListener('change', () => {
-                const val = race.options[race.selectedIndex]?.text || '—';
-                previewRace.innerHTML = '<strong>Раса:</strong> ' + val;
-            });
+        function getRaritySlug(option) {
+            const name = option.text.toLowerCase().trim();
+            const map = {
+                'обычный': 'common',
+                'common': 'common',
+                'необычный': 'uncommon',
+                'uncommon': 'uncommon',
+                'редкий': 'rare',
+                'rare': 'rare',
+                'эпический': 'epic',
+                'epic': 'epic',
+                'легендарный': 'legendary',
+                'legendary': 'legendary'
+            };
+            return map[name] || 'common';
         }
 
         // Редкость
-        if (rarity && previewRarity && cardPreview) {
-            console.log('✅ Привязано событие: Редкость');
-            rarity.addEventListener('change', () => {
-                const selected = rarity.options[rarity.selectedIndex];
-                const slug = this.getRaritySlug(selected);
-                const name = selected.text || 'Нет';
+        if (elements.rarity && elements.cardPreview && elements.previewRarity) {
+            const updateRarity = function() {
+                const selected = elements.rarity.options[elements.rarity.selectedIndex];
+                if (selected) {
+                    const slug = getRaritySlug(selected);
+                    elements.cardPreview.className = 'card-preview rarity-' + slug;
+                    elements.previewRarity.className = 'card-preview-rarity rarity-' + slug;
+                    elements.previewRarity.textContent = selected.text || 'Нет';
+                }
+            };
 
-                cardPreview.className = 'card-preview rarity-' + slug;
-                previewRarity.className = 'card-preview-rarity rarity-' + slug;
-                previewRarity.textContent = name;
+            updateRarity();
+            elements.rarity.addEventListener('change', updateRarity);
+        }
+
+        // Live Preview
+        if (elements.name && elements.previewName) {
+            elements.name.addEventListener('input', function() {
+                const val = this.value || 'Название карты';
+                elements.previewName.textContent = val;
+                if (elements.previewPlaceholderName) {
+                    elements.previewPlaceholderName.textContent = val;
+                }
             });
         }
 
-        // Атака
-        if (attack && previewAttack) {
-            console.log('✅ Привязано событие: Атака');
-            attack.addEventListener('input', () => {
-                previewAttack.textContent = attack.value || '—';
+        if (elements.mana && elements.previewMana) {
+            elements.mana.addEventListener('input', function() {
+                const val = this.value || 0;
+                elements.previewMana.textContent = '✦ ' + val;
+                if (elements.previewManaStat) {
+                    elements.previewManaStat.textContent = val;
+                }
             });
         }
 
-        // Здоровье
-        if (health && previewHealth) {
-            console.log('✅ Привязано событие: Здоровье');
-            health.addEventListener('input', () => {
-                previewHealth.textContent = health.value || '—';
+        if (elements.description && elements.previewDescription) {
+            elements.description.addEventListener('input', function() {
+                elements.previewDescription.textContent = this.value || 'Нет описания';
             });
         }
 
-        // Изображение
-        if (image) {
-            console.log('✅ Привязано событие: Изображение');
-            image.addEventListener('change', () => {
-                if (image.files && image.files[0]) {
-                    if (uploadLabel) {
-                        uploadLabel.textContent = '📄 ' + image.files[0].name;
+        if (elements.type && elements.previewType) {
+            elements.type.addEventListener('change', function() {
+                const val = this.options[this.selectedIndex]?.text || '—';
+                elements.previewType.innerHTML = '<strong>Тип:</strong> ' + val;
+            });
+        }
+
+        if (elements.race && elements.previewRace) {
+            elements.race.addEventListener('change', function() {
+                const val = this.options[this.selectedIndex]?.text || '—';
+                elements.previewRace.innerHTML = '<strong>Раса:</strong> ' + val;
+            });
+        }
+
+        if (elements.attack && elements.previewAttack) {
+            elements.attack.addEventListener('input', function() {
+                elements.previewAttack.textContent = this.value || '—';
+            });
+        }
+
+        if (elements.health && elements.previewHealth) {
+            elements.health.addEventListener('input', function() {
+                elements.previewHealth.textContent = this.value || '—';
+            });
+        }
+
+        // Загрузка изображения
+        if (elements.image) {
+            elements.image.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const file = this.files[0];
+
+                    if (elements.uploadLabel) {
+                        elements.uploadLabel.textContent = '📄 ' + file.name;
                     }
 
                     const reader = new FileReader();
-                    reader.onload = (e) => {
-                        if (previewImage) {
-                            previewImage.src = e.target.result;
-                            previewImage.style.display = 'block';
-                            if (previewPlaceholder) previewPlaceholder.style.display = 'none';
+                    reader.onload = function(event) {
+                        if (elements.previewImage) {
+                            elements.previewImage.src = event.target.result;
+                            elements.previewImage.style.display = 'block';
+                            if (elements.previewPlaceholder) {
+                                elements.previewPlaceholder.style.display = 'none';
+                            }
                         }
                     };
-                    reader.readAsDataURL(image.files[0]);
+                    reader.readAsDataURL(file);
                 } else {
-                    if (uploadLabel) {
-                        uploadLabel.textContent = '📁 Выберите файл';
+                    if (elements.uploadLabel) {
+                        elements.uploadLabel.textContent = '📁 Выберите файл';
                     }
                 }
             });
         }
-    }
 
-    /**
-     * Получение slug редкости
-     */
-    getRaritySlug(option) {
-        if (option.dataset.slug) {
-            return option.dataset.slug;
+        // Клик по превью
+        if (elements.previewContainer && elements.image) {
+            elements.previewContainer.addEventListener('click', function(e) {
+                if (e.target.closest('.btn') || e.target.closest('a')) return;
+                elements.image.click();
+            });
+            elements.previewContainer.style.cursor = 'pointer';
+            elements.previewContainer.title = 'Нажмите чтобы выбрать изображение';
         }
-        const name = option.text.toLowerCase().trim();
-        const map = {
-            'обычный': 'common',
-            'common': 'common',
-            'необычный': 'uncommon',
-            'uncommon': 'uncommon',
-            'редкий': 'rare',
-            'rare': 'rare',
-            'эпический': 'epic',
-            'epic': 'epic',
-            'легендарный': 'legendary',
-            'legendary': 'legendary'
-        };
-        return map[name] || 'common';
-    }
 
-    /**
-     * Инициализация способностей
-     */
-    initAbilities() {
-        const checkboxes = document.querySelectorAll('.ability-input');
-        console.log(`⚡ Способностей найдено: ${checkboxes.length}`);
-
-        checkboxes.forEach((checkbox) => {
+        // Способности
+        document.querySelectorAll('.ability-input').forEach(function(checkbox) {
             const container = checkbox.closest('.ability-checkbox');
             const valueInput = container?.querySelector('.ability-value-input');
 
             if (valueInput) {
                 valueInput.disabled = !checkbox.checked;
 
-                checkbox.addEventListener('change', () => {
-                    valueInput.disabled = !checkbox.checked;
-                    if (!checkbox.checked) {
+                checkbox.addEventListener('change', function() {
+                    valueInput.disabled = !this.checked;
+                    if (!this.checked) {
                         valueInput.value = '';
-                    } else {
-                        valueInput.focus();
                     }
                 });
             }
         });
     }
-}
 
-// Инициализация при загрузке
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🔍 Поиск формы...');
-    const form = document.getElementById('cardForm');
-
-    if (form) {
-        console.log('✅ Форма найдена, инициализация CardFormPreview');
-        new CardFormPreview();
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initCardForm);
     } else {
-        console.warn('⚠️ Форма #cardForm не найдена');
+        initCardForm();
     }
-});
+
+})();
