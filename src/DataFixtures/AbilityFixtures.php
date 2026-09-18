@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Abilities;
+use App\Entity\Ability;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -19,7 +19,7 @@ class AbilityFixtures extends Fixture implements FixtureGroupInterface
         $data = Yaml::parseFile(__DIR__ . '/Data/abilities.yaml');
 
         foreach ($data['abilities'] as $item) {
-            $ability = new Abilities();
+            $ability = new Ability();
             $ability->setName($item['type'])
                 ->setSlug($item['type'])
                 ->setIsActive(true)

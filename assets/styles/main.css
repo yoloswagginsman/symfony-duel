@@ -1,0 +1,556 @@
+/* assets/styles/main.css */
+
+/* ============================================
+   ГЛАВНАЯ СТРАНИЦА
+   ============================================ */
+
+/* ... остальные стили из предыдущих версий ... */
+
+/* ============================================
+   СЕКЦИЯ С КАРТАМИ
+   ============================================ */
+
+.cards-section {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.section-title {
+    font-size: 28px;
+    color: #e8dcc8;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 1px;
+}
+
+.section-title .badge {
+    background: rgba(180, 140, 100, 0.12);
+    color: #f0d8a0;
+    font-size: 14px;
+    padding: 2px 14px;
+    border-radius: 20px;
+    font-weight: normal;
+}
+
+.section-link {
+    color: #a09080;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.5px;
+    padding: 6px 16px;
+    border: 1px solid rgba(180, 140, 100, 0.08);
+    border-radius: 4px;
+    background: rgba(20, 12, 15, 0.3);
+}
+
+.section-link:hover {
+    color: #f0d8a0;
+    border-color: rgba(180, 140, 100, 0.25);
+    background: rgba(30, 20, 18, 0.5);
+    transform: translateX(4px);
+}
+
+/* ============================================
+   СЕТКА КАРТ НА ГЛАВНОЙ
+   ============================================ */
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 25px;
+}
+
+.card-item {
+    background: #1a1218;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(180, 140, 100, 0.06);
+    cursor: pointer;
+    position: relative;
+}
+
+.card-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    border-color: rgba(180, 140, 100, 0.2);
+}
+
+/* Подсветка редкости при наведении */
+.card-item[data-rarity="common"]:hover { border-color: rgba(157, 157, 157, 0.3); box-shadow: 0 20px 50px rgba(157, 157, 157, 0.05); }
+.card-item[data-rarity="uncommon"]:hover { border-color: rgba(30, 255, 0, 0.2); box-shadow: 0 20px 50px rgba(30, 255, 0, 0.05); }
+.card-item[data-rarity="rare"]:hover { border-color: rgba(0, 112, 221, 0.25); box-shadow: 0 20px 50px rgba(0, 112, 221, 0.06); }
+.card-item[data-rarity="epic"]:hover { border-color: rgba(163, 53, 238, 0.25); box-shadow: 0 20px 50px rgba(163, 53, 238, 0.06); }
+/* Легендарная карточка — базовая */
+.card-item[data-rarity="legendary"] {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+    box-shadow 0.6s ease,
+    border-color 0.6s ease;
+}
+
+/* Легендарная карточка — при наведении */
+.card-item[data-rarity="legendary"]:hover {
+    border-color: rgba(255, 128, 0, 0.35);
+    box-shadow: 0 20px 60px rgba(255, 128, 0, 0.1);
+}
+
+/* Свечение только через ::after — чтобы не дёргалось */
+.card-item[data-rarity="legendary"]::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 8px;
+    pointer-events: none;
+    opacity: 0;
+    box-shadow: 0 0 40px rgba(255, 128, 0, 0.25),
+    0 0 60px rgba(255, 128, 0, 0.15);
+    transition: opacity 0.6s ease;
+    z-index: 2;
+}
+
+.card-item[data-rarity="legendary"]:hover::after {
+    opacity: 1;
+    animation: legendaryGlowPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes legendaryGlowPulse {
+    0%, 100% {
+        box-shadow: 0 0 40px rgba(255, 128, 0, 0.25),
+        0 0 60px rgba(255, 128, 0, 0.15);
+    }
+    50% {
+        box-shadow: 0 0 60px rgba(255, 128, 0, 0.4),
+        0 0 90px rgba(255, 128, 0, 0.25);
+    }
+}
+
+/* Изображение */
+.card-item-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    background: #0a0608;
+    transition: transform 0.6s ease;
+}
+
+.card-item:hover .card-item-image {
+    transform: scale(1.05);
+}
+
+.card-item-image-placeholder {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a1218, #2a1a20);
+    color: #5a4a3a;
+    font-size: 48px;
+    transition: all 0.4s ease;
+}
+
+.card-item:hover .card-item-image-placeholder {
+    background: linear-gradient(135deg, #2a1a20, #3a2a30);
+    color: #7a5a4a;
+}
+
+/* Контент */
+.card-item-content {
+    padding: 14px 16px 12px;
+}
+
+.card-item-name {
+    color: #e8dcc8;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Cinzel', serif;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: 0.5px;
+}
+
+.card-item-description {
+    color: #6a5a4a;
+    font-size: 12px;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 32px;
+    font-style: italic;
+    line-height: 1.4;
+}
+
+.card-item-stats {
+    display: flex;
+    justify-content: space-between;
+    color: #8a7a6a;
+    font-size: 13px;
+    padding: 6px 0;
+    border-top: 1px solid rgba(180, 140, 100, 0.04);
+    border-bottom: 1px solid rgba(180, 140, 100, 0.04);
+    font-family: 'Cinzel', serif;
+}
+
+.card-item-stats span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.card-item-rarity {
+    display: inline-block;
+    font-size: 11px;
+    padding: 3px 14px;
+    border-radius: 20px;
+    margin-top: 8px;
+    font-weight: 500;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.5px;
+}
+
+.rarity-common { color: #9d9d9d; background: rgba(157, 157, 157, 0.06); border: 1px solid rgba(157, 157, 157, 0.06); }
+.rarity-uncommon { color: #1EFF00; background: rgba(30, 255, 0, 0.04); border: 1px solid rgba(30, 255, 0, 0.04); }
+.rarity-rare { color: #0070DD; background: rgba(0, 112, 221, 0.04); border: 1px solid rgba(0, 112, 221, 0.04); }
+.rarity-epic { color: #A335EE; background: rgba(163, 53, 238, 0.04); border: 1px solid rgba(163, 53, 238, 0.04); }
+.rarity-legendary {
+    color: #FF8000;
+    background: rgba(255, 128, 0, 0.04);
+    border: 1px solid rgba(255, 128, 0, 0.08);
+}
+
+/* ============================================
+   ПУСТОЙ СОСТОЯНИЕ
+   ============================================ */
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6a5a4a;
+}
+
+.empty-state .icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.empty-state h3 {
+    color: #8a7a6a;
+    margin-bottom: 10px;
+    font-family: 'Cinzel', serif;
+    font-size: 24px;
+}
+
+.empty-state p {
+    color: #6a5a4a;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.empty-state .btn-create {
+    margin-top: 15px;
+    display: inline-block;
+    padding: 10px 30px;
+    background: linear-gradient(135deg, #3a2a1a, #2a1a0f);
+    color: #f0d8a0;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(180, 140, 100, 0.25);
+    font-family: 'Cinzel', serif;
+}
+
+.empty-state .btn-create:hover {
+    background: linear-gradient(135deg, #4a3a2a, #3a2a1a);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* ============================================
+   АДАПТИВНОСТЬ
+   ============================================ */
+
+@media (max-width: 1024px) {
+    .cards-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .cards-section {
+        padding: 30px 15px 40px;
+    }
+
+    .cards-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 15px;
+    }
+
+    .card-item-image {
+        height: 150px;
+    }
+
+    .card-item-image-placeholder {
+        height: 150px;
+        font-size: 36px;
+    }
+
+    .card-item-content {
+        padding: 10px 12px 10px;
+    }
+
+    .card-item-name {
+        font-size: 14px;
+    }
+
+    .card-item-description {
+        display: none;
+    }
+
+    .card-item-stats {
+        font-size: 12px;
+    }
+
+    .section-title {
+        font-size: 22px;
+    }
+
+    .section-link {
+        font-size: 12px;
+        padding: 4px 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cards-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 10px;
+    }
+
+    .card-item-image {
+        height: 120px;
+    }
+
+    .card-item-image-placeholder {
+        height: 120px;
+        font-size: 28px;
+    }
+
+    .card-item-content {
+        padding: 8px 10px 8px;
+    }
+
+    .card-item-name {
+        font-size: 13px;
+    }
+
+    .card-item-stats {
+        font-size: 11px;
+        flex-wrap: wrap;
+        gap: 2px;
+        padding: 4px 0;
+    }
+
+    .card-item-rarity {
+        font-size: 10px;
+        padding: 2px 10px;
+        margin-top: 4px;
+    }
+
+    .section-title {
+        font-size: 18px;
+    }
+
+    .section-title .badge {
+        font-size: 12px;
+        padding: 1px 10px;
+    }
+
+    .section-link {
+        font-size: 11px;
+        padding: 3px 10px;
+    }
+}
+
+/* assets/styles/main.css - добавить в конец файла */
+
+/* ============================================
+   ФИЛЬТРЫ И ПОИСК
+   ============================================ */
+
+.filters-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    border: 1px solid rgba(180, 140, 100, 0.1);
+    border-radius: 4px;
+    background: rgba(20, 12, 15, 0.4);
+    color: #8a7a6a;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 13px;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.5px;
+}
+
+.filter-btn .filter-icon {
+    font-size: 12px;
+    opacity: 0.5;
+}
+
+.filter-btn .filter-dot {
+    font-size: 14px;
+}
+
+.filter-btn .filter-count {
+    font-size: 10px;
+    background: rgba(180, 140, 100, 0.06);
+    padding: 1px 8px;
+    border-radius: 10px;
+    color: #6a5a4a;
+    margin-left: 2px;
+}
+
+.filter-btn:hover {
+    border-color: rgba(180, 140, 100, 0.2);
+    color: #b0a090;
+    background: rgba(30, 20, 18, 0.6);
+    transform: translateY(-1px);
+}
+
+.filter-btn.active {
+    border-color: rgba(180, 140, 100, 0.25);
+    color: #f0d8a0;
+    background: rgba(180, 140, 100, 0.05);
+}
+
+.filter-btn.active .filter-count {
+    background: rgba(180, 140, 100, 0.08);
+    color: #b0a090;
+}
+
+/* Поиск */
+.search-wrapper {
+    width: 100%;
+    max-width: 300px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 8px 16px;
+    background: rgba(20, 12, 15, 0.6);
+    border: 1px solid rgba(180, 140, 100, 0.08);
+    border-radius: 4px;
+    color: #e8dcc8;
+    font-size: 14px;
+    font-family: 'Cinzel', serif;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.search-input::placeholder {
+    color: #5a4a3a;
+}
+
+.search-input:focus {
+    border-color: rgba(180, 140, 100, 0.2);
+    background: rgba(20, 12, 15, 0.8);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================
+   АДАПТИВНОСТЬ ФИЛЬТРОВ
+   ============================================ */
+
+@media (max-width: 768px) {
+    .filters-wrapper {
+        gap: 10px;
+    }
+
+    .filters {
+        gap: 6px;
+        justify-content: center;
+    }
+
+    .filter-btn {
+        padding: 6px 12px;
+        font-size: 11px;
+        gap: 4px;
+    }
+
+    .filter-btn .filter-count {
+        font-size: 9px;
+        padding: 0 6px;
+    }
+
+    .search-wrapper {
+        max-width: 100%;
+    }
+
+    .search-input {
+        padding: 6px 14px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .filters {
+        gap: 4px;
+    }
+
+    .filter-btn {
+        padding: 4px 10px;
+        font-size: 10px;
+    }
+
+    .filter-btn .filter-dot {
+        font-size: 10px;
+    }
+
+    .filter-btn .filter-count {
+        display: none;
+    }
+
+    .search-input {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+}
