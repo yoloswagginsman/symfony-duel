@@ -25,8 +25,10 @@
     <div class="cards-section">
         <div class="section-header">
             <h1 class="section-title">
+                {% include 'cards/_torch.html.twig' with {side: 'left'} %}
                 ◈ Коллекция карт
                 <span class="badge">{{ cards|length }}</span>
+                {% include 'cards/_torch.html.twig' with {side: 'right'} %}
             </h1>
             <a href="{{ path('app_home') }}" class="section-link">← На главную</a>
         </div>
