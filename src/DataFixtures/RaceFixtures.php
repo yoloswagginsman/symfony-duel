@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Races;
+use App\Entity\Race;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -19,7 +19,7 @@ class RaceFixtures extends Fixture implements FixtureGroupInterface
         $data = Yaml::parseFile(__DIR__ . '/Data/races.yaml');
 
         foreach ($data['races'] as $item) {
-            $race = new Races();
+            $race = new Race();
             $race->setName($item['name'])
                 ->setSlug($item['slug'])
                 ->setDescription($item['description']);

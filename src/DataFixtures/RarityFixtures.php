@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Rarities;
+use App\Entity\Rarity;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -19,7 +19,7 @@ class RarityFixtures extends Fixture implements FixtureGroupInterface
         $data = Yaml::parseFile(__DIR__ . '/Data/rarities.yaml');
 
         foreach ($data['rarities'] as $item) {
-            $rarity = new Rarities();
+            $rarity = new Rarity();
             $rarity->setName($item['name'])
                 ->setSlug($item['slug'])
                 ->setColorHex($item['color_hex'])

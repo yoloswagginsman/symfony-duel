@@ -1,0 +1,295 @@
+{# templates/cards/form.html.twig #}
+
+{% extends 'base.html.twig' %}
+{% set isEdit = form.vars.value is not null and form.vars.value.id is not null %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/form.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="form-container">
+        <a href="{{ path('app_cards_index') }}" class="back-button">
+            <span class="cross">✕</span>
+            Вернуться в коллекцию
+        </a>
+
+        <div class="form-wrapper">
+            <!-- ЛЕВАЯ ЧАСТЬ - ПРЕВЬЮ -->
+            <div class="form-preview">
+                <div class="craft-header">⚒️ КРАФТ КАРТЫ</div>
+
+                <div class="card-preview" id="cardPreview" data-rarity="{{ card.rarity ? card.rarity.slug|lower : 'common' }}">
+                    <div class="card-preview-image" id="previewImageContainer">
+                        <img src="{{ card.imagePath ? '/upload/cards/' ~ card.imagePath : '' }}"
+                             alt="{{ card.name }}"
+                             id="previewImage"
+                             style="{{ card.imagePath ? 'display: block;' : 'display: none;' }}">
+
+                        <div class="card-preview-placeholder" id="previewPlaceholder" style="{{ card.imagePath ? 'display: none;' : 'display: flex;' }}">
+                            <span>🃏</span>
+                            <span id="previewPlaceholderName">{{ card.name ?: 'Новая карта' }}</span>
+                        </div>
+
+                        <div class="preview-overlay">
+                            <span>📁 Нажмите чтобы добавить</span>
+                        </div>
+                    </div>
+
+                    <div class="card-preview-content">
+                        <div class="card-preview-name">
+                            <span class="preview-name" id="previewName">{{ card.name ?: 'Название карты' }}</span>
+                            <span class="preview-mana" id="previewMana">✦ {{ card.manaCost ?: 0 }}</span>
+                        </div>
+                        <div class="card-preview-rarity" id="previewRarity">
+                            {{ card.rarity ? card.rarity.name : 'Нет' }}
+                        </div>
+                        <div class="card-preview-type-race">
+                            <span id="previewType"><strong>Тип:</strong> {{ card.cardType ? card.cardType.name : '—' }}</span>
+                            <span id="previewRace"><strong>Раса:</strong> {{ card.race ? card.race.name : '—' }}</span>
+                        </div>
+                        <div class="card-preview-description" id="previewDescription">
+                            {{ card.description ? card.description : 'Нет описания' }}
+                        </div>
+                        <div class="card-preview-stats">
+                            <div class="preview-stat">
+                                <span class="stat-label">⚔️ Атака</span>
+                                <span class="stat-value" id="previewAttack">{{ card.attack ?? '—' }}</span>
+                            </div>
+                            <div class="preview-stat">
+                                <span class="stat-label">❤️ Здоровье</span>
+                                <span class="stat-value" id="previewHealth">{{ card.health ?? '—' }}</span>
+                            </div>
+                            <div class="preview-stat">
+                                <span class="stat-label">✦ Мана</span>
+                                <span class="stat-value" id="previewManaStat">{{ card.manaCost ?: 0 }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="craft-footer">⚔️ Создай свою легенду</div>
+            </div>
+
+            <!-- ПРАВАЯ ЧАСТЬ - ФОРМА -->
+            <div class="form-content">
+                <h1>{{ isEdit ? '✏️ Редактирование' : '⚒️ Создание карты' }}</h1>
+
+                {% if form.vars.errors|length > 0 %}
+                    <div class="alert alert-danger">
+                        {% for error in form.vars.errors %}
+                            <div>{{ error.message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'id': 'cardForm'}}) }}
+
+                <div class="form-row">
+                    <div class="form-group {% if form.name.vars.errors|length > 0 %}has-error{% endif %}">
+                        {{ form_label(form.name, '🏷️ Название') }}
+                        {# ✅ ДОБАВЛЯЕМ ID="inputName" #}
+                        {{ form_widget(form.name, {'attr': {'class': 'form-control', 'id': 'inputName', 'placeholder': 'Введите название'}}) }}
+                        {% if form.name.vars.errors|length > 0 %}
+                            <div class="form-error">
+                                {% for error in form.name.vars.errors %}
+                                    <div>{{ error.message }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group {% if form.manaCost.vars.errors|length > 0 %}has-error{% endif %}">
+                        {{ form_label(form.manaCost, '💎 Мана') }}
+                        {# ✅ ДОБАВЛЯЕМ ID="inputMana" #}
+                        {{ form_widget(form.manaCost, {'attr': {'class': 'form-control', 'type': 'number', 'min': 0, 'max': 10, 'id': 'inputMana'}}) }}
+                        {% if form.manaCost.vars.errors|length > 0 %}
+                            <div class="form-error">
+                                {% for error in form.manaCost.vars.errors %}
+                                    <div>{{ error.message }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-group {% if form.description.vars.errors|length > 0 %}has-error{% endif %}">
+                    {{ form_label(form.description, '📝 Описание') }}
+                    {# ✅ ДОБАВЛЯЕМ ID="inputDescription" #}
+                    {{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': 2, 'id': 'inputDescription', 'placeholder': 'Опишите карту...'}}) }}
+                    {% if form.description.vars.errors|length > 0 %}
+                        <div class="form-error">
+                            {% for error in form.description.vars.errors %}
+                                <div>{{ error.message }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group {% if form.cardType.vars.errors|length > 0 %}has-error{% endif %}">
+                        {{ form_label(form.cardType, '📋 Тип') }}
+                        {# ✅ ДОБАВЛЯЕМ ID="inputType" #}
+                        {{ form_widget(form.cardType, {'attr': {'class': 'form-select', 'id': 'inputType'}}) }}
+                        {% if form.cardType.vars.errors|length > 0 %}
+                            <div class="form-error">
+                                {% for error in form.cardType.vars.errors %}
+                                    <div>{{ error.message }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group {% if form.race.vars.errors|length > 0 %}has-error{% endif %}">
+                        {{ form_label(form.race, '🧝 Раса') }}
+                        {# ✅ ДОБАВЛЯЕМ ID="inputRace" #}
+                        {{ form_widget(form.race, {'attr': {'class': 'form-select', 'id': 'inputRace'}}) }}
+                        {% if form.race.vars.errors|length > 0 %}
+                            <div class="form-error">
+                                {% for error in form.race.vars.errors %}
+                                    <div>{{ error.message }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group {% if form.rarity.vars.errors|length > 0 %}has-error{% endif %}">
+                        {{ form_label(form.rarity, '⭐ Редкость') }}
+                        {# ✅ ДОБАВЛЯЕМ ID="inputRarity" #}
+                        {{ form_widget(form.rarity, {'attr': {'class': 'form-select', 'id': 'inputRarity'}}) }}
+                        {% if form.rarity.vars.errors|length > 0 %}
+                            <div class="form-error">
+                                {% for error in form.rarity.vars.errors %}
+                                    <div>{{ error.message }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group {% if form.attack.vars.errors|length > 0 %}has-error{% endif %}">
+                        {{ form_label(form.attack, '⚔️ Атака') }}
+                        {# ✅ ДОБАВЛЯЕМ ID="inputAttack" #}
+                        {{ form_widget(form.attack, {'attr': {'class': 'form-control', 'type': 'number', 'min': 0, 'id': 'inputAttack'}}) }}
+                        {% if form.attack.vars.errors|length > 0 %}
+                            <div class="form-error">
+                                {% for error in form.attack.vars.errors %}
+                                    <div>{{ error.message }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group {% if form.health.vars.errors|length > 0 %}has-error{% endif %}">
+                        {{ form_label(form.health, '❤️ Здоровье') }}
+                        {# ✅ ДОБАВЛЯЕМ ID="inputHealth" #}
+                        {{ form_widget(form.health, {'attr': {'class': 'form-control', 'type': 'number', 'min': 0, 'id': 'inputHealth'}}) }}
+                        {% if form.health.vars.errors|length > 0 %}
+                            <div class="form-error">
+                                {% for error in form.health.vars.errors %}
+                                    <div>{{ error.message }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- ИЗОБРАЖЕНИЕ -->
+                <div class="form-group {% if form.imageFile.vars.errors|length > 0 %}has-error{% endif %}">
+                    {{ form_label(form.imageFile, '🖼️ Изображение') }}
+                    <div class="image-upload-wrapper">
+                        {# ✅ ДОБАВЛЯЕМ ID="inputImage" #}
+                        {{ form_widget(form.imageFile, {'attr': {'accept': 'image/*', 'id': 'inputImage'}}) }}
+                        <span class="upload-label" id="uploadLabel">📁 Выберите файл</span>
+                    </div>
+                    <div style="font-size: 11px; color: #6a5a4a; margin-top: 4px;">
+                        JPEG, PNG, WEBP, GIF до 5 МБ
+                    </div>
+                    {% if form.imageFile.vars.errors|length > 0 %}
+                        <div class="form-error">
+                            {% for error in form.imageFile.vars.errors %}
+                                <div>{{ error.message }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- ТЕГИ -->
+                <div class="form-group {% if form.tags.vars.errors|length > 0 %}has-error{% endif %}">
+                    {{ form_label(form.tags, '🏷️ Теги') }}
+                    <div class="tags-container">
+                        {{ form_widget(form.tags, {'attr': {'class': 'form-select tags-select'}}) }}
+                    </div>
+                    {% if form.tags.vars.errors|length > 0 %}
+                        <div class="form-error">
+                            {% for error in form.tags.vars.errors %}
+                                <div>{{ error.message }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- СПОСОБНОСТИ -->
+                <label style="display: block; font-weight: bold; font-size: 12px; color: #b0a090; margin-bottom: 6px; font-family: 'Cinzel', serif;">
+                    ⚡ Способности
+                </label>
+                {% if form.abilities is not empty %}
+                    <div class="abilities-container">
+                        {% for abilityForm in form.abilities %}
+                            <div class="ability-checkbox">
+                                {{ form_widget(abilityForm.enabled, {'attr': {'class': 'ability-input'}}) }}
+                                <label for="{{ abilityForm.enabled.vars.id }}" class="ability-name">
+                                    {{ abilityForm.vars.data.ability.name }}
+                                </label>
+                                <div style="display: none;">
+                                    {{ form_widget(abilityForm.ability) }}
+                                </div>
+                                {{ form_widget(abilityForm.value, {
+                                    'attr': {
+                                        'class': 'ability-value-input',
+                                        'placeholder': '0',
+                                        'min': 0
+                                    }
+                                }) }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p style="color: #6a5a4a;">Нет доступных способностей</p>
+                {% endif %}
+
+                <!-- АКТИВНОСТЬ -->
+                <div class="form-group {% if form.isActive.vars.errors|length > 0 %}has-error{% endif %}" style="margin-top: 6px;">
+                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                        {{ form_widget(form.isActive, {'attr': {'style': 'width: 16px; height: 16px; accent-color: #f0d8a0;'}}) }}
+                        <span style="color: #e8dcc8; font-family: 'Cinzel', serif; font-size: 12px;">Карта активна</span>
+                    </label>
+                    {% if form.isActive.vars.errors|length > 0 %}
+                        <div class="form-error">
+                            {% for error in form.isActive.vars.errors %}
+                                <div>{{ error.message }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">{{ isEdit ? '💾 Сохранить' : '⚒️ Создать' }}</button>
+                    {% if isEdit %}
+                        <a href="{{ path('app_cards_show', {'id': card.id}) }}" class="btn btn-secondary">↩️ Отмена</a>
+                    {% endif %}
+                    <a href="{{ path('app_cards_index') }}" class="btn btn-secondary">📋 Список</a>
+                </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/card-form.js') }}"></script>
+{% endblock %}

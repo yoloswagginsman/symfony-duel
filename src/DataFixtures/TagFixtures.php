@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Tags;
+use App\Entity\Tag;
 use App\Enum\TagCategory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
@@ -20,7 +20,7 @@ class TagFixtures extends Fixture implements FixtureGroupInterface
         $data = Yaml::parseFile(__DIR__ . '/Data/tags.yaml');
 
         foreach ($data['tags'] as $item) {
-            $tag = new Tags();
+            $tag = new Tag();
             $tag->setName($item['name'])
                 ->setSlug($item['slug'])
                 ->setCategory(TagCategory::from($item['category']))

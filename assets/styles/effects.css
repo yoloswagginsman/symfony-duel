@@ -1,0 +1,42 @@
+/* Добавьте в card.css */
+
+/* Голографический эффект для легендарных карт */
+.card-legendary .card-image-container::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+            45deg,
+            transparent 30%,
+            rgba(255, 215, 0, 0.1) 50%,
+            transparent 70%
+    );
+    animation: holographic 4s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes holographic {
+    0% {
+        transform: translateX(-100%) rotate(0deg);
+    }
+    100% {
+        transform: translateX(100%) rotate(180deg);
+    }
+}
+
+/* Эффект частиц для легендарных карт */
+.card-legendary .card-rarity {
+    animation: legendaryText 1.5s ease-in-out infinite;
+}
+
+@keyframes legendaryText {
+    0%, 100% {
+        text-shadow: 0 0 10px rgba(255, 128, 0, 0.5);
+    }
+    50% {
+        text-shadow: 0 0 20px rgba(255, 128, 0, 0.8), 0 0 40px rgba(255, 128, 0, 0.4);
+    }
+}

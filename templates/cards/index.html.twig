@@ -1,0 +1,204 @@
+{# templates/cards/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Коллекция карт - Symfony Duel{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/main.css') }}">
+{% endblock %}
+
+{% block body %}
+    <!-- НАВИГАЦИЯ -->
+    <nav class="main-nav">
+        <a href="{{ path('app_home') }}" class="nav-logo">
+            ⚔️ Symfony Duel
+        </a>
+        <div class="nav-links">
+            <a href="{{ path('app_home') }}">Главная</a>
+            <a href="{{ path('app_cards_index') }}" class="active">Коллекция</a>
+            <a href="{{ path('app_cards_new') }}" class="btn-create">✦ Создать</a>
+        </div>
+    </nav>
+
+    <div class="cards-section">
+        <div class="section-header">
+            <h1 class="section-title">
+                {% include 'cards/_torch.html.twig' with {side: 'left'} %}
+                ◈ Коллекция карт
+                <span class="badge">{{ cards|length }}</span>
+                {% include 'cards/_torch.html.twig' with {side: 'right'} %}
+            </h1>
+            <a href="{{ path('app_home') }}" class="section-link">← На главную</a>
+        </div>
+
+        <!-- ФИЛЬТРЫ -->
+        <div class="filters-wrapper">
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">
+                    <span class="filter-icon">✦</span>
+                    Все
+                    <span class="filter-count">{{ cards|length }}</span>
+                </button>
+                <button class="filter-btn" data-filter="common">
+                    <span class="filter-dot" style="color: #9d9d9d;">●</span>
+                    Обычные
+                    <span class="filter-count">{{ cards|filter(c => c.rarity and c.rarity.slug == 'common')|length }}</span>
+                </button>
+                <button class="filter-btn" data-filter="uncommon">
+                    <span class="filter-dot" style="color: #1EFF00;">●</span>
+                    Необычные
+                    <span class="filter-count">{{ cards|filter(c => c.rarity and c.rarity.slug == 'uncommon')|length }}</span>
+                </button>
+                <button class="filter-btn" data-filter="rare">
+                    <span class="filter-dot" style="color: #0070DD;">●</span>
+                    Редкие
+                    <span class="filter-count">{{ cards|filter(c => c.rarity and c.rarity.slug == 'rare')|length }}</span>
+                </button>
+                <button class="filter-btn" data-filter="epic">
+                    <span class="filter-dot" style="color: #A335EE;">●</span>
+                    Эпические
+                    <span class="filter-count">{{ cards|filter(c => c.rarity and c.rarity.slug == 'epic')|length }}</span>
+                </button>
+                <button class="filter-btn" data-filter="legendary">
+                    <span class="filter-dot" style="color: #FF8000;">●</span>
+                    Легендарные
+                    <span class="filter-count">{{ cards|filter(c => c.rarity and c.rarity.slug == 'legendary')|length }}</span>
+                </button>
+            </div>
+
+            <!-- Поиск -->
+            <div class="search-wrapper">
+                <input type="text" id="searchInput" class="search-input" placeholder="🔍 Поиск карты...">
+            </div>
+        </div>
+
+        {% if cards is empty %}
+            <div class="empty-state">
+                <div class="icon">⚔️</div>
+                <h3>Коллекция пуста</h3>
+                <p>Создайте первую карту для вашей дуэли!</p>
+                <a href="{{ path('app_cards_new') }}" class="btn-create">✦ Создать карту</a>
+            </div>
+        {% else %}
+            <div class="cards-grid" id="cardsGrid">
+                {% for card in cards %}
+                    <div class="card-item"
+                         data-rarity="{{ card.rarity ? card.rarity.slug|lower : 'common' }}"
+                         data-name="{{ card.name|lower }}"
+                         onclick="window.location.href='{{ path('app_cards_show', {'id': card.id}) }}'">
+
+                        {% if card.imagePath %}
+                            <img class="card-item-image" src="/upload/cards/{{ card.imagePath }}" alt="{{ card.name }}">
+                        {% else %}
+                            <div class="card-item-image-placeholder">⚔️</div>
+                        {% endif %}
+
+                        <div class="card-item-content">
+                            <div class="card-item-name">{{ card.name }}</div>
+
+                            {% if card.description %}
+                                <div class="card-item-description">{{ card.description|slice(0, 50) }}{% if card.description|length > 50 %}...{% endif %}</div>
+                            {% endif %}
+
+                            <div class="card-item-stats">
+                                <span>✦ {{ card.manaCost }}</span>
+                                <span>⚔️ {{ card.attack ?? '-' }}</span>
+                                <span>❤️ {{ card.health ?? '-' }}</span>
+                            </div>
+
+                            <div class="card-item-rarity rarity-{{ card.rarity ? card.rarity.slug|lower : 'common' }}">
+                                {{ card.rarity ? card.rarity.name : 'Нет' }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const cards = document.querySelectorAll('.card-item');
+            const searchInput = document.getElementById('searchInput');
+
+            let currentFilter = 'all';
+            let currentSearch = '';
+
+            // Функция фильтрации
+            function filterCards() {
+                const searchTerm = currentSearch.toLowerCase().trim();
+
+                cards.forEach(card => {
+                    const rarity = card.dataset.rarity;
+                    const name = card.dataset.name;
+
+                    // Проверка фильтра
+                    let matchesFilter = (currentFilter === 'all' || rarity === currentFilter);
+
+                    // Проверка поиска
+                    let matchesSearch = true;
+                    if (searchTerm) {
+                        matchesSearch = name.includes(searchTerm);
+                    }
+
+                    // Показываем/скрываем карту
+                    if (matchesFilter && matchesSearch) {
+                        card.style.display = 'block';
+                        card.style.animation = 'fadeIn 0.3s ease';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // Обновляем счетчики
+                updateCounters();
+            }
+
+            // Обновление счетчиков
+            function updateCounters() {
+                const visibleCards = document.querySelectorAll('.card-item[style*="display: block"]').length;
+                // Можно обновить общий счетчик если нужно
+            }
+
+            // Фильтры
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    currentFilter = this.dataset.filter;
+                    filterCards();
+                });
+            });
+
+            // Поиск с задержкой
+            let searchTimeout;
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    currentSearch = this.value;
+                    filterCards();
+                }, 300);
+            });
+
+            // Добавляем анимацию появления
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: scale(0.95); }
+                    to { opacity: 1; transform: scale(1); }
+                }
+                .card-item {
+                    animation: fadeIn 0.3s ease;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+{% endblock %}

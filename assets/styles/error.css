@@ -1,0 +1,315 @@
+/* assets/styles/error.css */
+
+/* ============================================
+   СТРАНИЦА 404 В СТИЛЕ LINEAGE 2
+   ============================================ */
+
+.error-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+    height: calc(100vh - 40px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Кнопка назад */
+.error-back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #8a7a6a;
+    text-decoration: none;
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    padding: 6px 14px;
+    border: 1px solid rgba(180, 140, 100, 0.12);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    margin-bottom: 30px;
+    background: rgba(20, 12, 15, 0.5);
+    align-self: flex-start;
+    flex-shrink: 0;
+}
+
+.error-back-button:hover {
+    color: #f0d8a0;
+    border-color: rgba(180, 140, 100, 0.35);
+    background: rgba(30, 20, 18, 0.8);
+    transform: translateX(-4px);
+}
+
+.error-back-button .cross {
+    font-size: 16px;
+    font-weight: 300;
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+.error-back-button:hover .cross {
+    transform: rotate(90deg);
+}
+
+/* Основная карточка ошибки */
+.error-card {
+    background: linear-gradient(160deg, #1a1218 0%, #0f0a12 100%);
+    border: 1px solid rgba(180, 140, 100, 0.08);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+    max-width: 700px;
+    width: 100%;
+    animation: errorAppear 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+}
+
+/* Декоративная рамка */
+.error-card::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 1px solid rgba(180, 140, 100, 0.06);
+    border-radius: 8px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes errorAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Верхняя часть с иконкой */
+.error-header {
+    padding: 50px 40px 30px;
+    text-align: center;
+    border-bottom: 1px solid rgba(180, 140, 100, 0.06);
+    position: relative;
+}
+
+.error-icon {
+    font-size: 80px;
+    margin-bottom: 10px;
+    display: block;
+    filter: drop-shadow(0 0 30px rgba(180, 140, 100, 0.05));
+}
+
+.error-code {
+    font-family: 'Cinzel', serif;
+    font-size: 64px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #f0d8a0 0%, #c8a87a 50%, #f0d8a0 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 4s linear infinite;
+    letter-spacing: 4px;
+    line-height: 1;
+}
+
+@keyframes shine {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+}
+
+.error-title {
+    font-family: 'Cinzel', serif;
+    font-size: 24px;
+    color: #e8dcc8;
+    margin-top: 10px;
+    letter-spacing: 2px;
+}
+
+.error-title .highlight {
+    color: #f0d8a0;
+}
+
+/* Нижняя часть с текстом */
+.error-body {
+    padding: 30px 40px 40px;
+    text-align: center;
+}
+
+.error-message {
+    color: #b0a090;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+    font-style: italic;
+}
+
+.error-message::before {
+    content: '"';
+    font-size: 30px;
+    color: rgba(180, 140, 100, 0.1);
+    font-family: 'Cinzel', serif;
+}
+
+.error-message::after {
+    content: '"';
+    font-size: 30px;
+    color: rgba(180, 140, 100, 0.1);
+    font-family: 'Cinzel', serif;
+}
+
+/* Кнопки действий */
+.error-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.error-btn {
+    padding: 10px 28px;
+    border: 1px solid rgba(180, 140, 100, 0.12);
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.5px;
+}
+
+.error-btn-primary {
+    background: rgba(20, 12, 15, 0.5);
+    color: #f0d8a0;
+    border-color: rgba(180, 140, 100, 0.15);
+}
+
+.error-btn-primary:hover {
+    background: rgba(30, 20, 18, 0.7);
+    border-color: rgba(180, 140, 100, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.error-btn-secondary {
+    background: rgba(20, 12, 15, 0.3);
+    color: #8a7a6a;
+    border-color: rgba(180, 140, 100, 0.06);
+}
+
+.error-btn-secondary:hover {
+    background: rgba(30, 20, 18, 0.5);
+    color: #b0a090;
+    border-color: rgba(180, 140, 100, 0.12);
+    transform: translateY(-2px);
+}
+
+/* Декоративные элементы */
+.error-decoration {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+    opacity: 0.3;
+}
+
+.error-decoration span {
+    font-size: 12px;
+    color: #6a5a4a;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 2px;
+}
+
+.error-decoration .line {
+    flex: 1;
+    max-width: 100px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(180, 140, 100, 0.1), transparent);
+    align-self: center;
+}
+
+/* ============================================
+   АДАПТИВНОСТЬ
+   ============================================ */
+
+@media (max-width: 768px) {
+    .error-container {
+        height: auto;
+        margin: 20px auto;
+        justify-content: flex-start;
+    }
+
+    .error-header {
+        padding: 30px 20px 20px;
+    }
+
+    .error-icon {
+        font-size: 60px;
+    }
+
+    .error-code {
+        font-size: 48px;
+    }
+
+    .error-title {
+        font-size: 20px;
+    }
+
+    .error-body {
+        padding: 20px 20px 30px;
+    }
+
+    .error-message {
+        font-size: 14px;
+    }
+
+    .error-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .error-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .error-decoration {
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .error-decoration .line {
+        max-width: 100%;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .error-icon {
+        font-size: 48px;
+    }
+
+    .error-code {
+        font-size: 36px;
+    }
+
+    .error-title {
+        font-size: 17px;
+    }
+
+    .error-message {
+        font-size: 13px;
+    }
+
+    .error-btn {
+        font-size: 12px;
+        padding: 8px 20px;
+    }
+}
