@@ -1,0 +1,322 @@
+/* assets/styles/auth.css — страницы входа и регистрации */
+
+/* ============================================
+   КОНТЕЙНЕР
+   ============================================ */
+
+.auth-container {
+    max-width: 540px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.auth-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-start;
+    margin-bottom: 16px;
+    padding: 6px 14px;
+    color: #8a7a6a;
+    text-decoration: none;
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    background: rgba(20, 12, 15, 0.5);
+    border: 1px solid rgba(180, 140, 100, 0.12);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.auth-back:hover {
+    color: #f0d8a0;
+    border-color: rgba(180, 140, 100, 0.35);
+    background: rgba(30, 20, 18, 0.8);
+    transform: translateX(-4px);
+}
+
+.auth-back .cross {
+    display: inline-block;
+    font-size: 16px;
+    transition: transform 0.3s ease;
+}
+
+.auth-back:hover .cross {
+    transform: rotate(90deg);
+}
+
+/* ============================================
+   КАРТОЧКА
+   ============================================ */
+
+.auth-card {
+    position: relative;
+    padding: 28px 32px 24px;
+    background: linear-gradient(160deg, #1a1218 0%, #0f0a12 100%);
+    border: 1px solid rgba(180, 140, 100, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+    animation: authAppear 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Внутренняя декоративная рамка */
+.auth-card::before {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border: 1px solid rgba(180, 140, 100, 0.05);
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+@keyframes authAppear {
+    from { opacity: 0; transform: translateY(20px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.auth-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.auth-heading {
+    text-align: center;
+    flex: 1;
+}
+
+.auth-icon {
+    display: block;
+    font-size: 30px;
+    margin-bottom: 4px;
+    filter: drop-shadow(0 0 12px rgba(255, 128, 0, 0.25));
+}
+
+.auth-title {
+    font-family: 'Cinzel', serif;
+    font-size: 22px;
+    color: #e8dcc8;
+    letter-spacing: 2px;
+}
+
+.auth-subtitle {
+    margin-top: 4px;
+    color: #6a5a4a;
+    font-size: 14px;
+    font-style: italic;
+}
+
+/* ============================================
+   ПОЛЯ
+   ============================================ */
+
+.auth-field {
+    margin-bottom: 14px;
+}
+
+.auth-field label {
+    display: block;
+    margin-bottom: 5px;
+    color: #b0a090;
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.auth-input {
+    width: 100%;
+    height: 42px;
+    padding: 8px 14px;
+    color: #e8dcc8;
+    font-size: 15px;
+    background: rgba(20, 12, 15, 0.6);
+    border: 1px solid rgba(180, 140, 100, 0.1);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.auth-input::placeholder {
+    color: #4a3a2a;
+}
+
+.auth-input:focus {
+    outline: none;
+    border-color: rgba(255, 128, 0, 0.35);
+    background: rgba(20, 12, 15, 0.85);
+    box-shadow: 0 0 0 3px rgba(255, 128, 0, 0.06), 0 0 18px rgba(255, 110, 0, 0.08);
+}
+
+.auth-field.has-error .auth-input {
+    border-color: rgba(217, 74, 74, 0.4);
+}
+
+.auth-field-error {
+    margin-top: 4px;
+    color: #d94a4a;
+    font-size: 12px;
+}
+
+.auth-alert {
+    margin-bottom: 16px;
+    padding: 10px 14px;
+    color: #e8a0a0;
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    background: rgba(217, 74, 74, 0.06);
+    border: 1px solid rgba(217, 74, 74, 0.25);
+    border-radius: 4px;
+}
+
+/* ============================================
+   «ЗАПОМНИТЬ МЕНЯ»
+   ============================================ */
+
+.auth-remember {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 2px 0 18px;
+    color: #8a7a6a;
+    font-size: 14px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.auth-remember input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.auth-checkbox {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    background: rgba(20, 12, 15, 0.6);
+    border: 1px solid rgba(180, 140, 100, 0.3);
+    border-radius: 3px;
+    transition: all 0.2s ease;
+}
+
+.auth-remember input:checked + .auth-checkbox {
+    background: linear-gradient(135deg, #3a2a1a, #2a1a0f);
+    border-color: rgba(255, 128, 0, 0.5);
+    box-shadow: 0 0 10px rgba(255, 110, 0, 0.2);
+}
+
+.auth-remember input:checked + .auth-checkbox::after {
+    content: '✓';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffaa00;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.auth-remember input:focus-visible + .auth-checkbox {
+    outline: 2px solid rgba(255, 128, 0, 0.5);
+    outline-offset: 2px;
+}
+
+.auth-remember:hover {
+    color: #b0a090;
+}
+
+/* ============================================
+   КНОПКА И ПОДВАЛ
+   ============================================ */
+
+.auth-submit {
+    width: 100%;
+    height: 44px;
+    color: #f0d8a0;
+    font-family: 'Cinzel', serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, #3a2a1a, #2a1a0f);
+    border: 1px solid rgba(180, 140, 100, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.auth-submit:hover {
+    background: linear-gradient(135deg, #4a3a2a, #3a2a1a);
+    border-color: rgba(255, 128, 0, 0.4);
+    box-shadow: 0 4px 24px rgba(255, 110, 0, 0.12);
+    transform: translateY(-2px);
+}
+
+.auth-divider {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin: 20px 0 12px;
+    opacity: 0.4;
+    color: #6a5a4a;
+    font-size: 12px;
+    letter-spacing: 2px;
+}
+
+.auth-divider .line {
+    flex: 1;
+    max-width: 100px;
+    height: 1px;
+    align-self: center;
+    background: linear-gradient(90deg, transparent, rgba(180, 140, 100, 0.3), transparent);
+}
+
+.auth-footer {
+    text-align: center;
+    color: #6a5a4a;
+    font-size: 14px;
+}
+
+.auth-footer a {
+    color: #f0d8a0;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(240, 216, 160, 0.3);
+    transition: all 0.3s ease;
+}
+
+.auth-footer a:hover {
+    color: #ffaa00;
+    border-bottom-color: rgba(255, 170, 0, 0.6);
+}
+
+/* ============================================
+   АДАПТИВНОСТЬ
+   ============================================ */
+
+@media (max-width: 480px) {
+    .auth-container {
+        padding: 20px 16px;
+    }
+
+    .auth-card {
+        padding: 22px 18px 18px;
+    }
+
+    .auth-title {
+        font-size: 18px;
+        letter-spacing: 1px;
+    }
+
+    /* На экране авторизации факелы нужны оба — перебиваем правило из torch.css */
+    .auth-header .torch--right {
+        display: inline-block;
+    }
+}

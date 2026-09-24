@@ -46,16 +46,19 @@ class CardsType extends AbstractType
             ])
             ->add('manaCost', NumberType::class, [
                 'label' => 'Стоимость маны',
+                'invalid_message' => 'card.mana.not_a_number',
                 'attr' => ['min' => 0, 'max' => 10],
                 'required' => true,
             ])
             ->add('attack', NumberType::class, [
                 'label' => 'Атака',
+                'invalid_message' => 'card.attack.not_a_number',
                 'attr' => ['min' => 0],
                 'required' => false,
             ])
             ->add('health', NumberType::class, [
                 'label' => 'Здоровье',
+                'invalid_message' => 'card.health.not_a_number',
                 'attr' => ['min' => 0],
                 'required' => false,
             ])

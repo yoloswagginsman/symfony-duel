@@ -1,0 +1,33 @@
+{# templates/_partials/nav.html.twig — шапка сайта; active: 'home' | 'cards' #}
+<nav class="main-nav">
+    <a href="{{ path('app_home') }}" class="nav-logo">
+        ⚔️ Symfony Duel
+    </a>
+    <div class="nav-links">
+        <a href="{{ path('app_home') }}"{% if active|default('') == 'home' %} class="active"{% endif %}>Главная</a>
+        <a href="{{ path('app_cards_index') }}"{% if active|default('') == 'cards' %} class="active"{% endif %}>Коллекция</a>
+        {% if is_granted('ROLE_CREATOR') %}
+            <a href="{{ path('app_cards_new') }}" class="btn-create">✦ Создать</a>
+        {% endif %}
+
+        {% if app.user %}
+            <span class="nav-user" title="{{ app.user.email }}">
+                <span class="nav-user-icon">{{ app.user.mainRole.icon }}</span>
+                <span class="nav-user-info">
+                    <span class="nav-user-name">{{ app.user.nickname }}</span>
+                    <span class="nav-user-role">{{ app.user.mainRole.label }}</span>
+                </span>
+            </span>
+            <a href="{{ logout_path('main') }}" class="nav-logout" title="Выйти">🚪 Выйти</a>
+        {% else %}
+            <a href="{{ path('app_login') }}">Войти</a>
+            <a href="{{ path('app_register') }}" class="nav-register">Регистрация</a>
+        {% endif %}
+    </div>
+</nav>
+
+{% for type, messages in app.flashes(['success', 'error']) %}
+    {% for message in messages %}
+        <div class="flash-toast flash-toast--{{ type }}" role="status">{{ message }}</div>
+    {% endfor %}
+{% endfor %}

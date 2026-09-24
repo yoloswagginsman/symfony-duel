@@ -24,30 +24,16 @@ class CreateCardFormDto implements ToModelConvertibleInterface
 
         public ?string $description = null,
 
-        #[Assert\NotNull]
-        #[Assert\PositiveOrZero]
-        #[Assert\Range(
-            notInRangeMessage: 'Стоимость маны должна быть от {{ min }} до {{ max }}.',
-            min: 0,
-            max: 30
-        )]
+        // Тексты ошибок — ключи из translations/validators.ru.yaml
+        #[Assert\NotNull(message: 'card.mana.not_null')]
+        #[Assert\Range(notInRangeMessage: 'card.mana.range', min: 0, max: 30)]
         public ?int $manaCost = 0,
 
-        #[Assert\NotNull]
-        #[Assert\PositiveOrZero]
-        #[Assert\Range(
-            notInRangeMessage: 'Атака должна быть от {{ min }} до {{ max }}.',
-            min: 0,
-            max: 30
-        )]
+        #[Assert\NotNull(message: 'card.attack.not_null')]
+        #[Assert\Range(notInRangeMessage: 'card.attack.range', min: 0, max: 30)]
         public ?int $attack = null,
 
-        #[Assert\PositiveOrZero]
-        #[Assert\Range(
-            notInRangeMessage: 'Здоровье должно быть от {{ min }} до {{ max }}.',
-            min: 1,
-            max: 30
-        )]
+        #[Assert\Range(notInRangeMessage: 'card.health.range', min: 1, max: 30)]
         public ?int $health = 1,
 
         #[Assert\NotNull(message: 'Выберите тип карты.')]

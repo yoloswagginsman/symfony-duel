@@ -10,17 +10,7 @@
 {% endblock %}
 
 {% block body %}
-    <!-- НАВИГАЦИЯ -->
-    <nav class="main-nav">
-        <a href="{{ path('app_home') }}" class="nav-logo">
-            ⚔️ Symfony Duel
-        </a>
-        <div class="nav-links">
-            <a href="{{ path('app_home') }}" class="active">Главная</a>
-            <a href="{{ path('app_cards_index') }}">Коллекция</a>
-            <a href="{{ path('app_cards_new') }}" class="btn-create">✦ Создать</a>
-        </div>
-    </nav>
+    {% include '_partials/nav.html.twig' with {active: 'home'} %}
 
     <!-- ГЕРОЙ СЕКЦИЯ -->
     <section class="hero-section">
@@ -65,7 +55,9 @@
                 <div class="icon">⚔️</div>
                 <h3>Коллекция пуста</h3>
                 <p>Создайте первую карту для вашей дуэли!</p>
-                <a href="{{ path('app_cards_new') }}" class="btn-create">✦ Создать карту</a>
+                {% if is_granted('ROLE_CREATOR') %}
+                    <a href="{{ path('app_cards_new') }}" class="btn-create">✦ Создать карту</a>
+                {% endif %}
             </div>
         {% else %}
             <div class="cards-grid">

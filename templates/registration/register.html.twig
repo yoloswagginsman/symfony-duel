@@ -1,0 +1,71 @@
+{# templates/registration/register.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Регистрация - Symfony Duel{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/torch.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/auth.css') }}">
+{% endblock %}
+
+{% macro field(field, label, attr) %}
+    <div class="auth-field {% if field.vars.errors|length > 0 %}has-error{% endif %}">
+        {{ form_label(field, label) }}
+        {{ form_widget(field, {'attr': {'class': 'auth-input'}|merge(attr)}) }}
+        {% for error in field.vars.errors %}
+            <div class="auth-field-error">{{ error.message }}</div>
+        {% endfor %}
+    </div>
+{% endmacro %}
+
+{% block body %}
+    {% import _self as ui %}
+
+    <div class="auth-container">
+        <a href="{{ path('app_home') }}" class="auth-back">
+            <span class="cross">✕</span>
+            На главную
+        </a>
+
+        <div class="auth-card">
+            <div class="auth-header">
+                {% include '_partials/torch.html.twig' with {side: 'left'} %}
+                <div class="auth-heading">
+                    <span class="auth-icon">📜</span>
+                    <h1 class="auth-title">Вступить в гильдию</h1>
+                    <p class="auth-subtitle">Новый игрок начинает путь с ранга «Игрок»</p>
+                </div>
+                {% include '_partials/torch.html.twig' with {side: 'right'} %}
+            </div>
+
+            {% if form.vars.errors|length > 0 %}
+                <div class="auth-alert">
+                    {% for error in form.vars.errors %}
+                        <div>{{ error.message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                {{ ui.field(form.nickname, '🛡️ Никнейм', {'placeholder': 'Артас', 'autofocus': true, 'autocomplete': 'nickname'}) }}
+                {{ ui.field(form.email, '✉️ Email', {'placeholder': 'hero@duel.ru', 'autocomplete': 'email'}) }}
+                {{ ui.field(form.plainPassword.first, '🔒 Пароль', {'placeholder': 'Не короче 6 символов'}) }}
+                {{ ui.field(form.plainPassword.second, '🔒 Повторите пароль', {'placeholder': '••••••'}) }}
+
+                <button type="submit" class="auth-submit">📜 Зарегистрироваться</button>
+            {{ form_end(form) }}
+
+            <div class="auth-divider">
+                <span class="line"></span>
+                <span>✦ ✦ ✦</span>
+                <span class="line"></span>
+            </div>
+
+            <p class="auth-footer">
+                Уже в гильдии? <a href="{{ path('app_login') }}">Войти</a>
+            </p>
+        </div>
+    </div>
+{% endblock %}
