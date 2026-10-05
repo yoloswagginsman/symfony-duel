@@ -1,0 +1,53 @@
+{# templates/bundles/TwigBundle/Exception/error404.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}404 - Страница не найдена{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/error.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="error-container">
+        <a href="{{ path('app_home') }}" class="error-back-button">
+            <span class="cross">✕</span>
+            Вернуться на главную
+        </a>
+
+        <div class="error-card">
+            <div class="error-header">
+                <span class="error-icon">🗡️</span>
+                <div class="error-code">404</div>
+                <h1 class="error-title">
+                    <span class="highlight">Страница</span> потеряна
+                </h1>
+            </div>
+
+            <div class="error-body">
+                <p class="error-message">
+                    Похоже, эта карта выпала из колоды...<br>
+                    <span style="font-size: 14px; color: #6a5a4a;">
+                    Возможно, её украл дракон или она сгорела в пламени битвы.
+                </span>
+                </p>
+
+                <div class="error-actions">
+                    <a href="{{ path('app_home') }}" class="error-btn error-btn-primary">
+                        🏠 На главную
+                    </a>
+                    <a href="{{ path('app_cards_index') }}" class="error-btn error-btn-secondary">
+                        📋 В коллекцию
+                    </a>
+                </div>
+
+                <div class="error-decoration">
+                    <span class="line"></span>
+                    <span>✦ ✦ ✦</span>
+                    <span class="line"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

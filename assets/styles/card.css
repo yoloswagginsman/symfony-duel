@@ -1,0 +1,681 @@
+/* assets/styles/card.css */
+
+/* Контейнер карты */
+.card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    padding: 20px;
+    font-family: 'Belwe', 'Times New Roman', serif;
+}
+
+/* Основная карта */
+.card {
+    width: 350px;
+    min-height: 500px;
+    border-radius: 16px;
+    padding: 10px;
+    background: #1a1a2e;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-10px) scale(1.02);
+}
+
+/* ============================================
+   РЕДКОСТИ КАРТ
+   ============================================ */
+
+/* Обычный (Common) - Белый */
+.card-common {
+    border: 3px solid #FFFFFF;
+    background: linear-gradient(145deg, #2a2a3e, #1a1a2e);
+}
+
+.card-common .card-header {
+    border-bottom: 2px solid #FFFFFF;
+}
+
+.card-common .card-rarity {
+    color: #FFFFFF;
+}
+
+/* Необычный (Uncommon) - Зеленый */
+.card-uncommon {
+    border: 3px solid #1EFF00;
+    background: linear-gradient(145deg, #1a3e1a, #0a2e0a);
+    box-shadow: 0 0 30px rgba(30, 255, 0, 0.15);
+}
+
+.card-uncommon .card-header {
+    border-bottom: 2px solid #1EFF00;
+}
+
+.card-uncommon .card-rarity {
+    color: #1EFF00;
+}
+
+.card-uncommon:hover {
+    box-shadow: 0 0 50px rgba(30, 255, 0, 0.25);
+}
+
+/* Редкий (Rare) - Синий */
+.card-rare {
+    border: 3px solid #0070DD;
+    background: linear-gradient(145deg, #1a2a4e, #0a1a3e);
+    box-shadow: 0 0 30px rgba(0, 112, 221, 0.2);
+}
+
+.card-rare .card-header {
+    border-bottom: 2px solid #0070DD;
+}
+
+.card-rare .card-rarity {
+    color: #0070DD;
+}
+
+.card-rare:hover {
+    box-shadow: 0 0 50px rgba(0, 112, 221, 0.35);
+}
+
+/* Эпический (Epic) - Фиолетовый */
+.card-epic {
+    border: 3px solid #A335EE;
+    background: linear-gradient(145deg, #2a1a4e, #1a0a3e);
+    box-shadow: 0 0 30px rgba(163, 53, 238, 0.2);
+}
+
+.card-epic .card-header {
+    border-bottom: 2px solid #A335EE;
+}
+
+.card-epic .card-rarity {
+    color: #A335EE;
+}
+
+.card-epic:hover {
+    box-shadow: 0 0 50px rgba(163, 53, 238, 0.35);
+}
+
+/* Легендарный (Legendary) - Оранжевый с анимацией */
+.card-legendary {
+    border: 3px solid #FF8000;
+    background: linear-gradient(145deg, #3e2a0a, #2a1a0a);
+    box-shadow: 0 0 40px rgba(255, 128, 0, 0.3);
+    animation: legendaryGlow 2s ease-in-out infinite;
+}
+
+.card-legendary .card-header {
+    border-bottom: 2px solid #FF8000;
+}
+
+.card-legendary .card-rarity {
+    color: #FF8000;
+}
+
+.card-legendary::before {
+    content: '✦';
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    font-size: 22px;
+    color: #FF8000;
+    opacity: 0.6;
+    animation: sparkle 1.5s ease-in-out infinite;
+}
+
+.card-legendary::after {
+    content: '✦';
+    position: absolute;
+    bottom: -8px;
+    left: -8px;
+    font-size: 18px;
+    color: #FF8000;
+    opacity: 0.4;
+    animation: sparkle 1.8s ease-in-out infinite reverse;
+}
+
+@keyframes legendaryGlow {
+    0%, 100% {
+        box-shadow: 0 0 40px rgba(255, 128, 0, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 80px rgba(255, 128, 0, 0.6);
+    }
+}
+
+@keyframes sparkle {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(1) rotate(0deg);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.3) rotate(180deg);
+    }
+}
+
+/* ============================================
+   ЗАГОЛОВОК КАРТЫ
+   ============================================ */
+
+.card-header {
+    padding: 12px 16px 8px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.card-name {
+    font-size: 20px;
+    font-weight: bold;
+    color: #f0f0f0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    letter-spacing: 0.5px;
+}
+
+.rarity-icon {
+    margin-right: 6px;
+    font-size: 14px;
+}
+
+.card-mana {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: radial-gradient(circle at 30% 30%, #4a90d9, #1a3a6a);
+    border-radius: 50%;
+    border: 2px solid #7ab8ff;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 18px;
+    box-shadow: 0 0 15px rgba(74, 144, 217, 0.3);
+    flex-shrink: 0;
+}
+
+/* ============================================
+   ИЗОБРАЖЕНИЕ КАРТЫ
+   ============================================ */
+
+.card-image-container {
+    margin: 0 10px 10px 10px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    background: #0a0a1a;
+    height: 200px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.card-image:hover {
+    transform: scale(1.05);
+}
+
+.card-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a1a3e, #2a2a5e);
+    color: #6a6a8e;
+    font-size: 48px;
+}
+
+/* ============================================
+   ТИП И РЕДКОСТЬ
+   ============================================ */
+
+.card-type-rarity {
+    padding: 0 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #a0a0b0;
+    margin-bottom: 8px;
+}
+
+.card-type {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-rarity {
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 11px;
+    text-shadow: 0 0 10px currentColor;
+}
+
+/* ============================================
+   ТЕЛО КАРТЫ
+   ============================================ */
+
+.card-body {
+    padding: 8px 16px;
+    min-height: 60px;
+}
+
+.card-description {
+    color: #d0d0e0;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: center;
+    font-style: italic;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 10px 0;
+}
+
+/* ============================================
+   ХАРАКТЕРИСТИКИ
+   ============================================ */
+
+.card-stats {
+    padding: 8px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #e0e0f0;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.stat-icon {
+    font-size: 20px;
+}
+
+.stat-attack .stat-icon {
+    color: #ff6b6b;
+}
+
+.stat-health .stat-icon {
+    color: #51cf66;
+}
+
+.stat-value {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 4px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    min-width: 30px;
+    text-align: center;
+}
+
+/* ============================================
+   СПОСОБНОСТИ
+   ============================================ */
+
+.card-abilities {
+    padding: 8px 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    margin-top: 8px;
+}
+
+.abilities-title {
+    color: #a0a0b0;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+}
+
+.ability-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 4px;
+    margin-bottom: 2px;
+    font-size: 13px;
+    color: #c0c0d0;
+}
+
+.ability-name {
+    font-weight: bold;
+    color: #e0e0f0;
+}
+
+.ability-value {
+    background: rgba(255, 215, 0, 0.1);
+    padding: 2px 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    color: #ffd700;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+/* ============================================
+   ТЕГИ
+   ============================================ */
+
+.card-tags {
+    padding: 8px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.card-tag {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 10px;
+    color: #a0a0b0;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ============================================
+   ИНФОРМАЦИЯ О РЕДКОСТИ
+   ============================================ */
+
+.card-rarity-info {
+    padding: 8px 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 11px;
+    color: #6a6a8a;
+    text-align: center;
+}
+
+/* ============================================
+   КНОПКИ ДЕЙСТВИЙ
+   ============================================ */
+
+.card-actions {
+    padding: 16px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.btn {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.btn-edit {
+    background: #4a90d9;
+    color: white;
+}
+
+.btn-edit:hover {
+    background: #5aa0e9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(74, 144, 217, 0.4);
+}
+
+.btn-delete {
+    background: #d94a4a;
+    color: white;
+}
+
+.btn-delete:hover {
+    background: #e95a5a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(217, 74, 74, 0.4);
+}
+
+.btn-back {
+    background: #6a6a8a;
+    color: white;
+}
+
+.btn-back:hover {
+    background: #7a7a9a;
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   АДАПТИВНОСТЬ
+   ============================================ */
+
+@media (max-width: 480px) {
+    .card {
+        width: 100%;
+        max-width: 350px;
+        min-height: auto;
+    }
+
+    .card-name {
+        font-size: 17px;
+    }
+
+    .card-image-container {
+        height: 160px;
+    }
+}
+
+.card-type-race-rarity {
+    padding: 0 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #a0a0b0;
+    margin-bottom: 8px;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.card-type,
+.card-race,
+.card-rarity {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-race {
+    border-color: rgba(255, 215, 0, 0.2);
+    color: #ffd700;
+}
+
+/* assets/styles/card.css - добавить в конец файла */
+
+/* ============================================
+   КОМПАКТНЫЕ КНОПКИ-ИКОНКИ
+   ============================================ */
+
+/* Контейнер для кнопок */
+.card-actions {
+    padding: 12px 16px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 0 0 12px 12px;
+}
+
+/* Базовый стиль кнопки-иконки */
+.btn-icon {
+    width: 44px;
+    height: 44px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.03);
+    color: #8a8aaa;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+/* Тултип при наведении */
+.btn-icon::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.8);
+    background: rgba(0, 0, 0, 0.9);
+    color: #f0f0f0;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    font-family: 'Segoe UI', sans-serif;
+    letter-spacing: 0.3px;
+}
+
+.btn-icon:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+}
+
+/* Кнопка "Назад" */
+.btn-back-icon {
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.btn-back-icon:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #f0f0f0;
+    transform: translateX(-3px);
+}
+
+/* Кнопка "Редактировать" */
+.btn-edit-icon {
+    border-color: rgba(74, 144, 217, 0.3);
+}
+
+.btn-edit-icon:hover {
+    background: rgba(74, 144, 217, 0.15);
+    border-color: #4a90d9;
+    color: #4a90d9;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 20px rgba(74, 144, 217, 0.3);
+}
+
+/* Кнопка "Удалить" */
+.btn-delete-icon {
+    border-color: rgba(217, 74, 74, 0.3);
+}
+
+.btn-delete-icon:hover {
+    background: rgba(217, 74, 74, 0.15);
+    border-color: #d94a4a;
+    color: #d94a4a;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 20px rgba(217, 74, 74, 0.3);
+}
+
+/* Для формы удаления */
+.btn-delete-icon-form {
+    background: transparent;
+    border: 2px solid rgba(217, 74, 74, 0.3);
+    border-radius: 50%;
+    color: #8a8aaa;
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: inherit;
+    position: relative;
+}
+
+.btn-delete-icon-form::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.8);
+    background: rgba(0, 0, 0, 0.9);
+    color: #f0f0f0;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 10px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+
+.btn-delete-icon-form:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+}
+
+.btn-delete-icon-form:hover {
+    background: rgba(217, 74, 74, 0.15);
+    border-color: #d94a4a;
+    color: #d94a4a;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 20px rgba(217, 74, 74, 0.3);
+}
+
+/* ============================================
+   КОМПАКТНЫЕ ВЕРСИИ ДЛЯ МОБИЛЬНЫХ
+   ============================================ */
+
+@media (max-width: 480px) {
+    .btn-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 15px;
+    }
+
+    .btn-delete-icon-form {
+        width: 38px;
+        height: 38px;
+        font-size: 15px;
+    }
+
+    .btn-icon::after {
+        font-size: 9px;
+        bottom: -28px;
+    }
+
+    .btn-delete-icon-form::after {
+        font-size: 9px;
+        bottom: -28px;
+    }
+}

@@ -33,7 +33,7 @@ RUN apk update \
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
 # Install PHP extensions
-RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/
+RUN docker-php-ext-configure gd --with-webp --with-jpeg --with-freetype
 RUN docker-php-ext-install -j$(getconf _NPROCESSORS_ONLN) \
     intl \
     gd \

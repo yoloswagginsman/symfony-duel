@@ -1,0 +1,696 @@
+/* assets/styles/card-detail.css */
+
+/* ============================================
+   КАРТА В СТИЛЕ LINEAGE 2
+   ============================================ */
+
+.card-detail-container {
+    max-width: 950px;
+    margin: 20px auto;
+    padding: 0 20px;
+    height: calc(90vh - 40px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Кнопка назад */
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #8a7a6a;
+    text-decoration: none;
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    padding: 6px 14px;
+    border: 1px solid rgba(180, 140, 100, 0.12);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    margin-bottom: 16px;
+    background: rgba(20, 12, 15, 0.5);
+    align-self: flex-start;
+    flex-shrink: 0;
+}
+
+.back-button:hover {
+    color: #f0d8a0;
+    border-color: rgba(180, 140, 100, 0.35);
+    background: rgba(30, 20, 18, 0.8);
+    transform: translateX(-4px);
+}
+
+.back-button .cross {
+    font-size: 16px;
+    font-weight: 300;
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+.back-button:hover .cross {
+    transform: rotate(90deg);
+}
+
+/* Основная карта */
+.card-detail {
+    background: linear-gradient(160deg, #1a1218 0%, #0f0a12 100%);
+    border: 1px solid rgba(180, 140, 100, 0.12);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 0;
+    position: relative;
+    max-height: 85vh;
+    min-height: 400px;
+    animation: cardAppear 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Декоративная рамка */
+.card-detail::before {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 1px solid rgba(180, 140, 100, 0.06);
+    border-radius: 8px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Подсветка редкости */
+.card-detail::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 12px;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+.card-detail:hover::after {
+    opacity: 1;
+}
+
+.card-detail[data-rarity="common"]::after {
+    box-shadow: inset 0 0 30px rgba(157, 157, 157, 0.05);
+}
+.card-detail[data-rarity="uncommon"]::after {
+    box-shadow: inset 0 0 40px rgba(30, 255, 0, 0.08);
+}
+.card-detail[data-rarity="rare"]::after {
+    box-shadow: inset 0 0 50px rgba(0, 112, 221, 0.1);
+}
+.card-detail[data-rarity="epic"]::after {
+    box-shadow: inset 0 0 60px rgba(163, 53, 238, 0.12);
+}
+.card-detail[data-rarity="legendary"]::after {
+    box-shadow: inset 0 0 70px rgba(255, 128, 0, 0.15);
+    animation: legendaryGlow 2s ease-in-out infinite;
+}
+
+@keyframes legendaryGlow {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+@keyframes cardAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* ============================================
+   ЛЕВАЯ ЧАСТЬ - ИЗОБРАЖЕНИЕ
+   ============================================ */
+
+.card-detail-image {
+    position: relative;
+    min-height: 400px;
+    background: #0a0608;
+    overflow: hidden;
+}
+
+.card-detail-image img {
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.card-detail:hover .card-detail-image img {
+    transform: scale(1.03);
+}
+
+.card-detail-image-placeholder {
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a1218, #2a1a20);
+    color: #5a4a3a;
+    font-size: 64px;
+    gap: 16px;
+}
+
+.card-detail-image-placeholder span {
+    font-size: 16px;
+    font-family: 'Cinzel', serif;
+    color: #4a3a2a;
+    letter-spacing: 2px;
+}
+
+/* Винтажный уголок */
+.card-detail-image::after {
+    content: '✦';
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    color: rgba(180, 140, 100, 0.12);
+    font-size: 20px;
+}
+
+/* ============================================
+   ПРАВАЯ ЧАСТЬ - ИНФОРМАЦИЯ
+   ============================================ */
+
+.card-detail-info {
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    max-height: 100%;
+}
+
+.card-detail-info::-webkit-scrollbar {
+    width: 4px;
+}
+
+.card-detail-info::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.card-detail-info::-webkit-scrollbar-thumb {
+    background: rgba(180, 140, 100, 0.15);
+    border-radius: 4px;
+}
+
+/* Название */
+.card-detail-name {
+    font-family: 'Cinzel', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #e8dcc8;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(180, 140, 100, 0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.card-detail-name .mana-cost {
+    font-size: 18px;
+    color: #f0d8a0;
+    background: rgba(20, 12, 15, 0.5);
+    padding: 2px 14px;
+    border-radius: 4px;
+    border: 1px solid rgba(180, 140, 100, 0.12);
+    font-family: 'Cinzel', serif;
+    flex-shrink: 0;
+}
+
+/* Редкость */
+.card-detail-rarity {
+    display: inline-block;
+    padding: 3px 14px;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 1px;
+    align-self: flex-start;
+    flex-shrink: 0;
+}
+
+.rarity-common {
+    color: #9d9d9d;
+    background: rgba(157, 157, 157, 0.06);
+    border: 1px solid rgba(157, 157, 157, 0.08);
+}
+
+.rarity-uncommon {
+    color: #1EFF00;
+    background: rgba(30, 255, 0, 0.04);
+    border: 1px solid rgba(30, 255, 0, 0.06);
+}
+
+.rarity-rare {
+    color: #0070DD;
+    background: rgba(0, 112, 221, 0.04);
+    border: 1px solid rgba(0, 112, 221, 0.06);
+}
+
+.rarity-epic {
+    color: #A335EE;
+    background: rgba(163, 53, 238, 0.04);
+    border: 1px solid rgba(163, 53, 238, 0.06);
+}
+
+.rarity-legendary {
+    color: #FF8000;
+    background: rgba(255, 128, 0, 0.04);
+    border: 1px solid rgba(255, 128, 0, 0.1);
+    animation: legendaryTextPulse 2s ease-in-out infinite;
+}
+
+@keyframes legendaryTextPulse {
+    0%, 100% { text-shadow: 0 0 10px rgba(255, 128, 0, 0.05); }
+    50% { text-shadow: 0 0 20px rgba(255, 128, 0, 0.15); }
+}
+
+/* Тип и раса */
+.card-detail-type-race {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+}
+
+.card-detail-type-race span {
+    font-size: 12px;
+    color: #8a7a6a;
+    font-family: 'Cinzel', serif;
+    padding: 3px 12px;
+    background: rgba(20, 12, 15, 0.4);
+    border-radius: 4px;
+    border: 1px solid rgba(180, 140, 100, 0.04);
+}
+
+.card-detail-type-race span strong {
+    color: #b0a090;
+}
+
+/* Описание */
+.card-detail-description {
+    background: rgba(20, 12, 15, 0.3);
+    border: 1px solid rgba(180, 140, 100, 0.04);
+    border-radius: 6px;
+    padding: 10px 14px;
+    color: #b0a090;
+    font-size: 14px;
+    line-height: 1.5;
+    font-style: italic;
+    min-height: 40px;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.card-detail-description::before {
+    content: '"';
+    font-size: 22px;
+    color: rgba(180, 140, 100, 0.1);
+    position: absolute;
+    top: 2px;
+    left: 8px;
+    font-family: 'Cinzel', serif;
+}
+
+/* Характеристики */
+.card-detail-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.card-detail-stat {
+    background: rgba(20, 12, 15, 0.4);
+    border: 1px solid rgba(180, 140, 100, 0.04);
+    border-radius: 6px;
+    padding: 8px 10px;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.card-detail-stat:hover {
+    border-color: rgba(180, 140, 100, 0.12);
+    background: rgba(30, 20, 18, 0.5);
+    transform: translateY(-2px);
+}
+
+.card-detail-stat:hover .stat-value {
+    color: #ffd700;
+    text-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
+}
+
+.card-detail-stat .stat-label {
+    font-size: 10px;
+    color: #6a5a4a;
+    font-family: 'Cinzel', serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.card-detail-stat .stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #f0d8a0;
+    font-family: 'Cinzel', serif;
+    display: block;
+    margin-top: 2px;
+    transition: all 0.4s ease;
+}
+
+/* Способности */
+.card-detail-abilities {
+    flex-shrink: 0;
+}
+
+.card-detail-abilities .abilities-title {
+    font-size: 11px;
+    color: #6a5a4a;
+    font-family: 'Cinzel', serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    border-bottom: 1px solid rgba(180, 140, 100, 0.04);
+    padding-bottom: 4px;
+}
+
+.card-detail-ability {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 10px;
+    background: rgba(20, 12, 15, 0.2);
+    border-radius: 4px;
+    margin-bottom: 3px;
+    border: 1px solid rgba(180, 140, 100, 0.03);
+    transition: all 0.3s ease;
+}
+
+.card-detail-ability:hover {
+    background: rgba(30, 20, 18, 0.4);
+    border-color: rgba(180, 140, 100, 0.08);
+}
+
+.card-detail-ability .ability-name {
+    color: #b0a090;
+    font-size: 13px;
+    font-family: 'Cinzel', serif;
+}
+
+.card-detail-ability .ability-value {
+    color: #f0d8a0;
+    font-size: 13px;
+    font-weight: 700;
+    background: rgba(20, 12, 15, 0.3);
+    padding: 1px 10px;
+    border-radius: 4px;
+    border: 1px solid rgba(180, 140, 100, 0.04);
+}
+
+/* Теги */
+.card-detail-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+.card-detail-tag {
+    font-size: 10px;
+    color: #6a5a4a;
+    font-family: 'Cinzel', serif;
+    padding: 2px 10px;
+    border: 1px solid rgba(180, 140, 100, 0.04);
+    border-radius: 20px;
+    background: rgba(20, 12, 15, 0.2);
+    transition: all 0.3s ease;
+}
+
+.card-detail-tag:hover {
+    border-color: rgba(180, 140, 100, 0.15);
+    color: #b0a090;
+    transform: translateY(-1px);
+}
+
+/* Действия */
+.card-detail-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(180, 140, 100, 0.06);
+    flex-wrap: wrap;
+    flex-shrink: 0;
+}
+
+.btn-action {
+    padding: 8px 20px;
+    border: 1px solid rgba(180, 140, 100, 0.12);
+    border-radius: 4px;
+    background: rgba(20, 12, 15, 0.4);
+    color: #8a7a6a;
+    text-decoration: none;
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-action:hover {
+    border-color: rgba(180, 140, 100, 0.25);
+    color: #f0d8a0;
+    background: rgba(30, 20, 18, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.btn-action-edit:hover {
+    border-color: rgba(74, 144, 217, 0.25);
+    color: #7ab8ff;
+    box-shadow: 0 4px 20px rgba(74, 144, 217, 0.05);
+}
+
+.btn-action-delete {
+    color: #8a4a4a;
+    border-color: rgba(180, 80, 80, 0.08);
+}
+
+.btn-action-delete:hover {
+    border-color: rgba(180, 80, 80, 0.2);
+    color: #d94a4a;
+    box-shadow: 0 4px 20px rgba(180, 80, 80, 0.05);
+}
+
+/* ============================================
+   АДАПТИВНОСТЬ
+   ============================================ */
+
+@media (max-width: 1024px) {
+    .card-detail {
+        grid-template-columns: 1fr 1.2fr;
+        max-height: 80vh;
+    }
+    .card-detail-image {
+        min-height: 350px;
+    }
+    .card-detail-image img {
+        min-height: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .card-detail-container {
+        height: auto;
+        margin: 10px auto;
+        justify-content: flex-start;
+    }
+
+    .card-detail {
+        grid-template-columns: 1fr;
+        max-height: none;
+        min-height: auto;
+    }
+
+    .card-detail-image {
+        min-height: 250px;
+        max-height: 300px;
+    }
+
+    .card-detail-image img {
+        min-height: 250px;
+        max-height: 300px;
+    }
+
+    .card-detail-image-placeholder {
+        min-height: 200px;
+        font-size: 48px;
+    }
+
+    .card-detail-image-placeholder span {
+        font-size: 14px;
+    }
+
+    .card-detail-info {
+        padding: 18px 16px;
+        max-height: none;
+        overflow-y: visible;
+    }
+
+    .card-detail-name {
+        font-size: 20px;
+    }
+
+    .card-detail-name .mana-cost {
+        font-size: 16px;
+        padding: 2px 12px;
+    }
+
+    .card-detail-stats {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+    }
+
+    .card-detail-stat .stat-value {
+        font-size: 20px;
+    }
+
+    .card-detail-actions {
+        flex-direction: column;
+    }
+
+    .btn-action {
+        justify-content: center;
+        padding: 8px 16px;
+    }
+
+    .back-button {
+        font-size: 12px;
+        padding: 5px 12px;
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .card-detail-image {
+        min-height: 180px;
+        max-height: 220px;
+    }
+
+    .card-detail-image img {
+        min-height: 180px;
+        max-height: 220px;
+    }
+
+    .card-detail-image-placeholder {
+        min-height: 180px;
+        font-size: 36px;
+        gap: 10px;
+    }
+
+    .card-detail-image-placeholder span {
+        font-size: 12px;
+    }
+
+    .card-detail-image::after {
+        bottom: 10px;
+        right: 10px;
+        font-size: 16px;
+    }
+
+    .card-detail-info {
+        padding: 14px 12px;
+        gap: 8px;
+    }
+
+    .card-detail-name {
+        font-size: 18px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+        padding-bottom: 6px;
+    }
+
+    .card-detail-name .mana-cost {
+        font-size: 14px;
+        padding: 2px 10px;
+    }
+
+    .card-detail-stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+    }
+
+    .card-detail-stat {
+        padding: 6px 8px;
+    }
+
+    .card-detail-stat .stat-value {
+        font-size: 18px;
+    }
+
+    .card-detail-description {
+        font-size: 13px;
+        padding: 8px 12px;
+        min-height: 30px;
+    }
+
+    .card-detail-description::before {
+        font-size: 18px;
+        top: 0;
+        left: 6px;
+    }
+
+    .card-detail-ability {
+        padding: 3px 8px;
+    }
+
+    .card-detail-ability .ability-name {
+        font-size: 12px;
+    }
+
+    .card-detail-ability .ability-value {
+        font-size: 12px;
+        padding: 1px 8px;
+    }
+
+    .card-detail-rarity {
+        font-size: 11px;
+        padding: 2px 12px;
+    }
+
+    .card-detail-type-race span {
+        font-size: 11px;
+        padding: 2px 10px;
+    }
+
+    .card-detail-actions {
+        gap: 6px;
+        margin-top: 8px;
+        padding-top: 8px;
+    }
+
+    .btn-action {
+        font-size: 11px;
+        padding: 6px 14px;
+    }
+}

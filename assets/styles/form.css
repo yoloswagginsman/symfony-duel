@@ -1,0 +1,1000 @@
+/* assets/styles/form.css */
+
+/* ============================================
+   КОНТЕЙНЕР
+   ============================================ */
+
+.form-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+    height: calc(100vh - 40px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* ============================================
+   КНОПКА НАЗАД
+   ============================================ */
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #8a7a6a;
+    text-decoration: none;
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    padding: 6px 14px;
+    border: 1px solid rgba(180, 140, 100, 0.12);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    margin-bottom: 16px;
+    background: rgba(20, 12, 15, 0.5);
+    align-self: flex-start;
+    flex-shrink: 0;
+}
+
+.back-button:hover {
+    color: #f0d8a0;
+    border-color: rgba(180, 140, 100, 0.35);
+    background: rgba(30, 20, 18, 0.8);
+    transform: translateX(-4px);
+}
+
+.back-button .cross {
+    font-size: 16px;
+    font-weight: 300;
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+.back-button:hover .cross {
+    transform: rotate(90deg);
+}
+
+/* ============================================
+   ОСНОВНОЙ КОНТЕЙНЕР ФОРМЫ
+   ============================================ */
+
+.form-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 0;
+    background: linear-gradient(160deg, #1a1218 0%, #0f0a12 100%);
+    border: 1px solid rgba(180, 140, 100, 0.08);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+    max-height: 85vh;
+    min-height: 400px;
+    animation: formAppear 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes formAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* ============================================
+   ПРЕВЬЮ КАРТЫ
+   ============================================ */
+
+.form-preview {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    min-height: 400px;
+}
+
+/* Шапка крафта */
+.craft-header {
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: #f0d8a0;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(180, 140, 100, 0.06);
+    margin-bottom: 12px;
+    width: 100%;
+    text-transform: uppercase;
+}
+
+.craft-footer {
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #6a5a4a;
+    padding: 8px 0;
+    border-top: 1px solid rgba(180, 140, 100, 0.04);
+    margin-top: 12px;
+    width: 100%;
+}
+
+/* Карта превью */
+.card-preview {
+    width: 100%;
+    max-width: 320px;
+    background: transparent;
+    border: none;
+    transition: all 0.4s ease;
+}
+
+/* Рамки редкости для превью */
+.card-preview.rarity-common {
+    border: 2px solid rgba(157, 157, 157, 0.15);
+    border-radius: 8px;
+    padding: 4px;
+}
+.card-preview.rarity-uncommon {
+    border: 2px solid rgba(30, 255, 0, 0.15);
+    border-radius: 8px;
+    padding: 4px;
+}
+.card-preview.rarity-rare {
+    border: 2px solid rgba(0, 112, 221, 0.15);
+    border-radius: 8px;
+    padding: 4px;
+}
+.card-preview.rarity-epic {
+    border: 2px solid rgba(163, 53, 238, 0.15);
+    border-radius: 8px;
+    padding: 4px;
+}
+.card-preview.rarity-legendary {
+    border: 2px solid rgba(255, 128, 0, 0.2);
+    border-radius: 8px;
+    padding: 4px;
+    animation: craftLegendaryGlow 2s ease-in-out infinite;
+}
+
+@keyframes craftLegendaryGlow {
+    0%, 100% { box-shadow: 0 0 20px rgba(255, 128, 0, 0.05); }
+    50% { box-shadow: 0 0 40px rgba(255, 128, 0, 0.12); }
+}
+
+/* Изображение */
+.card-preview-image {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    background: transparent;
+    border-radius: 8px;
+}
+
+.card-preview-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.card-preview-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a1218, #2a1a20);
+    color: #5a4a3a;
+    font-size: 40px;
+    gap: 8px;
+    border-radius: 8px;
+}
+
+.card-preview-placeholder span {
+    font-size: 14px;
+    font-family: 'Cinzel', serif;
+    color: #4a3a2a;
+}
+
+/* Контент карты */
+.card-preview-content {
+    padding: 12px 14px;
+}
+
+.card-preview-name {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(180, 140, 100, 0.06);
+    margin-bottom: 4px;
+}
+
+.card-preview-name .preview-name {
+    color: #e8dcc8;
+    font-size: 17px;
+    font-weight: 700;
+    font-family: 'Cinzel', serif;
+}
+
+.card-preview-name .preview-mana {
+    color: #f0d8a0;
+    font-size: 15px;
+    font-family: 'Cinzel', serif;
+    background: rgba(20, 12, 15, 0.3);
+    padding: 2px 10px;
+    border-radius: 4px;
+}
+
+/* Редкость */
+.card-preview-rarity {
+    display: inline-block;
+    padding: 2px 12px;
+    border-radius: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.rarity-common {
+    color: #9d9d9d;
+    background: rgba(157, 157, 157, 0.06);
+    border: 1px solid rgba(157, 157, 157, 0.06);
+}
+.rarity-uncommon {
+    color: #1EFF00;
+    background: rgba(30, 255, 0, 0.04);
+    border: 1px solid rgba(30, 255, 0, 0.04);
+}
+.rarity-rare {
+    color: #0070DD;
+    background: rgba(0, 112, 221, 0.04);
+    border: 1px solid rgba(0, 112, 221, 0.04);
+}
+.rarity-epic {
+    color: #A335EE;
+    background: rgba(163, 53, 238, 0.04);
+    border: 1px solid rgba(163, 53, 238, 0.04);
+}
+.rarity-legendary {
+    color: #FF8000;
+    background: rgba(255, 128, 0, 0.04);
+    border: 1px solid rgba(255, 128, 0, 0.06);
+}
+
+/* Тип и раса */
+.card-preview-type-race {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 4px;
+}
+
+.card-preview-type-race span {
+    font-size: 11px;
+    color: #8a7a6a;
+    font-family: 'Cinzel', serif;
+    padding: 2px 10px;
+    background: rgba(20, 12, 15, 0.2);
+    border-radius: 4px;
+}
+
+.card-preview-type-race span strong {
+    color: #b0a090;
+}
+
+/* Описание */
+.card-preview-description {
+    background: rgba(20, 12, 15, 0.2);
+    border-radius: 4px;
+    padding: 6px 10px;
+    color: #b0a090;
+    font-size: 12px;
+    line-height: 1.4;
+    font-style: italic;
+    min-height: 32px;
+    margin-bottom: 6px;
+}
+
+/* Характеристики */
+.card-preview-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+}
+
+.card-preview-stats .preview-stat {
+    background: rgba(20, 12, 15, 0.2);
+    border-radius: 4px;
+    padding: 4px 6px;
+    text-align: center;
+}
+
+.card-preview-stats .preview-stat .stat-label {
+    font-size: 9px;
+    color: #6a5a4a;
+    font-family: 'Cinzel', serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.card-preview-stats .preview-stat .stat-value {
+    font-size: 17px;
+    font-weight: 700;
+    color: #f0d8a0;
+    font-family: 'Cinzel', serif;
+    display: block;
+}
+
+/* ============================================
+   ФОРМА (ПРАВАЯ ЧАСТЬ)
+   ============================================ */
+
+.form-content {
+    padding: 20px 24px 16px;
+    overflow-y: auto;
+    max-height: 100%;
+}
+
+.form-content::-webkit-scrollbar {
+    width: 4px;
+}
+.form-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+.form-content::-webkit-scrollbar-thumb {
+    background: rgba(180, 140, 100, 0.12);
+    border-radius: 4px;
+}
+
+.form-content h1 {
+    font-size: 18px;
+    color: #e8dcc8;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid rgba(180, 140, 100, 0.04);
+    padding-bottom: 6px;
+}
+
+/* Строки формы */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 700;
+    font-size: 12px;
+    color: #b0a090;
+    margin-bottom: 3px;
+    letter-spacing: 0.5px;
+    font-family: 'Cinzel', serif;
+}
+
+/* Поля ввода */
+.form-control,
+.form-select {
+    width: 100%;
+    padding: 6px 12px;
+    background: rgba(20, 12, 15, 0.6);
+    border: 1px solid rgba(180, 140, 100, 0.06);
+    border-radius: 4px;
+    color: #e8dcc8;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    height: 36px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    outline: none;
+    border-color: rgba(180, 140, 100, 0.15);
+    background: rgba(20, 12, 15, 0.8);
+}
+
+.form-control::placeholder {
+    color: #4a3a2a;
+}
+
+.form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236a5a4a' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 14px;
+}
+
+.form-select option {
+    background: #1a1218;
+    color: #e8dcc8;
+}
+
+.form-select option:checked {
+    background: rgba(180, 140, 100, 0.08);
+    color: #f0d8a0;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 50px;
+    height: auto;
+    font-family: inherit;
+}
+
+/* ============================================
+   ТЕГИ (раскрытые)
+   ============================================ */
+
+.tags-container {
+    position: relative;
+}
+
+.tags-select {
+    min-height: 60px !important;
+    height: auto !important;
+    padding: 6px;
+}
+
+.tags-select option {
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.tags-select option:checked {
+    background: rgba(180, 140, 100, 0.08);
+    color: #f0d8a0;
+}
+
+/* ============================================
+   СПОСОБНОСТИ
+   ============================================ */
+
+.abilities-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 4px;
+    background: rgba(20, 12, 15, 0.2);
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(180, 140, 100, 0.04);
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+.abilities-container::-webkit-scrollbar {
+    width: 4px;
+}
+.abilities-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+.abilities-container::-webkit-scrollbar-thumb {
+    background: rgba(180, 140, 100, 0.08);
+    border-radius: 4px;
+}
+
+.ability-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 8px;
+    background: rgba(20, 12, 15, 0.2);
+    border-radius: 4px;
+    border: 1px solid rgba(180, 140, 100, 0.02);
+    transition: all 0.3s ease;
+}
+
+.ability-checkbox:hover {
+    background: rgba(30, 20, 18, 0.4);
+}
+
+.ability-checkbox input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    accent-color: #f0d8a0;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.ability-checkbox .ability-name {
+    flex: 1;
+    font-size: 12px;
+    color: #b0a090;
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+}
+
+.ability-checkbox .ability-value-input {
+    width: 44px;
+    padding: 2px 4px;
+    background: rgba(20, 12, 15, 0.4);
+    border: 1px solid rgba(180, 140, 100, 0.04);
+    border-radius: 4px;
+    color: #f0d8a0;
+    text-align: center;
+    font-size: 12px;
+    height: 26px;
+}
+
+.ability-checkbox .ability-value-input:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* ============================================
+   ЗАГРУЗКА ИЗОБРАЖЕНИЯ
+   ============================================ */
+
+.image-upload-wrapper {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    width: 100%;
+}
+
+.image-upload-wrapper input[type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.image-upload-wrapper .upload-label {
+    display: block;
+    padding: 6px 14px;
+    background: rgba(20, 12, 15, 0.3);
+    border: 1px dashed rgba(180, 140, 100, 0.06);
+    border-radius: 4px;
+    color: #8a7a6a;
+    font-size: 13px;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    height: 36px;
+    line-height: 22px;
+}
+
+.image-upload-wrapper:hover .upload-label {
+    background: rgba(30, 20, 18, 0.5);
+    border-color: rgba(180, 140, 100, 0.1);
+}
+
+/* ============================================
+   КНОПКИ
+   ============================================ */
+
+.form-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(180, 140, 100, 0.04);
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 6px 18px;
+    border: 1px solid rgba(180, 140, 100, 0.1);
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Cinzel', serif;
+    height: 36px;
+}
+
+.btn-primary {
+    background: rgba(20, 12, 15, 0.5);
+    color: #f0d8a0;
+    border-color: rgba(180, 140, 100, 0.12);
+}
+
+.btn-primary:hover {
+    background: rgba(30, 20, 18, 0.7);
+    border-color: rgba(180, 140, 100, 0.2);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: rgba(20, 12, 15, 0.3);
+    color: #8a7a6a;
+    border-color: rgba(180, 140, 100, 0.04);
+}
+
+.btn-secondary:hover {
+    background: rgba(30, 20, 18, 0.5);
+    color: #b0a090;
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background: rgba(217, 74, 74, 0.04);
+    color: #8a4a4a;
+    border-color: rgba(180, 80, 80, 0.04);
+}
+
+.btn-danger:hover {
+    background: rgba(217, 74, 74, 0.08);
+    color: #d94a4a;
+    border-color: rgba(180, 80, 80, 0.1);
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   FLASH СООБЩЕНИЯ
+   ============================================ */
+
+.alert {
+    padding: 8px 14px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    border: 1px solid transparent;
+}
+
+.alert-success {
+    background: rgba(30, 255, 0, 0.04);
+    border-color: rgba(30, 255, 0, 0.08);
+    color: #1EFF00;
+}
+
+.alert-danger {
+    background: rgba(217, 74, 74, 0.04);
+    border-color: rgba(217, 74, 74, 0.08);
+    color: #d94a4a;
+}
+
+/* ============================================
+   ОШИБКИ ФОРМЫ
+   ============================================ */
+
+.form-error {
+    color: #d94a4a;
+    font-size: 11px;
+    margin-top: 2px;
+    display: block;
+    font-family: 'Cinzel', serif;
+}
+
+.form-group.has-error .form-control,
+.form-group.has-error .form-select {
+    border-color: rgba(217, 74, 74, 0.15);
+}
+
+/* ============================================
+   АДАПТИВНОСТЬ
+   ============================================ */
+
+@media (max-width: 1024px) {
+    .form-wrapper {
+        max-height: 80vh;
+    }
+}
+
+@media (max-width: 768px) {
+    .form-container {
+        height: auto;
+        margin: 10px auto;
+        justify-content: flex-start;
+    }
+
+    .form-wrapper {
+        grid-template-columns: 1fr;
+        max-height: none;
+        min-height: auto;
+    }
+
+    .form-preview {
+        padding: 16px;
+        min-height: auto;
+        max-height: 320px;
+    }
+
+    .card-preview {
+        max-width: 100%;
+    }
+    .card-preview-image {
+        height: 150px;
+    }
+
+    .form-content {
+        padding: 14px;
+        max-height: none;
+        overflow-y: visible;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .abilities-container {
+        grid-template-columns: 1fr 1fr;
+        max-height: 150px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+    .form-actions .btn {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .craft-header {
+        font-size: 11px;
+    }
+    .craft-footer {
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-preview {
+        max-height: 280px;
+        padding: 12px;
+    }
+
+    .card-preview-image {
+        height: 130px;
+    }
+
+    .card-preview-name .preview-name {
+        font-size: 15px;
+    }
+    .card-preview-stats .preview-stat .stat-value {
+        font-size: 15px;
+    }
+
+    .form-content {
+        padding: 10px;
+    }
+    .form-content h1 {
+        font-size: 16px;
+    }
+
+    .form-control,
+    .form-select {
+        font-size: 13px;
+        padding: 5px 10px;
+        height: 32px;
+    }
+
+    .btn {
+        font-size: 12px;
+        padding: 5px 14px;
+        height: 32px;
+    }
+
+    .abilities-container {
+        grid-template-columns: 1fr;
+        max-height: 120px;
+    }
+
+    .craft-header {
+        font-size: 10px;
+        padding: 4px 0;
+    }
+    .craft-footer {
+        font-size: 9px;
+        padding: 4px 0;
+    }
+}
+
+/* assets/styles/form.css - добавить в конец */
+
+/* ============================================
+   ОШИБКИ ФОРМЫ
+   ============================================ */
+
+.form-error {
+    color: #d94a4a;
+    font-size: 12px;
+    margin-top: 4px;
+    display: block;
+    font-family: 'Cinzel', serif;
+    padding: 4px 8px;
+    background: rgba(217, 74, 74, 0.04);
+    border-radius: 4px;
+    border: 1px solid rgba(217, 74, 74, 0.04);
+}
+
+.form-error div {
+    margin-bottom: 2px;
+}
+
+.form-error div:last-child {
+    margin-bottom: 0;
+}
+
+.form-group.has-error .form-control,
+.form-group.has-error .form-select {
+    border-color: rgba(217, 74, 74, 0.15);
+}
+
+.form-group.has-error .form-control:focus,
+.form-group.has-error .form-select:focus {
+    border-color: rgba(217, 74, 74, 0.3);
+    box-shadow: 0 0 20px rgba(217, 74, 74, 0.05);
+}
+
+/* Глобальные ошибки */
+.alert-danger {
+    background: rgba(217, 74, 74, 0.04);
+    border: 1px solid rgba(217, 74, 74, 0.08);
+    color: #d94a4a;
+    padding: 10px 14px;
+    border-radius: 4px;
+    margin-bottom: 14px;
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+}
+
+.alert-danger div {
+    margin-bottom: 2px;
+}
+
+.alert-danger div:last-child {
+    margin-bottom: 0;
+}
+
+/* assets/styles/form.css - добавить в САМЫЙ КОНЕЦ файла */
+
+/* ============================================
+   КЛИКАБЕЛЬНОЕ ПРЕВЬЮ ИЗОБРАЖЕНИЯ
+   ============================================ */
+
+.card-preview-image {
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.card-preview-image:hover {
+    opacity: 0.9;
+    transform: scale(1.01);
+}
+
+/* Оверлей при наведении */
+.card-preview-image .preview-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    z-index: 2;
+}
+
+.card-preview-image:hover .preview-overlay {
+    opacity: 1;
+}
+
+.card-preview-image .preview-overlay span {
+    color: #f0d8a0;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.5);
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid rgba(180, 140, 100, 0.2);
+}
+
+/* Подсказка при наведении */
+.card-preview-image::after {
+    content: '🖱️ Нажмите чтобы выбрать изображение';
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: #f0d8a0;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-family: 'Cinzel', serif;
+    white-space: nowrap;
+    z-index: 3;
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.card-preview-image:hover::after {
+    opacity: 1;
+}
+
+/* Стили для загрузки файла */
+.image-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.image-input-wrapper input[type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.image-input-wrapper .upload-label {
+    display: block;
+    padding: 8px 14px;
+    background: rgba(20, 12, 15, 0.3);
+    border: 1px dashed rgba(180, 140, 100, 0.06);
+    border-radius: 4px;
+    color: #8a7a6a;
+    font-size: 13px;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-family: 'Cinzel', serif;
+}
+
+.image-input-wrapper:hover .upload-label {
+    background: rgba(30, 20, 18, 0.5);
+    border-color: rgba(180, 140, 100, 0.1);
+    color: #b0a090;
+}
+
+/* Индикатор загрузки */
+.image-loading {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    z-index: 5;
+}
+
+.image-loading.active {
+    display: flex;
+}
+
+.image-loading span {
+    color: #f0d8a0;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}

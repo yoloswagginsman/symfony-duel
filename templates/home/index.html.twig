@@ -1,0 +1,126 @@
+{# templates/main/index.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Symfony Duel - Коллекция карт{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/main.css') }}">
+{% endblock %}
+
+{% block body %}
+    <!-- НАВИГАЦИЯ -->
+    <nav class="main-nav">
+        <a href="{{ path('app_home') }}" class="nav-logo">
+            ⚔️ Symfony Duel
+        </a>
+        <div class="nav-links">
+            <a href="{{ path('app_home') }}" class="active">Главная</a>
+            <a href="{{ path('app_cards_index') }}">Коллекция</a>
+            <a href="{{ path('app_cards_new') }}" class="btn-create">✦ Создать</a>
+        </div>
+    </nav>
+
+    <!-- ГЕРОЙ СЕКЦИЯ -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                ⚔️ <span class="highlight">Symfony</span> Duel
+            </h1>
+            <p class="hero-subtitle">
+                ~ Карточная битва в стиле старых легенд ~
+            </p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <span class="number">{{ totalCards }}</span>
+                    <span class="label">Карт</span>
+                </div>
+                {% if rarityStats is not empty %}
+                    {% for stat in rarityStats %}
+                        <div class="hero-stat">
+                            <span class="number">{{ stat.count }}</span>
+                            <span class="label">{{ stat.name }}</span>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- ПОСЛЕДНИЕ ДОБАВЛЕННЫЕ -->
+    <section class="cards-section">
+        <div class="section-header">
+            <h2 class="section-title">
+                ◈ Последние добавленные
+                <span class="badge">{{ latestCards|length }}</span>
+            </h2>
+            <a href="{{ path('app_cards_index') }}" class="section-link">
+                Все карты →
+            </a>
+        </div>
+
+        {% if latestCards is empty %}
+            <div class="empty-state">
+                <div class="icon">⚔️</div>
+                <h3>Коллекция пуста</h3>
+                <p>Создайте первую карту для вашей дуэли!</p>
+                <a href="{{ path('app_cards_new') }}" class="btn-create">✦ Создать карту</a>
+            </div>
+        {% else %}
+            <div class="cards-grid">
+                {% for card in latestCards %}
+                    <div class="card-item"
+                         data-rarity="{{ card.rarity ? card.rarity.slug|lower : 'common' }}"
+                         onclick="window.location.href='{{ path('app_cards_show', {'id': card.id}) }}'">
+
+                        {# Картинка с правильным путем #}
+                        {% if card.imagePath %}
+                            <img class="card-item-image" src="/upload/cards/{{ card.imagePath }}" alt="{{ card.name }}">
+                        {% else %}
+                            <div class="card-item-image-placeholder">⚔️</div>
+                        {% endif %}
+
+                        <div class="card-item-content">
+                            <div class="card-item-name">{{ card.name }}</div>
+
+                            {% if card.description %}
+                                <div class="card-item-description">{{ card.description|slice(0, 50) }}{% if card.description|length > 50 %}...{% endif %}</div>
+                            {% endif %}
+
+                            <div class="card-item-stats">
+                                <span>✦ {{ card.manaCost }}</span>
+                                <span>⚔️ {{ card.attack ?? '-' }}</span>
+                                <span>❤️ {{ card.health ?? '-' }}</span>
+                            </div>
+
+                            <div class="card-item-rarity rarity-{{ card.rarity ? card.rarity.slug|lower : 'common' }}">
+                                {{ card.rarity ? card.rarity.name : 'Нет' }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </section>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Анимация появления карт
+            const cards = document.querySelectorAll('.card-item');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 + (index * 80));
+            });
+        });
+    </script>
+{% endblock %}

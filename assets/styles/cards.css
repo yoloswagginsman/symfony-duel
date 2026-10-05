@@ -1,0 +1,422 @@
+/* assets/styles/cards.css */
+
+/* ============================================
+   СТРАНИЦА СПИСКА КАРТ
+   ============================================ */
+
+/* Шапка страницы */
+.page-header {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 30px 20px 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.page-header h1 {
+    color: #f0f0f0;
+    font-size: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.page-header h1 .count {
+    font-size: 18px;
+    color: #6a6a8a;
+    font-weight: normal;
+}
+
+.page-header .actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* Кнопки */
+.btn-create-card {
+    padding: 10px 24px;
+    background: linear-gradient(145deg, #4a7ab5, #2a5a8a);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.btn-create-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(74, 122, 181, 0.4);
+}
+
+.btn-create-card.secondary {
+    background: #6a6a8a;
+}
+
+.btn-create-card.secondary:hover {
+    background: #7a7a9a;
+    box-shadow: 0 4px 20px rgba(106, 106, 138, 0.4);
+}
+
+/* Секция с картами */
+.cards-section {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px 20px 40px;
+}
+
+/* ============================================
+   ФИЛЬТРЫ
+   ============================================ */
+
+.filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.filter-btn {
+    padding: 8px 20px;
+    border: 1px solid #2a2a4e;
+    border-radius: 20px;
+    background: transparent;
+    color: #8a8aaa;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.filter-btn:hover {
+    border-color: #4a6a8a;
+    color: #f0f0f0;
+}
+
+.filter-btn.active {
+    border-color: #ffd700;
+    color: #ffd700;
+    background: rgba(255, 215, 0, 0.05);
+}
+
+/* ============================================
+   СЕТКА КАРТ
+   ============================================ */
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 25px;
+}
+
+/* ============================================
+   КАРТОЧКА В СПИСКЕ
+   ============================================ */
+
+.card-item {
+    background: #1a1a2e;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 2px solid #2a2a4e;
+    cursor: pointer;
+    position: relative;
+}
+
+.card-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+    border-color: #4a6a8a;
+}
+
+/* Рамки редкости для карточек в списке */
+.card-item[data-rarity="common"]:hover {
+    border-color: #9d9d9d;
+}
+
+.card-item[data-rarity="uncommon"]:hover {
+    border-color: #1EFF00;
+    box-shadow: 0 12px 40px rgba(30, 255, 0, 0.1);
+}
+
+.card-item[data-rarity="rare"]:hover {
+    border-color: #0070DD;
+    box-shadow: 0 12px 40px rgba(0, 112, 221, 0.15);
+}
+
+.card-item[data-rarity="epic"]:hover {
+    border-color: #A335EE;
+    box-shadow: 0 12px 40px rgba(163, 53, 238, 0.15);
+}
+
+.card-item[data-rarity="legendary"]:hover {
+    border-color: #FF8000;
+    box-shadow: 0 12px 40px rgba(255, 128, 0, 0.2);
+}
+
+/* Изображение */
+.card-item-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    background: #0a0a1a;
+}
+
+.card-item-image-placeholder {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a1a3e, #2a2a5e);
+    color: #6a6a8e;
+    font-size: 48px;
+}
+
+/* Контент */
+.card-item-content {
+    padding: 14px 16px;
+}
+
+.card-item-name {
+    color: #f0f0f0;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-item-stats {
+    display: flex;
+    justify-content: space-between;
+    color: #8a8aaa;
+    font-size: 13px;
+    margin-top: 6px;
+}
+
+.card-item-stats span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Редкость */
+.card-item-rarity {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 10px;
+    border-radius: 10px;
+    margin-top: 6px;
+}
+
+.rarity-common {
+    color: #9d9d9d;
+    background: rgba(157, 157, 157, 0.1);
+}
+
+.rarity-uncommon {
+    color: #1EFF00;
+    background: rgba(30, 255, 0, 0.1);
+}
+
+.rarity-rare {
+    color: #0070DD;
+    background: rgba(0, 112, 221, 0.1);
+}
+
+.rarity-epic {
+    color: #A335EE;
+    background: rgba(163, 53, 238, 0.1);
+}
+
+.rarity-legendary {
+    color: #FF8000;
+    background: rgba(255, 128, 0, 0.1);
+}
+
+/* Действия */
+.card-item-actions {
+    padding: 10px 16px;
+    display: flex;
+    gap: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.btn-card {
+    padding: 4px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.btn-card-view {
+    background: #4a90d9;
+    color: white;
+}
+
+.btn-card-view:hover {
+    background: #5aa0e9;
+}
+
+.btn-card-edit {
+    background: #6a6a8a;
+    color: white;
+}
+
+.btn-card-edit:hover {
+    background: #7a7a9a;
+}
+
+/* ============================================
+   ПУСТОЙ СОСТОЯНИЕ
+   ============================================ */
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6a6a8a;
+}
+
+.empty-state .icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+}
+
+.empty-state h3 {
+    color: #a0a0b0;
+    margin-bottom: 10px;
+}
+
+.empty-state .btn {
+    margin-top: 15px;
+    display: inline-block;
+}
+
+/* ============================================
+   АДАПТИВНОСТЬ
+   ============================================ */
+
+@media (max-width: 1024px) {
+    .cards-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-header {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 20px 15px 5px;
+    }
+
+    .page-header h1 {
+        font-size: 26px;
+    }
+
+    .page-header h1 .count {
+        font-size: 16px;
+    }
+
+    .page-header .actions {
+        justify-content: stretch;
+    }
+
+    .page-header .actions .btn-create-card {
+        flex: 1;
+        justify-content: center;
+    }
+
+    .cards-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 15px;
+    }
+
+    .card-item-image {
+        height: 150px;
+    }
+
+    .card-item-image-placeholder {
+        height: 150px;
+        font-size: 36px;
+    }
+
+    .card-item-name {
+        font-size: 14px;
+    }
+
+    .card-item-stats {
+        font-size: 12px;
+    }
+
+    .filters {
+        justify-content: center;
+    }
+
+    .filter-btn {
+        padding: 6px 14px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cards-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 10px;
+    }
+
+    .card-item-image {
+        height: 120px;
+    }
+
+    .card-item-image-placeholder {
+        height: 120px;
+        font-size: 28px;
+    }
+
+    .card-item-content {
+        padding: 10px 12px;
+    }
+
+    .card-item-name {
+        font-size: 13px;
+    }
+
+    .card-item-stats {
+        font-size: 11px;
+        flex-wrap: wrap;
+        gap: 2px;
+    }
+
+    .card-item-actions {
+        padding: 8px 12px;
+    }
+
+    .btn-card {
+        padding: 3px 8px;
+        font-size: 11px;
+    }
+
+    .filters {
+        gap: 6px;
+    }
+
+    .filter-btn {
+        padding: 4px 12px;
+        font-size: 11px;
+    }
+}
