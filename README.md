@@ -50,24 +50,24 @@
 docker compose up -d
 docker exec -it php-card bash
 ```
-Загрузить контент (справочники и карты из `data/content`):
-```bash
-php bin/console app:content:import --dry-run   # показать, что изменится
-php bin/console app:content:import             # применить
-```
-Тестовые пользователи (только для разработки; очищает базу — после него снова `app:content:import`):
-```bash
-php bin/console doctrine:fixtures:load
-```
-Миграции (создать):
-```bash
-php bin/console make:migration
-```
-Миграции (применить)
+1. Миграции — создать таблицы:
 ```bash
 php bin/console doctrine:migrations:migrate
 ```
+2. Тестовые пользователи (только для разработки). `fixtures:load` очищает **всю** базу, поэтому — до импорта контента:
 ```bash
+php bin/console doctrine:fixtures:load
+```
+3. Контент — справочники и карты из `data/content`:
+```bash
+php bin/console app:content:import --dry-run          # показать, что изменится
+php bin/console app:content:import                    # применить
+php bin/console app:content:import --delete-missing   # также удалить карты, которых нет в контенте (с картинками)
+```
+
+Миграции при разработке (создать по изменениям сущностей):
+```bash
+php bin/console make:migration
 php bin/console doctrine:migrations:diff
 ```
 

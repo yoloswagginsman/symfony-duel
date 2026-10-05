@@ -3,12 +3,15 @@
 namespace App\Service\Content;
 
 use App\Contract\DataContent\DataContentInterface;
+use App\Contract\DataContent\DeleteMissingInterface;
 use App\Service\Content\Output\ContentImportResult;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Events;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
+use Throwable;
 
 /**
  * Загружает раздел контента (data/content) в базу — в своей транзакции.
@@ -18,7 +21,6 @@ use Symfony\Component\Validator\Exception\ValidationFailedException;
 readonly class ContentImporter
 {
     public function __construct(
-        // Все разделы контента по имени класса — достаём тот, что передала команда
         #[AutowireLocator(DataContentInterface::class)]
         private ContainerInterface $dataContents,
         private EntityManagerInterface $entityManager,
@@ -26,15 +28,15 @@ readonly class ContentImporter
     }
 
     /**
-     * @param class-string<DataContentInterface> $class  раздел контента
-     * @param bool                               $dryRun только показать, что изменится
+     * @param class-string<DataContentInterface> $class раздел контента
+     * @param bool $dryRun только показать, что изменится
+     * @param bool $deleteMissing удалить записи, которых нет в контенте (если раздел это умеет)
+     * @throws Exception|Throwable
      */
-    public function import(string $class, bool $dryRun = false): ContentImportResult
+    public function import(string $class, bool $dryRun = false, bool $deleteMissing = false): ContentImportResult
     {
         $dataContent = $this->dataContent($class);
         $result = new ContentImportResult($dataContent->getName());
-
-        // Справочники сохраняют сервисы (сами делают flush) — изменения ловим на onFlush
         $changes = new ReferenceChangeCollector();
         $eventManager = $this->entityManager->getEventManager();
         $eventManager->addEventListener(Events::onFlush, $changes);
@@ -53,13 +55,17 @@ readonly class ContentImporter
             }
             $changes->addTo($result);
 
+            if ($deleteMissing && $dataContent instanceof DeleteMissingInterface && !$result->hasErrors()) {
+                $this->deleteMissing($dataContent, $result, $dryRun);
+            }
+
             if ($dryRun || $result->hasErrors()) {
                 $connection->rollBack();
                 $this->entityManager->clear();
             } else {
                 $connection->commit();
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             if ($connection->isTransactionActive()) {
                 $connection->rollBack();
             }
@@ -71,6 +77,22 @@ readonly class ContentImporter
         }
 
         return $result;
+    }
+
+    /**
+     * В dry-run только показываем, что будет удалено: вместе с записью удаляются файлы (картинки),
+     * а их откат транзакции не вернёт.
+     */
+    private function deleteMissing(DeleteMissingInterface $dataContent, ContentImportResult $result, bool $dryRun): void
+    {
+        if ($dryRun) {
+            $result->deleted = $result->missing;
+            $result->missing = [];
+
+            return;
+        }
+
+        $dataContent->deleteMissing($result);
     }
 
     private function dataContent(string $class): DataContentInterface

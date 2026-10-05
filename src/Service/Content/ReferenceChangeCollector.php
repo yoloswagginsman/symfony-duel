@@ -16,7 +16,7 @@ final class ReferenceChangeCollector
     /** @var list<string> */
     private array $created = [];
 
-    /** @var array<string, list<string>> slug => изменившиеся поля */
+    /** @var array<string, array<string, array{0: mixed, 1: mixed}>> slug => [поле => [было, стало]] */
     private array $updated = [];
 
     public function onFlush(OnFlushEventArgs $args): void
@@ -30,7 +30,7 @@ final class ReferenceChangeCollector
         }
         foreach ($unitOfWork->getScheduledEntityUpdates() as $entity) {
             if ($entity instanceof ReferenceInterface) {
-                $this->updated[(string) $entity->getSlug()] = array_keys($unitOfWork->getEntityChangeSet($entity));
+                $this->updated[(string) $entity->getSlug()] = $unitOfWork->getEntityChangeSet($entity);
             }
         }
     }

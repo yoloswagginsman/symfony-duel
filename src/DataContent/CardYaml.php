@@ -3,10 +3,13 @@
 namespace App\DataContent;
 
 use App\Contract\DataContent\DataContentInterface;
+use App\Contract\DataContent\DeleteMissingInterface;
 use App\Dto\CardYamlDto;
 use App\Dto\Factory\CardYamlDtoFactory;
+use App\Entity\Card;
 use App\Repository\CardRepository;
 use App\Service\CardService;
+use App\Service\Content\ChangeSetCalculator;
 use App\Service\Content\ContentException;
 use App\Service\Content\ContentStorage;
 use App\Service\Content\Output\ContentImportResult;
@@ -20,11 +23,12 @@ use Symfony\Component\Validator\Exception\ValidationFailedException;
  * Карты CardService записывает сам (flush), поэтому созданные и обновлённые
  * раздел отмечает в результате сам.
  */
-readonly class CardYaml implements DataContentInterface
+readonly class CardYaml implements DataContentInterface, DeleteMissingInterface
 {
     public function __construct(
         private ContentStorage $storage,
         private CardYamlDtoFactory $dtoFactory,
+        private ChangeSetCalculator $changeSetCalculator,
         private CardRepository $cardRepository,
         private CardService $cardService,
         private string $uploadsDirectory,
@@ -38,11 +42,11 @@ readonly class CardYaml implements DataContentInterface
 
     public function import(ContentImportResult $result): void
     {
-        $matchedIds = [];
+        $items = $this->storage->loadCards();
         $seenCodes = [];
         $seenNames = [];
 
-        foreach ($this->storage->loadCards() as $position => $item) {
+        foreach ($items as $position => $item) {
             $label = sprintf('#%d «%s»', $position + 1, $item['name'] ?? '?');
 
             try {
@@ -76,13 +80,16 @@ readonly class CardYaml implements DataContentInterface
 
             try {
                 if ($card === null) {
-                    $matchedIds[] = $this->cardService->create($dto->toModel())->getId();
+                    $this->cardService->create($dto->toModel());
                     $result->created[] = $record;
                     continue;
                 }
 
-                $matchedIds[] = $card->getId();
-                $changes = CardYamlDto::fromCard($card)->changedFields($dto);
+                $changes = $this->changeSetCalculator->calculate(
+                    CardYamlDto::fromCard($card)->toArray(),
+                    $dto->toArray(),
+                    ignore: ['vendorCode'],   // ключ записи
+                );
                 if ($changes !== []) {
                     $this->cardService->update($card, $dto->toModel());
                     $result->updated[$record] = $changes;
@@ -94,11 +101,42 @@ readonly class CardYaml implements DataContentInterface
             }
         }
 
-        // Карты, которых нет в контенте, не удаляем — только сообщаем
-        foreach ($this->cardRepository->findAll() as $card) {
-            if (!in_array($card->getId(), $matchedIds, true)) {
-                $result->missing[] = sprintf('%s «%s»', $card->getVendorCode(), $card->getName());
-            }
+        // Карты, которых нет в контенте, только отмечаем — удалит deleteMissing() (--delete-missing)
+        foreach ($this->missingCards() as $card) {
+            $result->missing[] = $this->label($card);
         }
+    }
+
+    /**
+     * Удаляет карты, которых нет в cards.yaml, — с картинкой (CardService::delete).
+     */
+    public function deleteMissing(ContentImportResult $result): void
+    {
+        foreach ($this->missingCards() as $card) {
+            $this->cardService->delete($card);
+            $result->deleted[] = $this->label($card);
+        }
+        $result->missing = [];
+    }
+
+    /**
+     * Карты в базе, артикулов которых нет в cards.yaml. Запись с ошибкой — не «нет в контенте»:
+     * сверяем по артикулам из файла, а не по успешно импортированным картам.
+     *
+     * @return list<Card>
+     */
+    private function missingCards(): array
+    {
+        $codesInContent = array_column($this->storage->loadCards(), 'vendorCode');
+
+        return array_values(array_filter(
+            $this->cardRepository->findAll(),
+            static fn (Card $card) => !in_array($card->getVendorCode(), $codesInContent, true),
+        ));
+    }
+
+    private function label(Card $card): string
+    {
+        return sprintf('%s «%s»', $card->getVendorCode(), $card->getName());
     }
 }
