@@ -8,6 +8,9 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     uploads_directory: '%kernel.project_dir%/public/upload/cards'
+    # Контент: справочники и cards.yaml (импорт — app:content:import)
+    app.content.dir: '%kernel.project_dir%/data/content'
+    app.content.cards_file: 'cards.yaml'
 
 services:
     # default configuration for services in *this* file
@@ -27,3 +30,12 @@ services:
         arguments:
             $uploadDirectory: '%uploads_directory%'
             $slugger: '@slugger'
+
+    App\Service\Content\ContentStorage:
+        arguments:
+            $directory: '%app.content.dir%'
+            $cardsFile: '%app.content.cards_file%'
+
+    App\DataContent\CardYaml:
+        arguments:
+            $uploadsDirectory: '%uploads_directory%'

@@ -55,8 +55,8 @@ class CreateCardFormDto implements ToModelConvertibleInterface
             maxSize: '5M',
             mimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
             detectCorrupted: true,
-            maxSizeMessage: 'Размер файла не должен превышать 5 МБ',
-            mimeTypesMessage: 'Загрузите изображение формата JPEG, PNG или WEBP'
+            maxSizeMessage: 'card.image.max_size',
+            mimeTypesMessage: 'card.image.mime_types',
         )]
         public ?UploadedFile $imageFile = null,
 
@@ -72,7 +72,7 @@ class CreateCardFormDto implements ToModelConvertibleInterface
             if ($item instanceof CardAbilityFormDto && $item->enabled && $item->ability !== null) {
                 $abilities[] = [
                     'ability' => $item->ability,
-                    'value'   => (int) $item->value,
+                    'value'   => $item->value, // null — способность без числового значения (не 0)
                 ];
             }
         }

@@ -1,0 +1,148 @@
+cards:
+  - vendorCode: DUEL-CRE-ELV-LESNOJ-STRAZ
+    name: 'Лесной Страж'
+    description: 'Древний эльф, охраняющий лес.'
+    manaCost: 5
+    attack: 4
+    health: 6
+    race: elves
+    type: creature
+    rarity: rare
+    tags: [elf, taunt, shield]
+    abilities: [Taunt, Shield]
+
+  - vendorCode: DUEL-CRE-ORC-ORK-BERSERKER
+    name: Орк-Берсеркер
+    description: 'Впадает в ярость при виде врага.'
+    imagePath: orki/ork-berserker.webp
+    manaCost: 3
+    attack: 5
+    health: 3
+    race: orcs
+    type: creature
+    rarity: common
+    tags: [orc]
+    abilities: [Charge, Frenzy]
+
+  - vendorCode: DUEL-CRE-DRA-DREVNIJ-DRAKON
+    name: 'Древний Дракон'
+    description: 'Огнедышащий дракон, правящий небом.'
+    imagePath: drakony/drevnij-drakon.webp
+    manaCost: 9
+    attack: 8
+    health: 10
+    race: dragons
+    type: creature
+    rarity: legendary
+    tags: [dragon, fire, flying, legendary]
+    abilities: [Flying, AoE_Damage]
+
+  - vendorCode: DUEL-CRE-DRA-PALADIN-SVETA
+    name: 'Паладин Света'
+    description: 'Святой воин, исцеляющий союзников.Страж цитадели'
+    imagePath: ludi-s-severa/paladin-sveta.webp
+    manaCost: 4
+    attack: 3
+    health: 5
+    race: people-from-the-north
+    type: creature
+    rarity: rare
+    tags: []
+    abilities: [Heal]
+
+  - vendorCode: DUEL-SPE-PEO-MOLNIA-NEBES
+    name: 'Молния Небес'
+    description: 'Мощное заклинание, поражающее всех врагов.'
+    manaCost: 6
+    attack: 1
+    race: people-from-the-north
+    type: spell
+    rarity: epic
+    isActive: false
+    tags: [epic]
+    abilities: [AoE_Damage]
+
+  - vendorCode: DUEL-SPE-UND-PROKLATIE-T-MY
+    name: 'Проклятие Тьмы'
+    description: 'Наносит урон всем врагам тёмной магией.'
+    manaCost: 4
+    attack: 4
+    race: undead
+    type: spell
+    rarity: epic
+    isActive: false
+    tags: []
+    abilities: [Poison, AoE_Damage]
+
+  - vendorCode: DUEL-CRE-ELV-EL-FIJSKIJ-LUCNIK
+    name: 'Эльфийский Лучник'
+    description: 'Меткий стрелок, поражающий цель издалека.'
+    manaCost: 2
+    attack: 2
+    health: 2
+    race: elves
+    type: creature
+    rarity: common
+    tags: [elf]
+    abilities: []
+
+  - vendorCode: DUEL-CRE-DRA-OGNENNYJ-ELEMENTAL
+    name: 'Огненный Элементаль'
+    description: 'Существо из чистого пламени.'
+    manaCost: 4
+    attack: 5
+    health: 3
+    race: dragons
+    type: creature
+    rarity: rare
+    tags: [fire]
+    abilities: []
+
+  - vendorCode: DUEL-CRE-UND-NEKROMANT
+    name: Некромант
+    description: 'Повелитель мёртвых, поднимающий павших.'
+    manaCost: 5
+    attack: 2
+    health: 5
+    race: undead
+    type: creature
+    rarity: rare
+    tags: []
+    abilities: [Poison]
+
+  - vendorCode: DUEL-CRE-ELE-KAMENNYJ-GOLEM
+    name: 'Каменный Голем'
+    description: 'Непробиваемая каменная стена.'
+    manaCost: 4
+    attack: 1
+    health: 8
+    race: elementals
+    type: creature
+    rarity: common
+    tags: [taunt]
+    abilities: [Taunt]
+
+  - vendorCode: DUEL-CRE-ELE-ELEMENTAL-OGNA
+    name: 'Элементаль Огня'
+    description: 'Дух чистого пламени.'
+    manaCost: 4
+    attack: 5
+    health: 4
+    race: elementals
+    type: creature
+    rarity: uncommon
+    tags: [fire]
+    abilities: []
+
+  - vendorCode: DUEL-CRE-ANC-LESNOJ-DUH
+    name: 'Лесной Дух'
+    description: 'Хранитель древнего леса.'
+    imagePath: rozdennye-lesom/lesnoj-duh.webp
+    manaCost: 3
+    attack: 2
+    health: 4
+    race: ancient-forest
+    type: creature
+    rarity: uncommon
+    tags: []
+    abilities: [{ name: Heal, value: 2 }]

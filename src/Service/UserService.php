@@ -16,7 +16,7 @@ readonly class UserService
         private UserRepository $userRepository,
         private UserPasswordHasherInterface $passwordHasher,
         private ValidatorInterface $validator,
-        private EntityManagerInterface $em,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -24,7 +24,7 @@ readonly class UserService
     {
         $this->validateModel($model);
 
-        return $this->em->wrapInTransaction(function () use ($model) {
+        return $this->entityManager->wrapInTransaction(function () use ($model) {
             $user = (new User())
                 ->setNickname($model->nickname)
                 ->setEmail($model->email)

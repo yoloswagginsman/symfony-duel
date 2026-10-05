@@ -50,7 +50,12 @@
 docker compose up -d
 docker exec -it php-card bash
 ```
-Добавить карты:
+Загрузить контент (справочники и карты из `data/content`):
+```bash
+php bin/console app:content:import --dry-run   # показать, что изменится
+php bin/console app:content:import             # применить
+```
+Тестовые пользователи (только для разработки; очищает базу — после него снова `app:content:import`):
 ```bash
 php bin/console doctrine:fixtures:load
 ```
@@ -174,7 +179,10 @@ php bin/console doctrine:schema:validate
 Каждый пользователь имеет разрешение на добавление своих карт в проект 
 через систему MR (новые yaml файл + особенности карт с механикой)
 
-На данный момент использую "Фикстуры" с yaml файлами для добавления контента src/DataFixtures/Data
+Контент хранится в yaml-файлах в `data/content` (справочники и `cards.yaml`),
+и попадает в базу командой `app:content:import`. Карты, созданные или изменённые через интерфейс,
+автоматически записываются обратно в `data/content/cards.yaml` — их остаётся закоммитить
+(вместе с картинкой из `public/upload/cards`).
 (Необходимо реализовать автоматическую сборку json схемы для подсказок ide для удобства заполнения)
 
 ## Сущности проекта (базовые)

@@ -5,6 +5,9 @@ namespace App\Repository;
 use App\Entity\Card;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @extends AbstractRepository<Card>
+ */
 class CardRepository extends AbstractRepository
 {
     public function __construct(ManagerRegistry $registry)
