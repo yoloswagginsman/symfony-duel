@@ -1,0 +1,5 @@
+# Переопределения встроенных переводов Symfony
+# (vendor/symfony/security-core/Resources/translations/security.ru.xlf).
+# Ключ — исходное английское сообщение, значение — наш текст.
+'Invalid credentials.': 'Неверный email или пароль.'
+'Invalid CSRF token.': 'Страница устарела. Попробуйте войти ещё раз.'

@@ -1,0 +1,20 @@
+cards:
+  - vendorCode: DUEL-ITE-NEU-KINZAL
+    name: Кинжал
+    description: 'Выкован в Кузнице. Наденьте на своё существо: +1 к атаке.'
+    manaCost: 1
+    race: neutral
+    type: item
+    rarity: common
+    tags: []
+    abilities: [{ name: Equip_Attack, value: 1 }]
+
+  - vendorCode: DUEL-ITE-NEU-SIT
+    name: Щит
+    description: 'Выкован в Кузнице. Наденьте на своё существо: +1 к здоровью.'
+    manaCost: 1
+    race: neutral
+    type: item
+    rarity: common
+    tags: []
+    abilities: [{ name: Equip_Health, value: 1 }]

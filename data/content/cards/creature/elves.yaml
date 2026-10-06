@@ -1,0 +1,24 @@
+cards:
+  - vendorCode: DUEL-CRE-ELV-LESNOJ-STRAZ
+    name: 'Лесной Страж'
+    description: 'Древний эльф, охраняющий лес.'
+    manaCost: 5
+    attack: 4
+    health: 6
+    race: elves
+    type: creature
+    rarity: rare
+    tags: [elf, taunt, shield]
+    abilities: [Taunt, Shield]
+
+  - vendorCode: DUEL-CRE-ELV-EL-FIJSKIJ-LUCNIK
+    name: 'Эльфийский Лучник'
+    description: 'Меткий стрелок, поражающий цель издалека.'
+    manaCost: 2
+    attack: 2
+    health: 2
+    race: elves
+    type: creature
+    rarity: common
+    tags: [elf]
+    abilities: []

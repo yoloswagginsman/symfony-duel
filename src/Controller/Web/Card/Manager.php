@@ -9,13 +9,28 @@ use App\Form\CardsType;
 use App\Service\CardService;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 readonly class Manager
 {
     public function __construct(
         private CardService $cardService,
-        private FormFactoryInterface $formFactory
+        private FormFactoryInterface $formFactory,
+        private CsrfTokenManagerInterface $csrfTokenManager,
     ) {
+    }
+
+    /**
+     * Удаляет карту (с картинкой и записью в контенте), если CSRF-токен из формы удаления верный.
+     */
+    public function delete(Request $request, Card $card): void
+    {
+        $token = new CsrfToken('delete' . $card->getId(), $request->getPayload()->getString('_token'));
+
+        if ($this->csrfTokenManager->isTokenValid($token)) {
+            $this->cardService->deleteWithYaml($card);
+        }
     }
 
     public function getFormData(Request $request, ?Card $card = null): CardFormResult
@@ -52,9 +67,9 @@ readonly class Manager
 
             // ⚡ Разделяем создание и обновление
             if ($isNew) {
-                $card = $this->cardService->create($cardModel);
+                $card = $this->cardService->createWithYaml($cardModel);
             } else {
-                $card = $this->cardService->update($card, $cardModel);
+                $card = $this->cardService->updateWithYaml($card, $cardModel);
             }
 
             $isSubmittedAndValid = true;

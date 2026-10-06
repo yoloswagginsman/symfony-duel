@@ -1,0 +1,8 @@
+lexik_jwt_authentication:
+    secret_key: '%env(resolve:JWT_SECRET_KEY)%'
+    public_key: '%env(resolve:JWT_PUBLIC_KEY)%'
+    pass_phrase: '%env(JWT_PASSPHRASE)%'
+    # JWT живёт недолго: отозвать его нельзя, поэтому обновляется через refresh-токен
+    token_ttl: 900   # 15 минут
+    # Игрок в токене — по id (claim «sub»), а не по email: данные токена читает любой (src/EventListener/JwtPayloadListener.php)
+    user_id_claim: sub

@@ -24,30 +24,16 @@ class CreateCardFormDto implements ToModelConvertibleInterface
 
         public ?string $description = null,
 
-        #[Assert\NotNull]
-        #[Assert\PositiveOrZero]
-        #[Assert\Range(
-            notInRangeMessage: 'Стоимость маны должна быть от {{ min }} до {{ max }}.',
-            min: 0,
-            max: 30
-        )]
+        // Тексты ошибок — ключи из translations/validators.ru.yaml
+        #[Assert\NotNull(message: 'card.mana.not_null')]
+        #[Assert\Range(notInRangeMessage: 'card.mana.range', min: 0, max: 30)]
         public ?int $manaCost = 0,
 
-        #[Assert\NotNull]
-        #[Assert\PositiveOrZero]
-        #[Assert\Range(
-            notInRangeMessage: 'Атака должна быть от {{ min }} до {{ max }}.',
-            min: 0,
-            max: 30
-        )]
+        #[Assert\NotNull(message: 'card.attack.not_null')]
+        #[Assert\Range(notInRangeMessage: 'card.attack.range', min: 0, max: 30)]
         public ?int $attack = null,
 
-        #[Assert\PositiveOrZero]
-        #[Assert\Range(
-            notInRangeMessage: 'Здоровье должно быть от {{ min }} до {{ max }}.',
-            min: 1,
-            max: 30
-        )]
+        #[Assert\Range(notInRangeMessage: 'card.health.range', min: 1, max: 30)]
         public ?int $health = 1,
 
         #[Assert\NotNull(message: 'Выберите тип карты.')]
@@ -69,8 +55,8 @@ class CreateCardFormDto implements ToModelConvertibleInterface
             maxSize: '5M',
             mimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
             detectCorrupted: true,
-            maxSizeMessage: 'Размер файла не должен превышать 5 МБ',
-            mimeTypesMessage: 'Загрузите изображение формата JPEG, PNG или WEBP'
+            maxSizeMessage: 'card.image.max_size',
+            mimeTypesMessage: 'card.image.mime_types',
         )]
         public ?UploadedFile $imageFile = null,
 
@@ -86,7 +72,7 @@ class CreateCardFormDto implements ToModelConvertibleInterface
             if ($item instanceof CardAbilityFormDto && $item->enabled && $item->ability !== null) {
                 $abilities[] = [
                     'ability' => $item->ability,
-                    'value'   => (int) $item->value,
+                    'value'   => $item->value, // null — способность без числового значения (не 0)
                 ];
             }
         }

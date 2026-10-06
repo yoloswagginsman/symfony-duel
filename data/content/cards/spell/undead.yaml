@@ -1,0 +1,12 @@
+cards:
+  - vendorCode: DUEL-SPE-UND-PROKLATIE-T-MY
+    name: 'Проклятие Тьмы'
+    description: 'Наносит урон всем врагам тёмной магией.'
+    manaCost: 4
+    attack: 4
+    race: undead
+    type: spell
+    rarity: epic
+    isActive: false
+    tags: []
+    abilities: [Poison, AoE_Damage]

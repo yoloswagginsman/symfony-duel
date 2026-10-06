@@ -1,0 +1,40 @@
+cards:
+  - vendorCode: DUEL-LAN-NEU-SOLNECNYJ-DEN
+    name: 'Солнечный день'
+    description: 'Ясное небо поднимает боевой дух: +1 к атаке существам на вашей половине поля.'
+    manaCost: 2
+    race: neutral
+    type: landscape
+    rarity: common
+    tags: []
+    abilities: [{ name: Sunny_Day, value: 1 }, { name: Duration, value: 3 }]
+
+  - vendorCode: DUEL-LAN-NEU-LES
+    name: Лес
+    description: 'Лес укрывает своих: +2 к здоровью эльфам и рождённым лесом на вашей половине поля.'
+    manaCost: 2
+    race: neutral
+    type: landscape
+    rarity: uncommon
+    tags: []
+    abilities: [{ name: Forest, value: 2 }]
+
+  - vendorCode: DUEL-LAN-NEU-TEMNYJ-DOZD
+    name: 'Тёмный дождь'
+    description: 'Ложится на половину поля противника: −1 к атаке его существам.'
+    manaCost: 3
+    race: neutral
+    type: landscape
+    rarity: rare
+    tags: []
+    abilities: [Hostile, { name: Dark_Rain, value: 1 }, { name: Duration, value: 3 }]
+
+  - vendorCode: DUEL-LAN-NEU-TUMAN
+    name: Туман
+    description: 'Прячет ваших существ на ход противника — их нельзя атаковать. Провокацию не спрятать.'
+    manaCost: 2
+    race: neutral
+    type: landscape
+    rarity: rare
+    tags: []
+    abilities: [Fog, { name: Duration, value: 1 }]

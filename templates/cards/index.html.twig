@@ -7,28 +7,19 @@
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('styles/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/torch.css') }}">
 {% endblock %}
 
 {% block body %}
-    <!-- НАВИГАЦИЯ -->
-    <nav class="main-nav">
-        <a href="{{ path('app_home') }}" class="nav-logo">
-            ⚔️ Symfony Duel
-        </a>
-        <div class="nav-links">
-            <a href="{{ path('app_home') }}">Главная</a>
-            <a href="{{ path('app_cards_index') }}" class="active">Коллекция</a>
-            <a href="{{ path('app_cards_new') }}" class="btn-create">✦ Создать</a>
-        </div>
-    </nav>
+    {% include '_partials/nav.html.twig' with {active: 'cards'} %}
 
     <div class="cards-section">
         <div class="section-header">
             <h1 class="section-title">
-                {% include 'cards/_torch.html.twig' with {side: 'left'} %}
+                {% include '_partials/torch.html.twig' with {side: 'left'} %}
                 ◈ Коллекция карт
                 <span class="badge">{{ cards|length }}</span>
-                {% include 'cards/_torch.html.twig' with {side: 'right'} %}
+                {% include '_partials/torch.html.twig' with {side: 'right'} %}
             </h1>
             <a href="{{ path('app_home') }}" class="section-link">← На главную</a>
         </div>
@@ -79,7 +70,9 @@
                 <div class="icon">⚔️</div>
                 <h3>Коллекция пуста</h3>
                 <p>Создайте первую карту для вашей дуэли!</p>
-                <a href="{{ path('app_cards_new') }}" class="btn-create">✦ Создать карту</a>
+                {% if is_granted('ROLE_CREATOR') %}
+                    <a href="{{ path('app_cards_new') }}" class="btn-create">✦ Создать карту</a>
+                {% endif %}
             </div>
         {% else %}
             <div class="cards-grid" id="cardsGrid">

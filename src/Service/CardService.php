@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Ability;
 use App\Entity\Card;
 use App\Model\CreateCardModel;
+use App\Service\Content\CardContentSynchronizer;
 use App\Repository\CardRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
@@ -16,7 +17,8 @@ readonly class CardService
         private CardRepository $cardRepository,
         private ImageUploader $imageUploader,
         private ValidatorInterface $validator,
-        private EntityManagerInterface $em,
+        private EntityManagerInterface $entityManager,
+        private CardContentSynchronizer $contentSynchronizer,
     ) {
     }
 
@@ -24,8 +26,9 @@ readonly class CardService
     {
         $this->validateModel($model);
 
-        return $this->em->wrapInTransaction(function () use ($model) {
+        return $this->entityManager->wrapInTransaction(function () use ($model) {
             $card = new Card();
+            $card->setVendorCode($model->vendorCode);
             $this->applyModelToEntity($card, $model);
 
             $this->cardRepository->create($card);
@@ -38,7 +41,7 @@ readonly class CardService
     {
         $this->validateModel($model);
 
-        return $this->em->wrapInTransaction(function () use ($card, $model) {
+        return $this->entityManager->wrapInTransaction(function () use ($card, $model) {
 
             // ⚡ Очищаем старые связи для корректной синхронизации при обновлении
             $card->clearAbilities();
@@ -48,6 +51,36 @@ readonly class CardService
 
             return $card;
         });
+    }
+
+    public function delete(Card $card): void
+    {
+        $this->entityManager->wrapInTransaction(fn () => $this->cardRepository->remove($card));
+
+        $imagePath = $card->getImagePath();
+        $this->imageUploader->remove($imagePath);
+    }
+
+    public function createWithYaml(CreateCardModel $model): Card
+    {
+        $card = $this->create($model);
+        $this->contentSynchronizer->save($card);
+
+        return $card;
+    }
+
+    public function updateWithYaml(Card $card, CreateCardModel $model): Card
+    {
+        $card = $this->update($card, $model);
+        $this->contentSynchronizer->save($card);
+
+        return $card;
+    }
+
+    public function deleteWithYaml(Card $card): void
+    {
+        $this->delete($card);
+        $this->contentSynchronizer->remove($card);
     }
 
     private function validateModel(CreateCardModel $model): void
