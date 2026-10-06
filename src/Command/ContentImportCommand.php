@@ -5,6 +5,7 @@ namespace App\Command;
 use App\DataContent\AbilityYaml;
 use App\DataContent\CardYaml;
 use App\DataContent\CardTypeYaml;
+use App\DataContent\DeckYaml;
 use App\DataContent\RaceYaml;
 use App\DataContent\RarityYaml;
 use App\DataContent\TagYaml;
@@ -57,8 +58,10 @@ final readonly class ContentImportCommand
             RarityYaml::class,
             TagYaml::class,
             AbilityYaml::class,
-            // Карты — последними
+            // Карты — после справочников
             CardYaml::class,
+            // Колоды — из карт
+            DeckYaml::class,
         ];
 
         $results = [];

@@ -1,0 +1,24 @@
+cards:
+  - vendorCode: DUEL-CRE-ELE-KAMENNYJ-GOLEM
+    name: 'Каменный Голем'
+    description: 'Непробиваемая каменная стена.'
+    manaCost: 4
+    attack: 1
+    health: 8
+    race: elementals
+    type: creature
+    rarity: common
+    tags: [taunt]
+    abilities: [Taunt]
+
+  - vendorCode: DUEL-CRE-ELE-ELEMENTAL-OGNA
+    name: 'Элементаль Огня'
+    description: 'Дух чистого пламени.'
+    manaCost: 4
+    attack: 5
+    health: 4
+    race: elementals
+    type: creature
+    rarity: uncommon
+    tags: [fire]
+    abilities: []

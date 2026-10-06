@@ -58,11 +58,23 @@ php bin/console doctrine:migrations:migrate
 ```bash
 php bin/console doctrine:fixtures:load
 ```
-3. Контент — справочники и карты из `data/content`:
+3. Ключи подписи JWT (в git не хранятся — `config/jwt/*.pem`):
+```bash
+php bin/console lexik:jwt:generate-keypair
+```
+4. Контент — справочники, карты и базовые колоды из `data/content`:
 ```bash
 php bin/console app:content:import --dry-run          # показать, что изменится
 php bin/console app:content:import                    # применить
 php bin/console app:content:import --delete-missing   # также удалить карты, которых нет в контенте (с картинками)
+```
+
+Тесты — на отдельной базе `cards_test` (рабочая база не трогается):
+```bash
+APP_ENV=test php bin/console doctrine:database:create --if-not-exists
+APP_ENV=test php bin/console doctrine:migrations:migrate -n
+APP_ENV=test php bin/console app:content:import
+php bin/phpunit
 ```
 
 Миграции при разработке (создать по изменениям сущностей):
@@ -74,6 +86,91 @@ php bin/console doctrine:migrations:diff
 Полезное (проверить структуру):
 ```bash
 php bin/console doctrine:schema:validate
+```
+
+## API и авторизация
+
+Сайт работает на сессии (вход через форму, кука, «Запомнить меня»).
+API (`/api/*`) — **stateless**: сессии нет, каждый запрос сам несёт токен. Токенов два вида:
+
+| | API-токен | JWT |
+|---|---|---|
+| Для чего | долгоживущий ключ для скриптов, ботов, интеграций | сессия игрока: игровой клиент, игровые партии в реальном времени |
+| Получить | `POST /api/tokens` `{"email", "password"}` | `POST /api/login` `{"email", "password"}` → `token` + `refresh_token` |
+| Передавать | `X-Api-Token: duel_…` | `Authorization: Bearer eyJ…` |
+| Срок | 30 дней | JWT — 15 минут, refresh-токен — 30 дней (одноразовый) |
+| Проверка | хеш токена ищется в таблице `api_tokens` | подпись ключом — **без обращения к базе** |
+| Отзыв | `DELETE /api/tokens/current` | истекает сам; новый — `POST /api/token/refresh` `{"refresh_token"}` |
+
+```bash
+# JWT: вход и запрос
+curl -X POST localhost:7777/api/login -H 'Content-Type: application/json' -d '{"email":"player@duel.ru","password":"password"}'
+curl localhost:7777/api/me -H 'Authorization: Bearer <token>'
+
+# API-токен
+curl -X POST localhost:7777/api/tokens -H 'Content-Type: application/json' -d '{"email":"creator@duel.ru","password":"password"}'
+curl localhost:7777/api/me -H 'X-Api-Token: duel_…'
+```
+
+### Зачем JWT
+JWT — основа игровых сессий. Партия будет идти в реальном времени (WebSocket / Mercure), а такой сервер
+работает отдельным процессом: у него нет доступа к PHP-сессии сайта, а ходить в базу на каждое сообщение — дорого.
+JWT проверяется только по подписи: сервер партии сразу знает id игрока и его роли.
+- ход игрока — запрос к API с JWT (`Authorization: Bearer …`);
+- состояние партии рассылается игрокам в реальном времени; доступ к каналу партии — тоже по JWT
+  (только участники этой партии).
+
+Короткий срок жизни JWT (15 минут) — потому что отозвать выданный JWT нельзя; клиент продлевает его refresh-токеном.
+
+### Партии через API (JWT)
+| Запрос | Что делает |
+|---|---|
+| `GET /api/decks` | колоды, которыми можно играть: базовые и свои |
+| `GET /api/games` | партии, к которым можно присоединиться (`waiting`), и свои незавершённые (`mine`) |
+| `POST /api/games` `{"deckId"}` | создать партию — ждёт второго игрока |
+| `POST /api/games/{id}/join` `{"deckId"}` | присоединиться — партия начинается, кто ходит первым — жребий |
+| `POST /api/games/computer` `{"deckId"}` | игра с компьютером — начинается сразу; после вашего хода компьютер играет свой в том же запросе |
+| `GET /api/games/{id}` | партия глазами игрока (только участникам) |
+| `GET /api/games/{id}/subscription` | подписка на события партии в реальном времени: `{"hub", "topic", "token"}` |
+| `POST /api/games/{id}/actions` | ход: `{"type": "play_card", "cardId", "cell", "targetId"}`, `{"type": "attack", "attackerId", "targetId"}`, `{"type": "capture_point", "creatureId", "point"}`, `{"type": "end_turn"}`, `{"type": "surrender"}` (можно и в чужой ход) |
+
+Ответ на ход — события (`events`) и новое состояние (`state`). Клиент видит только своё: рука и колода
+противника — числом карт, его существа под Туманом скрыты, взятые им карты — тоже.
+Ошибки — JSON `{"error"}`: 422 — ход не по правилам (партия не изменилась), 409 — партия уже идёт / изменилась
+другим запросом, 403 — чужая партия или колода.
+
+Состояние партии хранится в `games.state` (JSON) вместе с описаниями карт — правки контента не ломают идущие партии.
+
+**Время на ход** — 90 секунд (`app.game.turn_seconds` в `config/services.yaml`). Истекло — ход завершается за игрока.
+Фонового процесса нет: срок проверяется при любом обращении к партии (`GET /api/games/{id}`, ход); страница соперника
+сама запрашивает партию, когда отсчёт доходит до нуля. В ответе — `game.turnDeadline` и `game.serverTime` (для отсчёта в браузере).
+Время в коде — через Symfony Clock (`ClockInterface`): в тестах его «перематывают» (`mockTime()`, `$clock->sleep(91)`).
+
+### Реальное время (Mercure)
+После старта партии и каждого хода сервер публикует участникам событие через хаб Mercure
+(контейнер `mercure-card`, порт 3000). У каждого игрока свой приватный топик `/users/{id}/games/{gameId}`
+и своё содержимое — то же, что в ответе API: чужая рука и туман скрыты.
+```bash
+# токен подписчика — по JWT, только участникам партии
+curl localhost:7777/api/games/1/subscription -H 'Authorization: Bearer <jwt>'
+# поток событий (SSE): хаб — протокол Mercure 1.0, подписка параметром match
+curl -N 'http://localhost:3000/.well-known/mercure?match=/users/5/games/1' -H 'Authorization: Bearer <token>'
+```
+Хаб принимает только токены доверенного издателя: `MERCURE_JWT_ISSUER` (.env) = `MERCURE_TRUSTED_ISSUERS` (docker-compose.yml),
+ключ — `MERCURE_JWT_SECRET` = `MERCURE_*_JWT_KEY`. В `.env` — ключ для разработки; на сервере — свой, случайный (`.env.local`).
+Хаб недоступен — ход всё равно сохраняется, состояние можно получить через `GET /api/games/{id}`.
+
+## Механика игры
+Правила партии и способности карт — [docs/game-rules.md](docs/game-rules.md). Движок — `src/Game/`, тесты:
+```bash
+php bin/phpunit tests/Game
+```
+
+Компьютерный соперник (`src/Game/Ai/ComputerPlayer`) — жадный, на один ход вперёд: пробует каждый возможный ход
+через движок на копии партии и делает тот, после которого позиция лучше (фортификации, существа, точки).
+Правил не повторяет — новые способности учитывает сам. Баланс базовых колод — компьютер против компьютера:
+```bash
+php bin/console app:game:simulate --games=50
 ```
 
 ## Этапы:
@@ -179,9 +276,11 @@ php bin/console doctrine:schema:validate
 Каждый пользователь имеет разрешение на добавление своих карт в проект 
 через систему MR (новые yaml файл + особенности карт с механикой)
 
-Контент хранится в yaml-файлах в `data/content` (справочники и `cards.yaml`),
-и попадает в базу командой `app:content:import`. Карты, созданные или изменённые через интерфейс,
-автоматически записываются обратно в `data/content/cards.yaml` — их остаётся закоммитить
+Контент хранится в yaml-файлах в `data/content` (справочники, `decks.yaml` и папка `cards`)
+и попадает в базу командой `app:content:import`. Карты разложены по файлам `cards/<тип>/<раса>.yaml`:
+`cards/creature/elves.yaml`, `cards/spell/undead.yaml`, `cards/building/neutral.yaml`, `cards/landscape/neutral.yaml`…
+Импорт читает все файлы папки. Карты, созданные или изменённые через интерфейс, автоматически записываются
+в свой файл (сменили расу или тип — карта переедет) — их остаётся закоммитить
 (вместе с картинкой из `public/upload/cards`).
 (Необходимо реализовать автоматическую сборку json схемы для подсказок ide для удобства заполнения)
 

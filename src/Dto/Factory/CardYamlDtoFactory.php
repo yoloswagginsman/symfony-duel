@@ -11,7 +11,7 @@ use App\Repository\TagRepository;
 use App\Service\Content\ContentException;
 
 /**
- * Запись из data/content/cards.yaml → CardYamlDto: справочники ищутся по slug, способности — по имени.
+ * Запись из файла карт (data/content/cards/…) → CardYamlDto: справочники ищутся по slug, способности — по имени.
  */
 readonly class CardYamlDtoFactory
 {

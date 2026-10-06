@@ -13,7 +13,7 @@ use App\Entity\Tag;
 use App\Model\CreateCardModel;
 
 /**
- * Карта из data/content/cards.yaml. Справочники уже найдены по slug (это делает CardYamlDtoFactory) —
+ * Карта из контента (data/content/cards/<тип>/<раса>.yaml). Справочники уже найдены по slug (это делает CardYamlDtoFactory) —
  * как в CreateCardFormDto, где их находит форма. Проверка полей — у модели (CardService).
  *
  * @implements ToModelConvertibleInterface<CreateCardModel>
@@ -83,7 +83,7 @@ final readonly class CardYamlDto implements ToModelConvertibleInterface
     }
 
     /**
-     * Запись для cards.yaml: справочники — по slug, способности — по имени,
+     * Запись для файла карт: справочники — по slug, способности — по имени,
      * поля без значения не пишутся, способность без числа — просто имя.
      *
      * @return array<string, mixed>

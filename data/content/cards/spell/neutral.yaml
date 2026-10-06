@@ -1,0 +1,10 @@
+cards:
+  - vendorCode: DUEL-SPE-NEU-RAZVEAT
+    name: Развеять
+    description: 'Снимает ландшафт: с вашей половины поля или выбранный.'
+    manaCost: 1
+    race: neutral
+    type: spell
+    rarity: common
+    tags: []
+    abilities: [Dispel]

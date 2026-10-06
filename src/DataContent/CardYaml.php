@@ -16,7 +16,7 @@ use App\Service\Content\Output\ContentImportResult;
 use Symfony\Component\Validator\Exception\ValidationFailedException;
 
 /**
- * Карты из data/content/cards.yaml. Сопоставление с базой — по vendorCode.
+ * Карты из data/content/cards/<тип>/<раса>.yaml. Сопоставление с базой — по vendorCode.
  *
  * Карты сохраняются через CardService: он же проверяет модель. Если хоть одна карта
  * не прошла — раздел в ошибках, и ContentImporter откатывает его целиком.
@@ -42,62 +42,12 @@ readonly class CardYaml implements DataContentInterface, DeleteMissingInterface
 
     public function import(ContentImportResult $result): void
     {
-        $items = $this->storage->loadCards();
         $seenCodes = [];
         $seenNames = [];
 
-        foreach ($items as $position => $item) {
-            $label = sprintf('#%d «%s»', $position + 1, $item['name'] ?? '?');
-
-            try {
-                $dto = $this->dtoFactory->fromArray($item);
-            } catch (ContentException $e) {
-                $result->errors[] = sprintf('%s: %s', $label, $e->getMessage());
-                continue;
-            } catch (\TypeError) {
-                $result->errors[] = sprintf('%s: у поля неверный тип (число вместо строки или наоборот)', $label);
-                continue;
-            }
-
-            // Дубли в самом контенте — ошибка: непонятно, какая запись правильная
-            if (isset($seenCodes[$dto->vendorCode])) {
-                $result->errors[] = sprintf('%s: повторяется vendorCode %s', $label, $dto->vendorCode);
-                continue;
-            }
-            if (isset($seenNames[$dto->name])) {
-                $result->errors[] = sprintf('%s: повторяется название', $label);
-                continue;
-            }
-            $seenCodes[$dto->vendorCode] = true;
-            $seenNames[$dto->name] = true;
-
-            if ($dto->imagePath !== null && !is_file($this->uploadsDirectory . '/' . $dto->imagePath)) {
-                $result->warnings[] = sprintf('%s: нет файла картинки %s', $label, $dto->imagePath);
-            }
-
-            $card = $this->cardRepository->findOneBy(['vendorCode' => $dto->vendorCode]);
-            $record = sprintf('%s «%s»', $dto->vendorCode, $dto->name);
-
-            try {
-                if ($card === null) {
-                    $this->cardService->create($dto->toModel());
-                    $result->created[] = $record;
-                    continue;
-                }
-
-                $changes = $this->changeSetCalculator->calculate(
-                    CardYamlDto::fromCard($card)->toArray(),
-                    $dto->toArray(),
-                    ignore: ['vendorCode'],   // ключ записи
-                );
-                if ($changes !== []) {
-                    $this->cardService->update($card, $dto->toModel());
-                    $result->updated[$record] = $changes;
-                }
-            } catch (ValidationFailedException $e) {
-                foreach ($e->getViolations() as $violation) {
-                    $result->errors[] = sprintf('%s: %s — %s', $label, $violation->getPropertyPath(), $violation->getMessage());
-                }
+        foreach ($this->storage->loadCardFiles() as $file => $items) {
+            foreach ($items as $position => $item) {
+                $this->importCard($result, sprintf('%s #%d «%s»', $file, $position + 1, $item['name'] ?? '?'), $item, $seenCodes, $seenNames);
             }
         }
 
@@ -108,7 +58,7 @@ readonly class CardYaml implements DataContentInterface, DeleteMissingInterface
     }
 
     /**
-     * Удаляет карты, которых нет в cards.yaml, — с картинкой (CardService::delete).
+     * Удаляет карты, которых нет в контенте, — с картинкой (CardService::delete).
      */
     public function deleteMissing(ContentImportResult $result): void
     {
@@ -120,7 +70,66 @@ readonly class CardYaml implements DataContentInterface, DeleteMissingInterface
     }
 
     /**
-     * Карты в базе, артикулов которых нет в cards.yaml. Запись с ошибкой — не «нет в контенте»:
+     * @param array<string, mixed> $item
+     * @param array<string, true>  $seenCodes
+     * @param array<string, true>  $seenNames
+     */
+    private function importCard(ContentImportResult $result, string $label, array $item, array &$seenCodes, array &$seenNames): void
+    {
+        try {
+            $dto = $this->dtoFactory->fromArray($item);
+        } catch (ContentException $e) {
+            $result->errors[] = sprintf('%s: %s', $label, $e->getMessage());
+            return;
+        } catch (\TypeError) {
+            $result->errors[] = sprintf('%s: у поля неверный тип (число вместо строки или наоборот)', $label);
+            return;
+        }
+
+        // Дубли в самом контенте — ошибка: непонятно, какая запись правильная
+        if (isset($seenCodes[$dto->vendorCode])) {
+            $result->errors[] = sprintf('%s: повторяется vendorCode %s', $label, $dto->vendorCode);
+            return;
+        }
+        if (isset($seenNames[$dto->name])) {
+            $result->errors[] = sprintf('%s: повторяется название', $label);
+            return;
+        }
+        $seenCodes[$dto->vendorCode] = true;
+        $seenNames[$dto->name] = true;
+
+        if ($dto->imagePath !== null && !is_file($this->uploadsDirectory . '/' . $dto->imagePath)) {
+            $result->warnings[] = sprintf('%s: нет файла картинки %s', $label, $dto->imagePath);
+        }
+
+        $card = $this->cardRepository->findOneBy(['vendorCode' => $dto->vendorCode]);
+        $record = sprintf('%s «%s»', $dto->vendorCode, $dto->name);
+
+        try {
+            if ($card === null) {
+                $this->cardService->create($dto->toModel());
+                $result->created[] = $record;
+                return;
+            }
+
+            $changes = $this->changeSetCalculator->calculate(
+                CardYamlDto::fromCard($card)->toArray(),
+                $dto->toArray(),
+                ignore: ['vendorCode'],   // ключ записи
+            );
+            if ($changes !== []) {
+                $this->cardService->update($card, $dto->toModel());
+                $result->updated[$record] = $changes;
+            }
+        } catch (ValidationFailedException $e) {
+            foreach ($e->getViolations() as $violation) {
+                $result->errors[] = sprintf('%s: %s — %s', $label, $violation->getPropertyPath(), $violation->getMessage());
+            }
+        }
+    }
+
+    /**
+     * Карты в базе, артикулов которых нет в контенте. Запись с ошибкой — не «нет в контенте»:
      * сверяем по артикулам из файла, а не по успешно импортированным картам.
      *
      * @return list<Card>

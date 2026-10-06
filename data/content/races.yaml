@@ -26,3 +26,7 @@ races:
   - name: "Драконы"
     slug: "dragons"
     description: "Могучие создания"
+
+  - name: "Нейтральные"
+    slug: "neutral"
+    description: "Доступны любой фракции: постройки, ландшафты, общие заклинания"

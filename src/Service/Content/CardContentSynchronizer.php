@@ -6,8 +6,8 @@ use App\Dto\CardYamlDto;
 use App\Entity\Card;
 
 /**
- * Переносит карту, созданную, изменённую или удалённую через интерфейс, в контент (cards.yaml).
- * Вызывается из CardService::*WithYaml(). Запись ищется по vendorCode.
+ * Переносит карту, созданную, изменённую или удалённую через интерфейс, в контент (data/content/cards/).
+ * Вызывается из CardService::*WithYaml(). Запись ищется по vendorCode; в какой файл она ляжет — решает ContentStorage.
  */
 readonly class CardContentSynchronizer
 {

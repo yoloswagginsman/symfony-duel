@@ -1,0 +1,25 @@
+cards:
+  - vendorCode: DUEL-CRE-DRA-DREVNIJ-DRAKON
+    name: 'Древний Дракон'
+    description: 'Огнедышащий дракон, правящий небом.'
+    imagePath: drakony/drevnij-drakon.webp
+    manaCost: 9
+    attack: 8
+    health: 10
+    race: dragons
+    type: creature
+    rarity: legendary
+    tags: [dragon, fire, flying, legendary]
+    abilities: [Flying, AoE_Damage]
+
+  - vendorCode: DUEL-CRE-DRA-OGNENNYJ-ELEMENTAL
+    name: 'Огненный Элементаль'
+    description: 'Существо из чистого пламени.'
+    manaCost: 4
+    attack: 5
+    health: 3
+    race: dragons
+    type: creature
+    rarity: rare
+    tags: [fire]
+    abilities: []

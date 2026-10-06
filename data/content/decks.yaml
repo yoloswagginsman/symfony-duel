@@ -1,0 +1,42 @@
+# Базовые колоды. Правила (App\Game\GameRules): ровно 20 карт, одной карты — до 3 копий,
+# легендарной — 1, постройки в колоду не входят. card — vendorCode карты из data/content/cards/, count — копий.
+decks:
+  - slug: forest-guardians
+    name: 'Стражи леса'
+    description: 'Оборона: Провокация и щиты, лечение, Лес и Туман прячут своих.'
+    cards:
+      - { card: DUEL-CRE-ELV-EL-FIJSKIJ-LUCNIK, count: 3 }
+      - { card: DUEL-CRE-ANC-LESNOJ-DUH, count: 3 }
+      - { card: DUEL-CRE-ELV-LESNOJ-STRAZ, count: 3 }
+      - { card: DUEL-CRE-ELE-KAMENNYJ-GOLEM, count: 3 }
+      - { card: DUEL-CRE-ELE-ELEMENTAL-OGNA, count: 2 }
+      - { card: DUEL-LAN-NEU-LES, count: 3 }
+      - { card: DUEL-LAN-NEU-TUMAN, count: 2 }
+      - { card: DUEL-SPE-NEU-RAZVEAT, count: 1 }
+
+  - slug: horde-fury
+    name: 'Ярость орды'
+    description: 'Натиск: Рывок и ярость орков, яд нежити, Тёмный дождь на врага.'
+    cards:
+      - { card: DUEL-CRE-ORC-ORK-BERSERKER, count: 3 }
+      - { card: DUEL-CRE-UND-NEKROMANT, count: 3 }
+      - { card: DUEL-SPE-UND-PROKLATIE-T-MY, count: 2 }
+      - { card: DUEL-CRE-ELE-ELEMENTAL-OGNA, count: 3 }
+      - { card: DUEL-CRE-DRA-OGNENNYJ-ELEMENTAL, count: 3 }
+      - { card: DUEL-LAN-NEU-TEMNYJ-DOZD, count: 2 }
+      - { card: DUEL-LAN-NEU-SOLNECNYJ-DEN, count: 3 }
+      - { card: DUEL-SPE-NEU-RAZVEAT, count: 1 }
+
+  - slug: north-dragons
+    name: 'Север и драконы'
+    description: 'Контроль: паладины лечат, Молния чистит поле, Древний Дракон добивает.'
+    cards:
+      - { card: DUEL-CRE-DRA-DREVNIJ-DRAKON, count: 1 }
+      - { card: DUEL-CRE-DRA-PALADIN-SVETA, count: 3 }
+      - { card: DUEL-SPE-PEO-MOLNIA-NEBES, count: 2 }
+      - { card: DUEL-CRE-DRA-OGNENNYJ-ELEMENTAL, count: 3 }
+      - { card: DUEL-CRE-ELE-KAMENNYJ-GOLEM, count: 3 }
+      - { card: DUEL-CRE-ELV-EL-FIJSKIJ-LUCNIK, count: 3 }
+      - { card: DUEL-LAN-NEU-SOLNECNYJ-DEN, count: 2 }
+      - { card: DUEL-LAN-NEU-TUMAN, count: 1 }
+      - { card: DUEL-SPE-NEU-RAZVEAT, count: 2 }

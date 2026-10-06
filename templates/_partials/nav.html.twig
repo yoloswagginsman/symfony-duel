@@ -1,4 +1,4 @@
-{# templates/_partials/nav.html.twig — шапка сайта; active: 'home' | 'cards' #}
+{# templates/_partials/nav.html.twig — шапка сайта; active: 'home' | 'cards' | 'play' | 'decks' #}
 <nav class="main-nav">
     <a href="{{ path('app_home') }}" class="nav-logo">
         ⚔️ Symfony Duel
@@ -6,6 +6,10 @@
     <div class="nav-links">
         <a href="{{ path('app_home') }}"{% if active|default('') == 'home' %} class="active"{% endif %}>Главная</a>
         <a href="{{ path('app_cards_index') }}"{% if active|default('') == 'cards' %} class="active"{% endif %}>Коллекция</a>
+        {% if is_granted('ROLE_PLAYER') %}
+            <a href="{{ path('app_play') }}"{% if active|default('') == 'play' %} class="active"{% endif %}>⚔️ Играть</a>
+            <a href="{{ path('app_decks') }}"{% if active|default('') == 'decks' %} class="active"{% endif %}>🂠 Колоды</a>
+        {% endif %}
         {% if is_granted('ROLE_CREATOR') %}
             <a href="{{ path('app_cards_new') }}" class="btn-create">✦ Создать</a>
         {% endif %}

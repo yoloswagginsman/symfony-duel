@@ -9,6 +9,11 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+        # Для JWT: в токене id игрока (claim «sub»), а не email
+        app_user_by_id_provider:
+            entity:
+                class: App\Entity\User
+                property: id
 
     # Администратор ⊃ Создатель ⊃ Игрок
     role_hierarchy:
@@ -20,6 +25,44 @@ security:
             # Ensure dev tools and static assets are always allowed
             pattern: ^/(_profiler|_wdt|assets|build)/
             security: false
+        # Выдача API-токена: POST /api/tokens {email, password}
+        api_token_issue:
+            pattern: ^/api/tokens$
+            methods: [POST]
+            stateless: true
+            provider: app_user_provider
+            json_login:
+                check_path: api_tokens_issue
+                username_path: email
+                password_path: password
+                success_handler: App\Security\ApiTokenIssueHandler
+
+        # API без сессии: каждый запрос несёт токен сам
+        api:
+            pattern: ^/api
+            stateless: true
+            provider: app_user_provider
+            # Вход для игрока: POST /api/login {email, password} → JWT + refresh-токен
+            json_login:
+                check_path: api_login
+                username_path: email
+                password_path: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            # Authorization: Bearer <JWT>
+            jwt:
+                provider: app_user_by_id_provider
+            # POST /api/token/refresh {refresh_token} → новый JWT
+            refresh_jwt:
+                check_path: api_token_refresh
+            # X-Api-Token: duel_…
+            access_token:
+                token_handler: App\Security\ApiTokenHandler
+                token_extractors: app.security.api_token_extractor
+                failure_handler: App\Security\ApiTokenFailureHandler
+            # Без токена — JSON 401 от JWT (а не HTML-страница)
+            entry_point: jwt
+
         main:
             lazy: true
             provider: app_user_provider
@@ -43,7 +86,9 @@ security:
                 path: /
 
     # Права на карты проверяются атрибутом #[IsGranted] в контроллерах
-    access_control: []
+    access_control:
+        - { path: ^/api/(tokens|login|token/refresh)$, methods: [POST], roles: PUBLIC_ACCESS }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:

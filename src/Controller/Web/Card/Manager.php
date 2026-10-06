@@ -22,7 +22,7 @@ readonly class Manager
     }
 
     /**
-     * Удаляет карту (с картинкой и записью в cards.yaml), если CSRF-токен из формы удаления верный.
+     * Удаляет карту (с картинкой и записью в контенте), если CSRF-токен из формы удаления верный.
      */
     public function delete(Request $request, Card $card): void
     {
