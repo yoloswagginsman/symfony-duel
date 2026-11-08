@@ -23,14 +23,16 @@ readonly class CreateCardModel
 
         public ?string $description = null,
 
-        #[Assert\NotNull]
-        #[Assert\PositiveOrZero]
+        // Диапазоны — те же, что в CreateCardFormDto: модель проверяется при любом источнике (форма, импорт контента)
+        #[Assert\NotNull(message: 'card.mana.not_null')]
+        #[Assert\Range(notInRangeMessage: 'card.mana.range', min: 0, max: 30)]
         public ?int $manaCost = 0,
 
-        #[Assert\PositiveOrZero]
+        // null — у заклинаний
+        #[Assert\Range(notInRangeMessage: 'card.attack.range', min: 0, max: 30)]
         public ?int $attack = null,
 
-        #[Assert\PositiveOrZero]
+        #[Assert\Range(notInRangeMessage: 'card.health.range', min: 1, max: 30)]
         public ?int $health = null,
 
         public ?string $imagePath = null,
@@ -51,6 +53,10 @@ readonly class CreateCardModel
         public Collection|array $tags = [],
 
         public Collection|array $abilities = [],
+
+        // Задаётся только из фикстур, чтобы артикул не менялся при перезагрузке.
+        // Если null — артикул сгенерирует CardVendorCodeListener.
+        public ?string $vendorCode = null,
     ) {
     }
 }

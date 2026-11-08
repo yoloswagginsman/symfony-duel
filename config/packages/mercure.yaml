@@ -1,0 +1,17 @@
+mercure:
+    hubs:
+        default:
+            # Приложение публикует по внутреннему адресу (сеть Docker), игроки подписываются по публичному
+            url: '%env(default::MERCURE_URL)%'
+            public_url: '%env(default::MERCURE_PUBLIC_URL)%'
+            # Хаб dunglas/mercure 2.11+ — протокол 1.0: токены по RFC 9068 (iss, sub, client_id, aud),
+            # подписка — ?match=<топик>. aud — public_url (у хаба закреплён тем же resource_identifier).
+            protocol_version: '1.0'
+            jwt:
+                secret: '%env(MERCURE_JWT_SECRET)%'
+                publish: '*'
+                claims:
+                    # Хаб принимает токены только от доверенного издателя (MERCURE_TRUSTED_ISSUERS у хаба)
+                    iss: '%env(MERCURE_JWT_ISSUER)%'
+                    sub: 'symfony-duel'
+                    client_id: 'symfony-duel'

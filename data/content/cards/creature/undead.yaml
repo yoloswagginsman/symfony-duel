@@ -1,0 +1,12 @@
+cards:
+  - vendorCode: DUEL-CRE-UND-NEKROMANT
+    name: Некромант
+    description: 'Повелитель мёртвых, поднимающий павших.'
+    manaCost: 5
+    attack: 2
+    health: 5
+    race: undead
+    type: creature
+    rarity: rare
+    tags: []
+    abilities: [Poison]

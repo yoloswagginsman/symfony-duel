@@ -1,0 +1,1749 @@
+/* assets/styles/board.css — поле партии (рисует assets/controllers/game_controller.js) */
+
+/* Атрибут hidden должен прятать всегда: иначе display: flex у элемента его перебивает
+   (так «застывало» окно «Соперник разыгрывает») */
+.board [hidden] {
+    display: none !important;
+}
+
+.board {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px 16px 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.board-status {
+    margin-left: auto;
+    color: #f0d8a0;
+    font-family: 'Cinzel', serif;
+}
+
+/* ─── Половины поля ──────────────────────────── */
+
+.board-side {
+    padding: 14px;
+    border: 1px solid rgba(180, 140, 100, 0.12);
+    border-radius: 8px;
+    background: rgba(20, 12, 15, 0.45);
+}
+
+.board-side--opponent {
+    background: rgba(40, 14, 14, 0.35);
+}
+
+.side {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 12px;
+}
+
+.side-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.badge-stat {
+    padding: 4px 10px;
+    border-radius: 12px;
+    background: rgba(180, 140, 100, 0.1);
+    color: #e8dcc8;
+    font-size: 14px;
+}
+
+.fortification {
+    font-size: 16px;
+    color: #f0d8a0;
+    border: 1px solid transparent;
+}
+
+.cell {
+    min-height: 150px;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+}
+
+.cell--empty {
+    border: 1px dashed rgba(180, 140, 100, 0.18);
+    border-radius: 6px;
+}
+
+/* ─── Точки сопряжения ───────────────────────── */
+
+.board-points {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.point {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid rgba(240, 216, 160, 0.15);
+    border-radius: 8px;
+    background: rgba(30, 24, 12, 0.4);
+    align-items: stretch;
+}
+
+.point > .g-card:last-child,
+.point > .placeholder {
+    flex: 1;
+}
+
+.placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60px;
+    padding: 8px;
+    color: #807060;
+    font-size: 13px;
+    border: 1px dashed rgba(180, 140, 100, 0.15);
+    border-radius: 6px;
+    text-align: center;
+}
+
+/* ─── Карта ──────────────────────────────────── */
+
+.g-card {
+    position: relative;
+    width: 100%;
+    min-height: 150px;
+    padding: 26px 8px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 4px;
+    color: #f5ead6;
+    font: inherit;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid rgba(180, 140, 100, 0.3);
+    border-radius: 8px;
+    background-color: #241820;
+    background-size: cover;
+    background-position: center;
+    box-shadow: inset 0 -70px 50px -20px rgba(10, 6, 8, 0.9);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.g-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(240, 216, 160, 0.6);
+}
+
+.g-card:focus-visible {
+    outline: 2px solid #f0d8a0;
+    outline-offset: 2px;
+}
+
+.g-card--spell { background-color: #1c2030; }
+.g-card--landscape { background-color: #18281c; }
+.g-card--item { background-color: #2a2018; border-color: rgba(200, 160, 90, 0.45); }
+.g-card--building { background-color: #2a2414; cursor: default; }
+
+.g-card--small {
+    min-height: 70px;
+    width: 120px;
+    padding: 22px 6px 6px;
+    font-size: 12px;
+}
+
+.g-card-name {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    line-height: 1.2;
+    text-shadow: 0 1px 2px #000;
+}
+
+.g-card-mana {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    min-width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #2a4a8a;
+    color: #fff;
+    font-size: 13px;
+    line-height: 22px;
+}
+
+.g-card-keywords {
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    font-size: 14px;
+}
+
+.g-card-attack,
+.g-card-health {
+    position: absolute;
+    bottom: 4px;
+    min-width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-weight: bold;
+    line-height: 24px;
+    color: #fff;
+}
+
+.g-card-attack { left: 4px; background: #8a5a1a; }
+.g-card-health { right: 4px; background: #8a1a1a; }
+
+.g-card.is-selected {
+    border-color: #f0d8a0;
+    box-shadow: 0 0 0 2px #f0d8a0, 0 0 22px rgba(240, 216, 160, 0.45), inset 0 -70px 50px -20px rgba(10, 6, 8, 0.9);
+    transform: translateY(-6px);
+}
+
+.g-card.is-disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.g-card.is-exhausted {
+    filter: grayscale(0.7) brightness(0.75);
+}
+
+/* Куда можно кликнуть при выбранной карте/атакующем */
+.is-target {
+    cursor: pointer;
+    border-color: rgba(120, 220, 120, 0.6) !important;
+    box-shadow: 0 0 14px rgba(120, 220, 120, 0.25);
+}
+
+/* ─── Управление, рука, журнал ───────────────── */
+
+.board-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.board-hint {
+    flex: 1;
+    color: #c8b8a0;
+    font-style: italic;
+    min-width: 200px;
+}
+
+.board-hand {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    padding: 12px;
+    border-top: 1px solid rgba(180, 140, 100, 0.15);
+}
+
+.board-log {
+    color: #a09080;
+    font-size: 13px;
+}
+
+.board-log-title {
+    color: #c8b8a0;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.board-log ol {
+    list-style: none;
+    max-height: 220px;
+    overflow-y: auto;
+    padding-top: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.board-toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: min(560px, calc(100% - 32px));
+    padding: 12px 20px;
+    background: #2a1414;
+    border: 1px solid rgba(217, 74, 74, 0.5);
+    border-radius: 6px;
+    color: #f0c0c0;
+    z-index: 50;
+}
+
+@media (max-width: 700px) {
+    .side-board { grid-template-columns: repeat(2, 1fr); }
+    .board-points { grid-template-columns: 1fr; }
+    .cell, .g-card { min-height: 120px; }
+    .board-status { margin-left: 0; width: 100%; }
+}
+
+/* ─── Время хода ─────────────────────────────── */
+
+.board-timer {
+    font-family: 'Cinzel', serif;
+    color: #c8b8a0;
+    min-width: 64px;
+}
+
+.board-timer.is-urgent {
+    color: #f08080;
+    animation: timerUrgent 1s ease-in-out infinite;
+}
+
+@keyframes timerUrgent {
+    50% { opacity: 0.5; }
+}
+
+/* ─── Анимации событий ───────────────────────── */
+
+.fortification {
+    position: relative;
+}
+
+.g-card[draggable="true"] {
+    cursor: grab;
+}
+
+.float-number {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    z-index: 5;
+    transform: translateX(-50%);
+    font-family: 'Cinzel', serif;
+    font-size: 26px;
+    font-weight: 900;
+    pointer-events: none;
+    text-shadow: 0 2px 4px #000;
+    animation: floatUp 1.2s ease-out forwards;
+}
+
+.float-number--damage { color: #ff6b5b; }
+.float-number--heal { color: #7be07b; }
+
+@keyframes floatUp {
+    0% { opacity: 0; transform: translate(-50%, 10px) scale(0.7); }
+    15% { opacity: 1; transform: translate(-50%, 0) scale(1.15); }
+    100% { opacity: 0; transform: translate(-50%, -40px) scale(1); }
+}
+
+.is-hit {
+    animation: hit 0.4s ease;
+}
+
+@keyframes hit {
+    20% { transform: translateX(-5px); filter: brightness(1.6) saturate(1.5); }
+    40% { transform: translateX(5px); }
+    60% { transform: translateX(-3px); }
+}
+
+.is-healed {
+    box-shadow: 0 0 22px rgba(120, 220, 120, 0.6);
+}
+
+.is-attacking {
+    animation: attack 0.45s ease;
+}
+
+@keyframes attack {
+    40% { transform: translateY(-14px) scale(1.06); }
+}
+
+.is-arriving {
+    animation: arrive 0.5s ease-out;
+}
+
+@keyframes arrive {
+    0% { opacity: 0; transform: scale(0.8) translateY(10px); }
+}
+
+.is-dying {
+    transition: opacity 0.45s ease, transform 0.45s ease, filter 0.45s ease;
+    opacity: 0;
+    transform: scale(0.85) rotate(-4deg);
+    filter: grayscale(1) brightness(0.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .float-number, .is-hit, .is-attacking, .is-arriving, .board-timer.is-urgent {
+        animation: none;
+    }
+    .is-dying {
+        transition: none;
+    }
+}
+
+/* ─── Режим игры: своя панель вместо меню, игровой курсор ── */
+
+/* Курсоры нарисованы в SVG: золотая стрелка и меч (когда выбрана цель атаки). Точка клика — остриё (2 2) */
+.board {
+    --cursor-pointer: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Cpolygon points='3,2 3,25 9,19 13,29 17,27 13,18 21,18' fill='%23f0d8a0' stroke='%232a1a0f' stroke-width='2' stroke-linejoin='round'/%3E%3Cpolygon points='5,7 5,19 8,16 7,9' fill='%23fff6dc' opacity='.6'/%3E%3C/svg%3E") 3 2, default;
+    --cursor-sword: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32'%3E%3Cpolygon points='2,2 9,3 22,16 16,22 3,9' fill='%23dfe3ea' stroke='%231a1418' stroke-width='1.5' stroke-linejoin='round'/%3E%3Cline x1='4' y1='4' x2='18' y2='18' stroke='%239aa3b2' stroke-width='1'/%3E%3Cpolygon points='13,25 25,13 27,15 15,27' fill='%23c9a040' stroke='%231a1418' stroke-width='1.5'/%3E%3Cline x1='21' y1='21' x2='27' y2='27' stroke='%235a3a1a' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='28.5' cy='28.5' r='2.2' fill='%23c9a040' stroke='%231a1418'/%3E%3C/svg%3E") 2 2, crosshair;
+    position: relative;
+    cursor: var(--cursor-pointer);
+}
+
+.board [data-pick],
+.board button,
+.board a {
+    cursor: var(--cursor-pointer);
+}
+
+.board.is-aiming,
+.board.is-aiming [data-pick] {
+    cursor: var(--cursor-sword);
+}
+
+.board .is-disabled {
+    cursor: not-allowed;
+}
+
+.board:fullscreen {
+    max-width: none;
+    overflow-y: auto;
+    background: #0f0a12;
+    padding: 16px 24px;
+}
+
+.board-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 8px 14px;
+    border: 1px solid rgba(180, 140, 100, 0.12);
+    border-radius: 8px;
+    background: rgba(10, 6, 8, 0.6);
+}
+
+.board-bar-link {
+    color: #a09080;
+    text-decoration: none;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+}
+
+.board-bar-link:hover {
+    color: #f0d8a0;
+}
+
+.board-bar-title {
+    font-family: 'Cinzel', serif;
+    color: #807060;
+    font-size: 14px;
+}
+
+.board-bar-button {
+    padding: 4px 10px;
+    color: #f0d8a0;
+    font-size: 18px;
+    background: transparent;
+    border: 1px solid rgba(180, 140, 100, 0.25);
+    border-radius: 4px;
+}
+
+/* ─── Стороны: кто есть кто и чей ход ────────── */
+
+.side-label {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    font-family: 'Cinzel', serif;
+}
+
+.side-label-who {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.board-side--me .side-label-who { color: #7fb0ff; }
+.board-side--opponent .side-label-who { color: #ff8a7a; }
+
+.side-label-name {
+    color: #e8dcc8;
+    font-size: 16px;
+}
+
+.side-label-turn {
+    margin-left: auto;
+    padding: 1px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    color: #1a1014;
+    background: #f0d8a0;
+}
+
+.board-side--me {
+    border-color: rgba(100, 150, 255, 0.25);
+}
+
+.board-side--opponent {
+    border-color: rgba(255, 110, 90, 0.25);
+}
+
+.board-side.is-active {
+    box-shadow: 0 0 0 1px rgba(240, 216, 160, 0.45), 0 0 26px rgba(240, 216, 160, 0.12);
+}
+
+.point--mine { border-color: rgba(100, 150, 255, 0.4); }
+.point--enemy { border-color: rgba(255, 110, 90, 0.4); }
+
+/* Готово атаковать — мягкое зелёное свечение; устало — «💤» */
+.g-card.is-ready {
+    border-color: rgba(120, 220, 120, 0.7);
+    box-shadow: 0 0 14px rgba(120, 220, 120, 0.35), inset 0 -70px 50px -20px rgba(10, 6, 8, 0.9);
+}
+
+.g-card-sleep {
+    position: absolute;
+    top: 30px;
+    right: 6px;
+    font-size: 14px;
+    opacity: 0.85;
+}
+
+.g-card.is-target {
+    border-color: rgba(255, 110, 90, 0.8);
+    box-shadow: 0 0 16px rgba(255, 110, 90, 0.35), inset 0 -70px 50px -20px rgba(10, 6, 8, 0.9);
+}
+
+.board.is-playing .board-hand,
+.board.is-playing .side-board {
+    pointer-events: none;
+}
+
+/* ─── Стрелки ────────────────────────────────── */
+
+.board-arrows {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: visible;
+    z-index: 20;
+}
+
+.arrow {
+    fill: none;
+    stroke-width: 6;
+    stroke-linecap: round;
+    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.7));
+}
+
+.arrow--attack {
+    stroke: #ff5a4a;
+    stroke-dasharray: 1200;
+    stroke-dashoffset: 1200;
+    animation: arrowDraw 0.35s ease-out forwards;
+}
+
+.arrow--spell {
+    stroke: #8ab4ff;
+    stroke-dasharray: 1200;
+    stroke-dashoffset: 1200;
+    animation: arrowDraw 0.35s ease-out forwards;
+}
+
+.arrow--aim {
+    stroke: #f0d8a0;
+    stroke-width: 4;
+    stroke-dasharray: 10 8;
+    opacity: 0.85;
+}
+
+@keyframes arrowDraw {
+    to { stroke-dashoffset: 0; }
+}
+
+/* ─── Карта соперника и «Ваш ход!» ───────────── */
+
+.board-reveal {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    z-index: 30;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 22px;
+    background: rgba(10, 6, 8, 0.88);
+    border: 1px solid rgba(255, 110, 90, 0.5);
+    border-radius: 10px;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.7);
+    animation: reveal 0.15s ease-out;
+}
+
+@keyframes reveal {
+    from { transform: translate(-50%, -40%) scale(0.9); }
+}
+
+.board-reveal .g-card {
+    width: 190px;
+    min-height: 260px;
+    font-size: 16px;
+}
+
+.reveal-caption {
+    font-family: 'Cinzel', serif;
+    color: #ff8a7a;
+}
+
+.board-banner {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    z-index: 40;
+    transform: translate(-50%, -50%);
+    padding: 14px 40px;
+    font-family: 'Cinzel', serif;
+    font-size: 34px;
+    color: #f0d8a0;
+    text-shadow: 0 2px 10px #000;
+    background: rgba(10, 6, 8, 0.8);
+    border: 1px solid rgba(240, 216, 160, 0.5);
+    border-radius: 10px;
+    pointer-events: none;
+}
+
+.board-banner.is-shown {
+    animation: banner 1.3s ease forwards;
+}
+
+@keyframes banner {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+    20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    75% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* ─── Журнал: стороны цветом, ходы заголовками ── */
+
+.board-log .log-turn {
+    margin-top: 6px;
+    color: #f0d8a0;
+    font-family: 'Cinzel', serif;
+}
+
+.board-log .log-me { color: #9ec0ff; }
+.board-log .log-opponent { color: #ffaaa0; }
+
+@media (prefers-reduced-motion: reduce) {
+    .arrow--attack, .arrow--spell, .board-reveal, .board-banner.is-shown {
+        animation: none;
+        stroke-dashoffset: 0;
+    }
+}
+
+/* ═══ Атмосфера: каменный стол при свете факелов ═══ */
+
+.board {
+    background:
+        radial-gradient(ellipse 60% 45% at 50% 50%, rgba(120, 80, 40, 0.16), transparent 70%),
+        radial-gradient(circle at 0% 0%, rgba(255, 140, 50, 0.12), transparent 28%),
+        radial-gradient(circle at 100% 0%, rgba(255, 140, 50, 0.12), transparent 28%),
+        /* Камень: неровные пятна света и тени, без линий */
+        radial-gradient(ellipse 30% 22% at 18% 72%, rgba(255, 220, 180, 0.025), transparent 70%),
+        radial-gradient(ellipse 26% 30% at 78% 30%, rgba(255, 220, 180, 0.03), transparent 70%),
+        radial-gradient(ellipse 40% 25% at 60% 85%, rgba(0, 0, 0, 0.25), transparent 70%),
+        radial-gradient(ellipse 35% 28% at 30% 20%, rgba(0, 0, 0, 0.2), transparent 70%),
+        linear-gradient(180deg, #19111a, #120c11 50%, #19111a);
+    box-shadow: inset 0 0 160px rgba(0, 0, 0, 0.85);
+}
+
+/* Половины поля — «земля» своего цвета */
+.board-side--opponent {
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(160, 50, 40, 0.18), transparent 70%),
+        rgba(30, 12, 14, 0.55);
+}
+
+.board-side--me {
+    background:
+        radial-gradient(ellipse at 50% 100%, rgba(50, 90, 170, 0.18), transparent 70%),
+        rgba(12, 16, 30, 0.55);
+}
+
+/* Точки сопряжения — на рунной линии посередине */
+.board-points {
+    position: relative;
+}
+
+.board-points::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(240, 200, 120, 0.55) 20%, rgba(255, 220, 150, 0.8) 50%, rgba(240, 200, 120, 0.55) 80%, transparent);
+    box-shadow: 0 0 14px rgba(255, 190, 90, 0.55);
+    animation: runeGlow 4s ease-in-out infinite;
+}
+
+.point {
+    position: relative;
+    background: radial-gradient(ellipse at center, rgba(90, 70, 30, 0.55), rgba(25, 18, 10, 0.9));
+    box-shadow: 0 0 18px rgba(255, 190, 90, 0.15);
+}
+
+.point--mine { box-shadow: 0 0 22px rgba(100, 150, 255, 0.35); }
+.point--enemy { box-shadow: 0 0 22px rgba(255, 110, 90, 0.35); }
+
+@keyframes runeGlow {
+    50% { opacity: 0.55; }
+}
+
+/* ═══ Игроки в боковой панели ═══ */
+
+.hero {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(180, 140, 100, 0.18);
+    background: rgba(10, 6, 8, 0.55);
+    transition: box-shadow 0.3s ease;
+}
+
+.hero--opponent { border-color: rgba(255, 110, 90, 0.3); }
+.hero--me { border-color: rgba(100, 150, 255, 0.3); }
+
+.hero.is-active {
+    box-shadow: 0 0 0 1px rgba(240, 216, 160, 0.55), 0 0 24px rgba(240, 216, 160, 0.15);
+}
+
+.hero-body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.hero .side-label {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 10px;
+}
+
+.hero .side-label-turn {
+    margin-left: 0;
+}
+
+.hero--opponent .side-label-who { color: #ff8a7a; }
+.hero--me .side-label-who { color: #7fb0ff; }
+
+.hero-fortification {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(240, 216, 160, 0.25);
+    background: linear-gradient(180deg, rgba(70, 50, 30, 0.6), rgba(30, 20, 12, 0.8));
+}
+
+.fortification-icon { font-size: 26px; }
+
+.fortification-value {
+    font-family: 'Cinzel', serif;
+    font-size: 30px;
+    font-weight: 900;
+    color: #f0d8a0;
+    text-shadow: 0 2px 6px #000;
+}
+
+.fortification.is-target {
+    border-color: rgba(255, 110, 90, 0.85);
+    box-shadow: 0 0 18px rgba(255, 110, 90, 0.4);
+}
+
+.hero-mana {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+}
+
+.mana-crystal {
+    width: 14px;
+    height: 14px;
+    transform: rotate(45deg);
+    border: 1px solid rgba(120, 170, 255, 0.6);
+    background: rgba(20, 30, 60, 0.6);
+}
+
+.mana-crystal.is-full {
+    background: linear-gradient(135deg, #a8d0ff, #2a5ad0);
+    box-shadow: 0 0 6px rgba(100, 160, 255, 0.7);
+}
+
+.mana-crystal.is-bonus {
+    border-color: rgba(150, 255, 200, 0.8);
+}
+
+.hero-mana-text {
+    margin-left: 6px;
+    color: #a8c8ff;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+}
+
+.hero-counts {
+    display: flex;
+    gap: 6px;
+}
+
+/* ═══ Подробности карты при наведении ═══ */
+
+.card-detail {
+    position: fixed;
+    z-index: 35;
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(180, 140, 100, 0.45);
+    background: rgba(14, 9, 12, 0.97);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.75);
+    pointer-events: none;
+}
+
+.card-detail[data-rarity="legendary"] { border-color: rgba(240, 180, 60, 0.85); }
+.card-detail[data-rarity="epic"] { border-color: rgba(170, 100, 230, 0.75); }
+.card-detail[data-rarity="rare"] { border-color: rgba(80, 140, 230, 0.75); }
+
+.card-detail-image {
+    height: 150px;
+    border-radius: 6px;
+    background-size: cover;
+    background-position: center;
+}
+
+.card-detail-name {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    color: #f0d8a0;
+}
+
+.card-detail-kind {
+    color: #a09080;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+.card-detail-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.card-detail-stats .stat {
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 13px;
+    background: rgba(180, 140, 100, 0.12);
+}
+
+.stat--mana { color: #a8c8ff; }
+.stat--attack { color: #f0b070; }
+.stat--health { color: #ff9a8a; }
+
+.card-detail-abilities {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.card-detail-abilities li {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.card-detail-ability {
+    color: #f0d8a0;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.card-detail-ability-text {
+    color: #c8b8a0;
+    font-size: 13px;
+}
+
+.card-detail-description {
+    color: #a09080;
+    font-size: 13px;
+    font-style: italic;
+}
+
+.card-detail-status {
+    color: #9ad89a;
+    font-size: 13px;
+}
+
+/* ═══ Конец партии ═══ */
+
+.board-result {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(5, 3, 5, 0.72);
+    backdrop-filter: blur(2px);
+}
+
+.board-result-box {
+    min-width: min(420px, calc(100vw - 32px));
+    padding: 30px 34px;
+    text-align: center;
+    border-radius: 12px;
+    border: 1px solid rgba(217, 74, 74, 0.5);
+    background: linear-gradient(180deg, #241418, #120a0d);
+    box-shadow: 0 20px 70px rgba(0, 0, 0, 0.85);
+    animation: reveal 0.25s ease-out;
+}
+
+.board-result.is-victory .board-result-box {
+    border-color: rgba(240, 200, 100, 0.7);
+    background: linear-gradient(180deg, #2a2112, #120d08);
+    box-shadow: 0 0 60px rgba(240, 190, 90, 0.25), 0 20px 70px rgba(0, 0, 0, 0.85);
+}
+
+.board-result-title {
+    font-family: 'Cinzel', serif;
+    font-size: 40px;
+    color: #e8a0a0;
+}
+
+.board-result.is-victory .board-result-title {
+    color: #f0d8a0;
+    text-shadow: 0 0 20px rgba(240, 190, 90, 0.5);
+}
+
+.board-result-reason {
+    margin: 6px 0 18px;
+    color: #c8b8a0;
+}
+
+.board-result-stats {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 6px 18px;
+    margin: 0 auto 22px;
+    max-width: 320px;
+    text-align: left;
+    color: #a09080;
+}
+
+.board-result-stats dd {
+    color: #f0d8a0;
+    text-align: right;
+    font-family: 'Cinzel', serif;
+}
+
+.board-result-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* ═══ Боковые панели ═══ */
+
+.board-panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.board-panel-torch {
+    display: flex;
+    justify-content: center;
+    padding-top: 14px;
+}
+
+.board-panel-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.board-panel--right .board-timer {
+    font-size: 28px;
+    text-align: center;
+}
+
+.board-panel--right .board-status {
+    margin: 0;
+    text-align: center;
+    font-size: 15px;
+}
+
+.board-panel--right .board-controls {
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.board-end-turn {
+    padding: 22px 10px;
+    font-size: 18px;
+    box-shadow: 0 0 22px rgba(240, 180, 100, 0.15);
+}
+
+.board-end-turn {
+    position: relative;
+}
+
+.board-end-turn:not(:disabled)::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: 0 0 30px rgba(240, 180, 100, 0.5);
+    pointer-events: none;
+    will-change: opacity;
+    animation: auraPulse 2.5s ease-in-out infinite;
+}
+
+.board-surrender {
+    margin-top: auto;
+}
+
+/* ═══ Большой экран: три колонки, всё в одном экране, рука — внизу веером ═══
+   Размер карты — от высоты окна (--card-h), всё остальное — от него.
+   На телефоне и в низком окне — обычная прокрутка (правила выше). */
+
+@media (min-width: 1000px) and (min-height: 620px) {
+    .content-wrapper:has(> .board) {
+        max-width: none;
+        padding: 0;
+    }
+
+    body:has(.board) {
+        overflow: hidden;
+    }
+
+    .board {
+        --card-h: clamp(110px, 19.5vh, 230px);
+        --card-w: calc(var(--card-h) * 0.74);
+        --hand-h: calc(var(--card-h) * 1.32);
+        --hand-peek: calc(var(--card-h) * 1.12);
+        --panel-w: clamp(210px, 17vw, 270px);
+
+        max-width: none;
+        height: 100dvh;
+        margin: 0;
+        padding: 12px 16px;
+        display: grid;
+        grid-template-columns: var(--panel-w) minmax(0, 1fr) var(--panel-w);
+        grid-template-rows: minmax(0, 1fr);
+        gap: 16px;
+        overflow: hidden;
+    }
+
+    .board-panel {
+        min-height: 0;
+        padding: 0 4px;
+    }
+
+    /* Журнал занимает место между игроками и прокручивается сам */
+    .board-panel--left .board-log {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .board-panel--left .board-log ol {
+        flex: 1;
+        min-height: 0;
+        max-height: none;
+        overflow-y: auto;
+        padding-right: 6px;
+    }
+
+    .board-field {
+        min-height: 0;
+        padding-bottom: calc(var(--hand-peek) + 4px);
+        display: grid;
+        grid-template-rows: minmax(0, 1fr) auto minmax(0, 1fr);
+        gap: 10px;
+    }
+
+    .board-side {
+        min-height: 0;
+        padding: 10px 14px;
+        display: flex;
+        align-items: center;
+    }
+
+    .board-side .side {
+        width: 100%;
+    }
+
+    .side-board {
+        gap: 12px;
+        justify-items: center;
+    }
+
+    .cell {
+        width: 100%;
+        height: var(--card-h);
+        min-height: 0;
+        align-items: center;
+    }
+
+    .cell .g-card,
+    .point .g-card:not(.g-card--small) {
+        width: var(--card-w);
+        height: var(--card-h);
+        min-height: 0;
+        flex: none;
+    }
+
+    .cell--empty {
+        width: var(--card-w);
+        justify-self: center;
+    }
+
+    .side-landscape .g-card--small,
+    .side-landscape .placeholder,
+    .point .g-card--small {
+        width: calc(var(--card-w) * 0.78);
+        height: calc(var(--card-h) * 0.55);
+        min-height: 0;
+        padding-top: 20px;
+    }
+
+    .board-points {
+        display: flex;
+        justify-content: center;
+        gap: 48px;
+    }
+
+    .point {
+        align-items: center;
+        padding: 6px 10px;
+    }
+
+    .point .g-card:not(.g-card--small),
+    .point > .placeholder {
+        width: calc(var(--card-w) * 0.8);
+        height: calc(var(--card-h) * 0.8);
+        min-height: 0;
+        flex: none;
+    }
+
+    /* Рука — внизу под полем, веером: карты крупные, наведённая поднимается целиком */
+    .board-hand {
+        position: fixed;
+        left: 50%;
+        bottom: 0;
+        z-index: 25;
+        transform: translateX(-50%);
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        gap: 0;
+        padding: 0 20px;
+        border: none;
+        height: var(--hand-peek);
+        overflow: visible;
+    }
+
+    .board-hand .g-card {
+        flex: none;
+        width: calc(var(--hand-h) * 0.74);
+        height: var(--hand-h);
+        min-height: 0;
+        margin-left: calc(-1 * var(--hand-overlap, calc(var(--hand-h) * 0.1)));
+        padding-bottom: 34px;
+        font-size: 15px;
+        transform-origin: 50% 120%;
+        transform: translateY(calc(var(--hand-h) - var(--hand-peek) + var(--fan-drop, 0px))) rotate(var(--fan-rotate, 0deg));
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.6), inset 0 -80px 60px -20px rgba(10, 6, 8, 0.92);
+    }
+
+    .board-hand .g-card .g-card-name {
+        font-size: 15px;
+    }
+
+    .board-hand .g-card:first-child {
+        margin-left: 0;
+    }
+
+    .board-hand .g-card:hover,
+    .board-hand .g-card:focus-visible,
+    .board-hand .g-card.is-selected {
+        z-index: 2;
+        transform: translateY(calc(var(--hand-h) * -0.08)) rotate(0deg) scale(1.12);
+    }
+
+    /* Не хватает маны — карта темнее, но не прозрачная (иначе сквозь неё видно соседние) */
+    .board-hand .g-card.is-disabled {
+        opacity: 1;
+        filter: grayscale(0.6) brightness(0.55);
+    }
+
+    .board-toast {
+        bottom: calc(var(--hand-peek) + 16px);
+    }
+}
+
+/* Узкий или низкий экран: панели — над и под полем, рука — сеткой */
+@media (max-width: 999px), (max-height: 619px) {
+    .board-panel--left {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .board-panel--left .board-log {
+        grid-column: 1 / -1;
+        order: 3;
+    }
+
+    .board-panel-torch {
+        display: none;
+    }
+
+    .board-panel--right .board-controls {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}
+
+/* Выход в лобби — заметная кнопка; партия при этом не прерывается */
+.board-exit {
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.board-log ol {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(180, 140, 100, 0.4) transparent;
+}
+
+
+/* ═══ Поле — старая карта на свитке ═══
+   Пергамент с обожжёнными краями и валиками сверху и снизу; территории обведены чернилами,
+   посередине — дорога с точками сопряжения и розой ветров. */
+
+.board-map {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 22px 26px;
+    color: #4a3018;
+    border-radius: 4px;
+    background:
+        radial-gradient(ellipse 75% 70% at 50% 50%, transparent 60%, rgba(70, 35, 10, 0.55) 100%),
+        radial-gradient(ellipse 18% 14% at 14% 22%, rgba(140, 90, 40, 0.18), transparent 70%),
+        radial-gradient(ellipse 22% 16% at 82% 78%, rgba(140, 90, 40, 0.2), transparent 70%),
+        radial-gradient(ellipse 12% 10% at 70% 18%, rgba(110, 70, 30, 0.14), transparent 70%),
+        radial-gradient(ellipse 30% 25% at 35% 65%, rgba(255, 245, 220, 0.18), transparent 70%),
+        linear-gradient(180deg, #e3d0a6, #d6bd8d 45%, #cdb07c);
+    box-shadow:
+        0 14px 40px rgba(0, 0, 0, 0.75),
+        inset 0 0 50px rgba(100, 55, 20, 0.45);
+}
+
+/* Валики свитка */
+.board-map::before,
+.board-map::after {
+    content: '';
+    position: absolute;
+    left: -14px;
+    right: -14px;
+    height: 16px;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #8a5a2c, #5a3418 45%, #3a200e);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 220, 160, 0.35);
+}
+
+.board-map::before { top: -9px; }
+.board-map::after { bottom: -9px; }
+
+/* Территории: обведены чернилами, без «игрового стола» */
+.board-map .board-side {
+    background: transparent;
+    border: 2px solid rgba(110, 45, 30, 0.45);
+    border-radius: 14px 6px 16px 8px;
+    box-shadow: none;
+}
+
+.board-map .board-side--me {
+    border-color: rgba(40, 60, 110, 0.45);
+    border-radius: 8px 16px 6px 14px;
+}
+
+.board-map .board-side.is-active {
+    box-shadow: 0 0 0 3px rgba(160, 110, 40, 0.25), inset 0 0 30px rgba(160, 110, 40, 0.15);
+}
+
+.board-map .cell--empty {
+    border: 1.5px dashed rgba(90, 60, 30, 0.35);
+    background: rgba(120, 80, 40, 0.05);
+}
+
+.board-map .placeholder {
+    color: #6b4a28;
+    border: 1.5px dashed rgba(90, 60, 30, 0.35);
+    font-style: italic;
+}
+
+/* Дорога посередине с розой ветров; точки — отметки на ней */
+.board-map .board-points {
+    background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='%235a3a1c' stroke-width='1.2' opacity='.75'%3E%3Ccircle cx='50' cy='50' r='30'/%3E%3Ccircle cx='50' cy='50' r='26' stroke-dasharray='2 3'/%3E%3C/g%3E%3Cg fill='%235a3a1c' opacity='.8'%3E%3Cpolygon points='50,8 55,45 50,50 45,45'/%3E%3Cpolygon points='50,92 55,55 50,50 45,55' opacity='.55'/%3E%3Cpolygon points='8,50 45,45 50,50 45,55' opacity='.55'/%3E%3Cpolygon points='92,50 55,45 50,50 55,55' opacity='.55'/%3E%3Cpolygon points='50,8 55,45 50,50' fill='%238a2a1a'/%3E%3C/g%3E%3Ctext x='50' y='7' font-family='serif' font-size='7' text-anchor='middle' fill='%235a3a1c'%3E%D0%A1%3C/text%3E%3C/svg%3E") center / 92px 92px no-repeat;
+}
+
+.board-map .board-points::before {
+    height: 0;
+    border-top: 3px dashed rgba(90, 55, 25, 0.55);
+    background: none;
+    box-shadow: none;
+    animation: none;
+}
+
+.board-map .point {
+    background: rgba(150, 105, 55, 0.18);
+    border: 1.5px solid rgba(90, 55, 25, 0.45);
+    box-shadow: none;
+}
+
+.board-map .point--mine {
+    border-color: rgba(40, 70, 140, 0.7);
+    box-shadow: 0 0 0 3px rgba(40, 70, 140, 0.18);
+}
+
+.board-map .point--enemy {
+    border-color: rgba(140, 40, 25, 0.7);
+    box-shadow: 0 0 0 3px rgba(140, 40, 25, 0.18);
+}
+
+/* Карты на пергаменте — с тенью, как положенные сверху */
+.board-map .g-card {
+    box-shadow: 0 4px 10px rgba(40, 20, 5, 0.55), inset 0 -70px 50px -20px rgba(10, 6, 8, 0.9);
+}
+
+/* Большой экран: свиток занимает поле целиком, под рукой — свободно */
+@media (min-width: 1000px) and (min-height: 620px) {
+    .board-field {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .board-map {
+        flex: 1;
+        min-height: 0;
+        display: grid;
+        grid-template-rows: minmax(0, 1fr) auto minmax(0, 1fr);
+    }
+}
+
+/* ═══ Куда можно: подсветка по режиму поля (data-mode ставит game_controller.updateMode) ═══
+   Работает и при клике, и при перетаскивании — без перерисовки поля. */
+
+/* Существо: свободные клетки — зелёные, со знаком «＋ Сюда» */
+.board[data-mode="creature"] [data-pick="my-cell"] {
+    position: relative;
+    border: 3px solid rgba(40, 150, 60, 0.95) !important;
+    background: rgba(70, 180, 90, 0.22) !important;
+    box-shadow: 0 0 0 4px rgba(70, 180, 90, 0.25), 0 0 26px rgba(70, 200, 90, 0.55);
+}
+
+.board[data-mode="creature"] [data-pick="my-cell"]::after {
+    content: '＋ Сюда';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cinzel', serif;
+    font-size: 15px;
+    font-weight: bold;
+    color: #1f6a2c;
+    pointer-events: none;
+}
+
+/* Атака: враги, их фортификация и свободные точки — красные */
+.board[data-mode="attack"] [data-pick="enemy-creature"],
+.board[data-mode="attack"] .fortification[data-pick],
+.board[data-mode="attack"] [data-pick="point"] {
+    outline: 3px solid rgba(220, 50, 40, 0.95);
+    outline-offset: 2px;
+    box-shadow: 0 0 24px rgba(255, 70, 50, 0.6);
+}
+
+/* Предмет: свои существа — золотые */
+.board[data-mode="item"] [data-pick="my-creature"] {
+    outline: 3px solid rgba(230, 180, 60, 0.95);
+    outline-offset: 2px;
+    box-shadow: 0 0 26px rgba(255, 200, 80, 0.65);
+}
+
+/* Заклинание с целью: существа и ландшафты — синие */
+.board[data-mode="target"] [data-pick="enemy-creature"],
+.board[data-mode="target"] [data-pick="my-creature"],
+.board[data-mode="target"] [data-pick="landscape"] {
+    outline: 3px solid rgba(80, 140, 255, 0.95);
+    outline-offset: 2px;
+    box-shadow: 0 0 24px rgba(100, 160, 255, 0.6);
+}
+
+/* Заклинание без цели: всё поле — «отпустите здесь» */
+.board[data-mode="cast"] .board-map {
+    box-shadow: 0 0 0 4px rgba(100, 160, 255, 0.55), 0 14px 40px rgba(0, 0, 0, 0.75), inset 0 0 50px rgba(100, 55, 20, 0.45);
+}
+
+/* ═══ Аура карт, которые можно разыграть прямо сейчас ═══
+   Ровное сияние на отдельном слое (::before), без анимации. */
+
+.board-hand .g-card.is-playable {
+    border-color: rgba(120, 230, 140, 0.95);
+}
+
+.board-hand .g-card.is-playable::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    z-index: -1;
+    border-radius: inherit;
+    box-shadow: 0 0 0 2px rgba(150, 255, 170, 0.8), 0 0 30px 6px rgba(110, 240, 140, 0.7);
+    pointer-events: none;
+}
+
+@keyframes auraPulse {
+    0%, 100% { opacity: 0.45; }
+    50% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .board-hand .g-card.is-playable::before,
+    .board-end-turn::after {
+        animation: none;
+        opacity: 0.8;
+    }
+}
+
+/* ═══ Добор: карта прилетает из колоды в руку ═══
+   Откуда — в --from-x/--from-y (считает game_controller.animateDraw), куда — обычное место в веере.
+   Анимируются только transform и opacity — без перерисовки страницы. */
+
+.board-hand .g-card.is-drawn {
+    animation: drawIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    animation-delay: var(--draw-delay, 0ms);
+}
+
+@keyframes drawIn {
+    from {
+        opacity: 0.2;
+        transform: translate(var(--from-x, 0), var(--from-y, 0)) scale(0.3) rotate(-30deg);
+    }
+}
+
+/* Добор соперника: летит рубашка — какая карта, не видно */
+.card-back-fly {
+    position: fixed;
+    z-index: 45;
+    width: 44px;
+    height: 62px;
+    margin: -31px 0 0 -22px;
+    border-radius: 5px;
+    border: 2px solid rgba(240, 200, 120, 0.8);
+    background:
+        repeating-linear-gradient(45deg, rgba(240, 200, 120, 0.25) 0 4px, transparent 4px 9px),
+        linear-gradient(135deg, #5a1a1a, #2a0a10);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7);
+    pointer-events: none;
+    animation: drawBack 0.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+    animation-delay: var(--draw-delay, 0ms);
+}
+
+@keyframes drawBack {
+    0% { opacity: 0; transform: translate(0, 0) scale(0.6) rotate(-20deg); }
+    20% { opacity: 1; }
+    100% { opacity: 0; transform: translate(var(--to-x, 0), var(--to-y, 0)) scale(0.8) rotate(8deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .board-hand .g-card.is-drawn,
+    .card-back-fly {
+        animation: none;
+    }
+}
+
+/* ═══ Эффект заклинания / предмета на лицевой стороне ═══ */
+
+.g-card-effect {
+    position: absolute;
+    left: 50%;
+    bottom: 6px;
+    transform: translateX(-50%);
+    padding: 2px 10px;
+    border-radius: 10px;
+    white-space: nowrap;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff4d8;
+    background: rgba(20, 12, 8, 0.85);
+    border: 1px solid rgba(240, 200, 120, 0.6);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.g-card--spell .g-card-effect { border-color: rgba(130, 170, 255, 0.7); }
+.g-card--item .g-card-effect { border-color: rgba(230, 180, 80, 0.8); }
+
+/* Значок кузницы — у существа есть усиление (надеты предметы) */
+.g-card-equipment {
+    position: absolute;
+    top: 30px;
+    left: 4px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    border-radius: 50%;
+    color: #2a1a08;
+    background: linear-gradient(180deg, #f4d58a, #c99a3a);
+    border: 1px solid #6a4a14;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+}
+
+.stat--effect { color: #f0d8a0; }
+
+.card-detail-equipment {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    background: rgba(230, 180, 80, 0.08);
+}
+
+.card-detail-equipment-item {
+    color: #e8d0a0;
+    font-size: 13px;
+}
+
+/* ═══ Провокация: каменно-серебряная рамка и герб-щит сверху ═══ */
+
+.g-card.has-taunt {
+    border: 4px solid #c9c3b2;
+    border-radius: 10px 10px 18px 18px;
+    box-shadow:
+        0 0 0 2px #2a2620,
+        0 0 0 5px #8c8676,
+        0 6px 16px rgba(0, 0, 0, 0.6),
+        inset 0 -70px 50px -20px rgba(10, 6, 8, 0.9);
+}
+
+.g-card.has-taunt::after {
+    content: '🛡';
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    border-radius: 50% 50% 45% 45%;
+    border: 2px solid #c9c3b2;
+    background: radial-gradient(circle at 40% 35%, #6a6458, #2a2620);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+    pointer-events: none;
+}
+
+/* Значок 🛡 в углу больше не нужен — есть рамка */
+.g-card.has-taunt .g-card-keywords {
+    opacity: 0.6;
+}
+
+/* ═══ Захват точки: существо переезжает на точку, вспышка и флажок ═══
+   Откуда — --from-x/--from-y (game_controller.animateCapture). Только transform и opacity. */
+
+.g-card.is-capturing {
+    position: relative;
+    z-index: 6;
+    animation: captureMove 0.75s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes captureMove {
+    from { transform: translate(var(--from-x, 0), var(--from-y, 0)) scale(1); }
+    55% { transform: translate(calc(var(--from-x, 0) * 0.2), calc(var(--from-y, 0) * 0.2 - 18px)) scale(1.12); }
+    to { transform: none; }
+}
+
+.point {
+    --capture-color: rgba(240, 200, 120, 0.9);
+}
+
+.point--mine { --capture-color: rgba(70, 120, 230, 0.95); }
+.point--enemy { --capture-color: rgba(220, 60, 40, 0.95); }
+
+/* Кольцо-вспышка */
+.point.is-captured::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 14px;
+    border: 3px solid var(--capture-color);
+    pointer-events: none;
+    animation: captureRing 0.9s ease-out forwards;
+}
+
+@keyframes captureRing {
+    from { opacity: 1; transform: scale(0.85); }
+    to { opacity: 0; transform: scale(1.18); }
+}
+
+/* Флажок над точкой */
+.point.is-captured::before {
+    content: '⚑';
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    z-index: 7;
+    font-size: 28px;
+    color: var(--capture-color);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+    pointer-events: none;
+    animation: flagPop 1.1s ease-out forwards;
+}
+
+@keyframes flagPop {
+    0% { opacity: 0; transform: translate(-50%, 14px) scale(0.4); }
+    25% { opacity: 1; transform: translate(-50%, 0) scale(1.15); }
+    75% { opacity: 1; transform: translate(-50%, 0) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -6px) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .g-card.is-capturing,
+    .point.is-captured::before,
+    .point.is-captured::after {
+        animation: none;
+    }
+}
+
+/* ═══ Карты, которыми можно ходить, приподняты ═══ */
+
+@media (min-width: 1000px) and (min-height: 620px) {
+    /* В руке: разыгрываемые выдвинуты из веера (наведённая и выбранная — ещё выше, правила выше) */
+    .board-hand .g-card.is-playable:not(:hover):not(.is-selected):not(.is-drawn) {
+        transform: translateY(calc(var(--hand-h) - var(--hand-peek) + var(--fan-drop, 0px) - var(--hand-h) * 0.09)) rotate(var(--fan-rotate, 0deg));
+    }
+}
+
+/* На поле: готовое к атаке существо «встало» над клеткой */
+.side-board .g-card.is-ready:not(.is-selected) {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 16px rgba(30, 15, 5, 0.55), 0 0 14px rgba(120, 220, 120, 0.35), inset 0 -70px 50px -20px rgba(10, 6, 8, 0.9);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* ═══ Можно ходить — существо на поле слегка покачивается (в руке — без анимации) ═══
+   Анимируется отдельное свойство translate: оно складывается с transform и меняется видеокартой без перерисовки. */
+
+@keyframes idleFloat {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 0 -3px; }
+}
+
+/* Во время удара, атаки, появления и захвата — их анимация важнее покачивания */
+.side-board .g-card.is-ready:not(.is-selected):not(.is-hit):not(.is-attacking):not(.is-arriving):not(.is-capturing) {
+    animation: idleFloat 3.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .board-hand .g-card.is-playable,
+    .side-board .g-card.is-ready {
+        animation: none;
+    }
+}
+
+/* Можно играть — карта крупнее (свойство scale складывается с transform и подъёмом при наведении) */
+.board-hand .g-card.is-playable {
+    scale: 1.1;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, scale 0.2s ease;
+}
+
+.side-board .g-card.is-ready {
+    scale: 1.09;
+}
+
+
+/* ═══ Фортификация на поле: каменная плашка по центру края территории ═══
+   У соперника — на верхней кромке, у вас — на нижней; территория освобождает под неё место. */
+
+.board-map .board-side {
+    position: relative;
+}
+
+.board-map .board-side--opponent {
+    padding-top: 30px;
+}
+
+.board-map .board-side--me {
+    padding-bottom: 30px;
+}
+
+.field-fortification {
+    position: absolute;
+    left: 50%;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 16px 4px 12px;
+    border-radius: 10px 10px 14px 14px;
+    border: 2px solid #8a7a5a;
+    background: linear-gradient(180deg, #6a5e4a, #3a3226 60%, #2a241c);
+    box-shadow: 0 4px 10px rgba(30, 15, 5, 0.6), inset 0 1px 0 rgba(255, 240, 200, 0.25);
+    transform: translateX(-50%);
+}
+
+.field-fortification--opponent { top: -18px; }
+.field-fortification--me { bottom: -18px; }
+
+.field-fortification .fortification-icon {
+    font-size: 22px;
+}
+
+.field-fortification .fortification-value {
+    font-size: 24px;
+}
+
+/* Цель атаки — заметнее; на неё можно кликнуть */
+.field-fortification[data-pick] {
+    cursor: var(--cursor-sword, pointer);
+}

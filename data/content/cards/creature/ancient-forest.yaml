@@ -1,0 +1,13 @@
+cards:
+  - vendorCode: DUEL-CRE-ANC-LESNOJ-DUH
+    name: 'Лесной Дух'
+    description: 'Хранитель древнего леса.'
+    imagePath: rozdennye-lesom/lesnoj-duh.webp
+    manaCost: 3
+    attack: 2
+    health: 4
+    race: ancient-forest
+    type: creature
+    rarity: uncommon
+    tags: []
+    abilities: [{ name: Heal, value: 2 }]

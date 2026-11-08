@@ -1,0 +1,104 @@
+{# templates/deck/builder.html.twig — конструктор колоды. Набор карт — Stimulus (deck_builder), проверка правил — на сервере #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Symfony Duel - {{ form.deck ? 'Колода «' ~ form.deck.name ~ '»' : 'Новая колода' }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/play.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/board.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/decks.css') }}">
+{% endblock %}
+
+{% block body %}
+    {% include '_partials/nav.html.twig' with {active: 'decks'} %}
+
+    {% set races = {} %}
+    {% set types = {} %}
+    {% for card in form.pool %}
+        {% if card.race %}{% set races = races|merge({(card.race.slug): card.race.name}) %}{% endif %}
+        {% set types = types|merge({(card.cardType.slug): card.cardType.name}) %}
+    {% endfor %}
+
+    <form method="post" class="builder"
+          data-controller="deck-builder"
+          data-deck-builder-quantities-value="{{ form.quantities|json_encode(constant('JSON_FORCE_OBJECT')) }}"
+          data-deck-builder-deck-size-value="{{ constant('App\\Game\\GameRules::DECK_SIZE') }}"
+          data-deck-builder-max-copies-value="{{ constant('App\\Game\\GameRules::MAX_COPIES') }}"
+          data-deck-builder-max-legendary-value="{{ constant('App\\Game\\GameRules::MAX_LEGENDARY_COPIES') }}">
+        <input type="hidden" name="_token" value="{{ csrf_token('deck') }}">
+
+        <header class="builder-header">
+            <a href="{{ path('app_decks') }}" class="section-link">← Колоды</a>
+            <h2 class="section-title">{{ form.deck ? '◈ Колода' : '◈ Новая колода' }}</h2>
+        </header>
+
+        {% if form.errors is not empty %}
+            <ul class="builder-errors" role="alert">
+                {% for error in form.errors %}<li>{{ error }}</li>{% endfor %}
+            </ul>
+        {% endif %}
+
+        <div class="builder-layout">
+            <section class="builder-pool" aria-label="Карты">
+                <div class="builder-filters">
+                    <input type="search" placeholder="Поиск по названию" data-deck-builder-target="search" data-action="deck-builder#filter" aria-label="Поиск по названию">
+                    <select data-deck-builder-target="race" data-action="deck-builder#filter" aria-label="Раса">
+                        <option value="">Все расы</option>
+                        {% for slug, name in races %}<option value="{{ slug }}">{{ name }}</option>{% endfor %}
+                    </select>
+                    <select data-deck-builder-target="type" data-action="deck-builder#filter" aria-label="Тип карты">
+                        <option value="">Все типы</option>
+                        {% for slug, name in types %}<option value="{{ slug }}">{{ name }}</option>{% endfor %}
+                    </select>
+                </div>
+
+                <div class="builder-grid">
+                    {% for card in form.pool %}
+                        <button type="button"
+                                class="g-card g-card--{{ card.cardType.slug }} builder-card"
+                                data-deck-builder-target="card"
+                                data-action="deck-builder#add"
+                                data-card-id="{{ card.id }}"
+                                data-name="{{ card.name }}"
+                                data-mana="{{ card.manaCost }}"
+                                data-race="{{ card.race ? card.race.slug }}"
+                                data-type="{{ card.cardType.slug }}"
+                                data-legendary="{{ card.rarity and card.rarity.slug == 'legendary' ? '1' : '0' }}"
+                                data-rarity="{{ card.rarity ? card.rarity.slug : 'common' }}"
+                                title="{{ card.description }}"
+                                {% if card.imagePath %}style="background-image: url('/upload/cards/{{ card.imagePath }}')"{% endif %}>
+                            <span class="g-card-mana">{{ card.manaCost }}</span>
+                            <span class="g-card-keywords builder-card-count" data-count></span>
+                            <span class="g-card-name">{{ card.name }}</span>
+                            {% if card.attack is not null and card.health is not null %}
+                                <span class="g-card-attack">{{ card.attack }}</span>
+                                <span class="g-card-health">{{ card.health }}</span>
+                            {% endif %}
+                        </button>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <aside class="builder-deck" aria-label="Колода">
+                <label class="builder-field">
+                    <span>Название</span>
+                    <input type="text" name="name" value="{{ form.name }}" required maxlength="100">
+                </label>
+                <label class="builder-field">
+                    <span>Описание</span>
+                    <textarea name="description" rows="2">{{ form.description }}</textarea>
+                </label>
+
+                <p class="builder-total"><b data-deck-builder-target="total">0</b> / {{ constant('App\\Game\\GameRules::DECK_SIZE') }} карт</p>
+                <div class="builder-curve" data-deck-builder-target="curve" aria-label="Кривая маны"></div>
+                <ol class="builder-list" data-deck-builder-target="list"></ol>
+                <div data-deck-builder-target="inputs"></div>
+
+                <button type="submit" class="lobby-button lobby-button--main" data-deck-builder-target="save">Сохранить колоду</button>
+            </aside>
+        </div>
+    </form>
+{% endblock %}

@@ -22,7 +22,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Image;
 
 class CardsType extends AbstractType
 {
@@ -46,16 +45,19 @@ class CardsType extends AbstractType
             ])
             ->add('manaCost', NumberType::class, [
                 'label' => 'Стоимость маны',
+                'invalid_message' => 'card.mana.not_a_number',
                 'attr' => ['min' => 0, 'max' => 10],
                 'required' => true,
             ])
             ->add('attack', NumberType::class, [
                 'label' => 'Атака',
+                'invalid_message' => 'card.attack.not_a_number',
                 'attr' => ['min' => 0],
                 'required' => false,
             ])
             ->add('health', NumberType::class, [
                 'label' => 'Здоровье',
+                'invalid_message' => 'card.health.not_a_number',
                 'attr' => ['min' => 0],
                 'required' => false,
             ])
@@ -102,15 +104,8 @@ class CardsType extends AbstractType
             ->add('imageFile', FileType::class, [
                 'label' => 'Изображение карты',
                 'required' => false,
-                'attr' => ['accept' => 'image/*'],
-                'constraints' => [
-                    new Image([
-                        'maxSize' => '5M',
-                        'mimeTypes' => ['image/jpeg', 'image/png', 'image/webp', 'image/gif'],
-                        'maxSizeMessage' => 'Файл слишком большой (макс. 5 МБ)',
-                        'mimeTypesMessage' => 'Пожалуйста, загрузите изображение',
-                    ])
-                ],
+                // Проверка формата и размера — в CreateCardFormDto::$imageFile
+                'attr' => ['accept' => 'image/jpeg,image/png,image/webp'],
             ])
             ->add('isActive', CheckboxType::class, [
                 'label' => 'Карта активна',

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Contract\Entity\ReferenceInterface;
 use App\Repository\RaceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RaceRepository::class)]
 #[ORM\Table(name: 'races')]
-class Race
+class Race implements ReferenceInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

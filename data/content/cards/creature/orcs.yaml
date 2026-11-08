@@ -1,0 +1,13 @@
+cards:
+  - vendorCode: DUEL-CRE-ORC-ORK-BERSERKER
+    name: Орк-Берсеркер
+    description: 'Впадает в ярость при виде врага.'
+    imagePath: orki/ork-berserker.webp
+    manaCost: 3
+    attack: 5
+    health: 3
+    race: orcs
+    type: creature
+    rarity: common
+    tags: [orc]
+    abilities: [Charge, Frenzy]

@@ -1,0 +1,70 @@
+{# templates/deck/index.html.twig — колоды: базовые (можно скопировать) и свои #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Symfony Duel - Колоды{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/play.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/decks.css') }}">
+{% endblock %}
+
+{% macro deck_card(deck, own) %}
+    <article class="deck-tile">
+        <h3 class="deck-option-name">{{ deck.name }}</h3>
+        {% if deck.description %}
+            <p class="deck-option-description">{{ deck.description }}</p>
+        {% endif %}
+        <p class="deck-option-cards">
+            {% for deckCard in deck.cards %}
+                <span class="deck-card-chip">{{ deckCard.card.name }} <b>×{{ deckCard.quantity }}</b></span>
+            {% endfor %}
+        </p>
+        <div class="deck-tile-actions">
+            {% if own %}
+                <a href="{{ path('app_decks_edit', {id: deck.id}) }}" class="lobby-button lobby-button--small">✎ Изменить</a>
+            {% endif %}
+            <form method="post" action="{{ path('app_decks_copy', {id: deck.id}) }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('deck') }}">
+                <button type="submit" class="lobby-button lobby-button--small">⧉ Копия в мои</button>
+            </form>
+            {% if own %}
+                <form method="post" action="{{ path('app_decks_delete', {id: deck.id}) }}" onsubmit="return confirm('Удалить колоду «{{ deck.name|e('js') }}»?')">
+                    <input type="hidden" name="_token" value="{{ csrf_token('deck') }}">
+                    <button type="submit" class="lobby-button lobby-button--small lobby-button--danger">Удалить</button>
+                </form>
+            {% endif %}
+        </div>
+    </article>
+{% endmacro %}
+
+{% block body %}
+    {% include '_partials/nav.html.twig' with {active: 'decks'} %}
+
+    <div class="lobby">
+        <section class="lobby-section">
+            <div class="section-header">
+                <h2 class="section-title">◈ Мои колоды <span class="badge">{{ mine|length }}</span></h2>
+                <a href="{{ path('app_decks_new') }}" class="lobby-button lobby-button--main">✦ Собрать колоду</a>
+            </div>
+            {% if mine is empty %}
+                <p class="lobby-empty">Своих колод пока нет — соберите новую или скопируйте базовую и измените.</p>
+            {% else %}
+                <div class="deck-list">
+                    {% for deck in mine %}{{ _self.deck_card(deck, true) }}{% endfor %}
+                </div>
+            {% endif %}
+        </section>
+
+        <section class="lobby-section">
+            <div class="section-header">
+                <h2 class="section-title">◈ Базовые колоды <span class="badge">{{ base|length }}</span></h2>
+            </div>
+            <div class="deck-list">
+                {% for deck in base %}{{ _self.deck_card(deck, false) }}{% endfor %}
+            </div>
+        </section>
+    </div>
+{% endblock %}

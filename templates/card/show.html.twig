@@ -94,20 +94,22 @@
                     </div>
                 {% endif %}
 
-                <!-- Действия -->
-                <div class="card-detail-actions">
-                    <a href="{{ path('app_cards_edit', {'id': card.id}) }}" class="btn-action btn-action-edit">
-                        ✎ Редактировать
-                    </a>
-                    <form method="post" action="{{ path('app_cards_delete', {'id': card.id}) }}"
-                          onsubmit="return confirm('Удалить карту «{{ card.name }}»?');"
-                          style="display: inline;">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ card.id) }}">
-                        <button type="submit" class="btn-action btn-action-delete">
-                            ✕ Удалить
-                        </button>
-                    </form>
-                </div>
+                {% if is_granted('ROLE_CREATOR') %}
+                    <!-- Действия -->
+                    <div class="card-detail-actions">
+                        <a href="{{ path('app_cards_edit', {'id': card.id}) }}" class="btn-action btn-action-edit">
+                            ✎ Редактировать
+                        </a>
+                        <form method="post" action="{{ path('app_cards_delete', {'id': card.id}) }}"
+                              onsubmit="return confirm('Удалить карту «{{ card.name }}»?');"
+                              style="display: inline;">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ card.id) }}">
+                            <button type="submit" class="btn-action btn-action-delete">
+                                ✕ Удалить
+                            </button>
+                        </form>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>

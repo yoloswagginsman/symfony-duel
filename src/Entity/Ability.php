@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
+use App\Contract\Entity\ReferenceInterface;
 use App\Repository\AbilityRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AbilityRepository::class)]
 #[ORM\Table(name: 'abilities')]
-class Ability
+class Ability implements ReferenceInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

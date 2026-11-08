@@ -1,0 +1,109 @@
+{# templates/play/game.html.twig — партия в режиме игры: без меню сайта.
+   Слева — игроки и журнал, по центру — поле, справа — управление, внизу — рука.
+   Поле рисует Stimulus (assets/controllers/game_controller.js) по API, обновления — Mercure #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Symfony Duel - Партия №{{ game.id }}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/play.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/torch.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/board.css') }}">
+{% endblock %}
+
+{% block body %}
+    <section class="board"
+             data-controller="game"
+             data-game-game-url-value="{{ path('api_games_show', {id: game.id}) }}"
+             data-game-token-url-value="{{ path('app_play_token') }}"
+             data-game-card-info-value="{{ cardInfo|json_encode }}"
+             data-game-ability-info-value="{{ abilityInfo|json_encode }}"
+             data-action="keydown.esc@window->game#cancel">
+
+        {# ─── Слева: игроки и журнал ─── #}
+        <aside class="board-panel board-panel--left">
+            <div class="board-panel-torch">{% include '_partials/torch.html.twig' with {side: 'left'} %}</div>
+            <div class="hero hero--opponent" data-game-target="opponentHero"></div>
+            <section class="board-log" aria-label="Журнал партии">
+                <h3 class="board-log-title">Журнал партии</h3>
+                <ol data-game-target="log"></ol>
+            </section>
+            <div class="hero hero--me" data-game-target="meHero"></div>
+        </aside>
+
+        {# ─── Поле — старая карта на свитке ─── #}
+        <div class="board-field">
+            <div class="board-map">
+                <div class="board-side board-side--opponent" data-game-target="opponent"></div>
+                <div class="board-points" data-game-target="points"></div>
+                <div class="board-side board-side--me" data-game-target="me"></div>
+            </div>
+        </div>
+
+        {# ─── Справа: ход и управление ─── #}
+        <aside class="board-panel board-panel--right">
+            <div class="board-panel-torch">{% include '_partials/torch.html.twig' with {side: 'right'} %}</div>
+            <nav class="board-panel-top">
+                <a href="{{ path('app_play') }}" class="lobby-button lobby-button--small board-exit" title="Партия не прервётся — вернуться к ней можно из лобби">⟵ Выйти в лобби</a>
+                <span class="board-bar-title">№{{ game.id }}</span>
+                <button type="button" class="board-bar-button" data-action="game#fullscreen" title="На весь экран" aria-label="На весь экран">
+                    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M1 5V1h4M11 1h4v4M15 11v4h-4M5 15H1v-4" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                </button>
+            </nav>
+
+            <span class="board-timer" data-game-target="timer" title="Время на ход"></span>
+            <p class="board-status" data-game-target="status" role="status" aria-live="polite">Загрузка…</p>
+
+            <div class="board-controls">
+                <button type="button" class="lobby-button lobby-button--main board-end-turn" data-game-target="endTurn" data-action="game#endTurn" disabled>Конец хода</button>
+                <button type="button" class="lobby-button lobby-button--small" data-game-target="skip" data-action="game#skip" hidden>Пропустить ⏩</button>
+                <button type="button" class="lobby-button lobby-button--small" data-game-target="noTarget" data-action="game#playWithoutTarget" hidden>Без цели</button>
+                <button type="button" class="lobby-button lobby-button--small" data-action="game#cancel">Отмена</button>
+                <p class="board-hint" data-game-target="hint"></p>
+            </div>
+
+            <button type="button" class="lobby-button lobby-button--small lobby-button--danger board-surrender" data-game-target="surrender" data-action="game#surrender" hidden>Сдаться</button>
+        </aside>
+
+        <div class="board-hand" data-game-target="hand" aria-label="Ваша рука"></div>
+
+        {# Слой стрелок: кто кого атакует, прицел #}
+        <svg class="board-arrows" data-game-target="arrows" aria-hidden="true">
+            <defs>
+                <marker id="arrowhead-attack" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#ff5a4a"/>
+                </marker>
+                <marker id="arrowhead-spell" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#8ab4ff"/>
+                </marker>
+                <marker id="arrowhead-aim" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#f0d8a0"/>
+                </marker>
+            </defs>
+        </svg>
+
+        {# Подробности карты при наведении #}
+        <div class="card-detail" data-game-target="detail" hidden></div>
+
+        {# Карта, которую разыгрывает соперник #}
+        <div class="board-reveal" data-game-target="reveal" hidden></div>
+
+        {# Конец партии #}
+        <div class="board-result" data-game-target="result" hidden>
+            <div class="board-result-box" role="dialog" aria-modal="true" aria-labelledby="board-result-title">
+                <h2 id="board-result-title" class="board-result-title" data-game-target="resultTitle"></h2>
+                <p class="board-result-reason" data-game-target="resultReason"></p>
+                <dl class="board-result-stats" data-game-target="resultStats"></dl>
+                <div class="board-result-actions">
+                    <a href="{{ path('app_play') }}" class="lobby-button lobby-button--main">В лобби</a>
+                    <button type="button" class="lobby-button" data-action="game#closeResult">Посмотреть поле</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="board-banner" data-game-target="banner" hidden></div>
+        <div class="board-toast" data-game-target="toast" role="alert" hidden></div>
+    </section>
+{% endblock %}

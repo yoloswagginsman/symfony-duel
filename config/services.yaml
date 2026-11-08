@@ -8,6 +8,14 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     uploads_directory: '%kernel.project_dir%/public/upload/cards'
+    # Контент: справочники, карты (папка cards: <тип>/<раса>.yaml), колоды (импорт — app:content:import)
+    app.content.dir: '%kernel.project_dir%/data/content'
+    app.content.cards_dir: 'cards'
+
+    # Время на ход (секунды): истекло — ход завершается за игрока
+    app.game.turn_seconds: 90
+    # Срок жизни непрозрачного API-токена (X-Api-Token)
+    app.api_token.lifetime: '+30 days'
 
 services:
     # default configuration for services in *this* file
@@ -27,3 +35,36 @@ services:
         arguments:
             $uploadDirectory: '%uploads_directory%'
             $slugger: '@slugger'
+
+    App\Service\ApiTokenService:
+        arguments:
+            $lifetime: '%app.api_token.lifetime%'
+
+    # API-токен берём из заголовка «X-Api-Token: duel_…» (без слова Bearer — Bearer занят JWT)
+    app.security.api_token_extractor:
+        class: Symfony\Component\Security\Http\AccessToken\HeaderAccessTokenExtractor
+        arguments: ['X-Api-Token', '']
+
+    App\Service\Content\ContentStorage:
+        arguments:
+            $directory: '%app.content.dir%'
+            $cardsDirectory: '%app.content.cards_dir%'
+
+    App\Service\Game\GameService:
+        arguments:
+            $turnSeconds: '%app.game.turn_seconds%'
+
+    App\DataContent\CardYaml:
+        arguments:
+            $uploadsDirectory: '%uploads_directory%'
+
+when@test:
+    services:
+        # Тесты не ходят в настоящий хаб Mercure — события запоминаются (tests/Support/RecordingHub)
+        App\Tests\Support\RecordingHub:
+            public: true
+            arguments:
+                $publicUrl: '%env(MERCURE_PUBLIC_URL)%'
+                $secret: '%env(MERCURE_JWT_SECRET)%'
+                $issuer: '%env(MERCURE_JWT_ISSUER)%'
+        Symfony\Component\Mercure\HubInterface: '@App\Tests\Support\RecordingHub'

@@ -1,0 +1,117 @@
+{# templates/play/lobby.html.twig — лобби: выбор колоды, игра с компьютером, партии игроков #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Symfony Duel - Играть{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('styles/play.css') }}">
+{% endblock %}
+
+{% block body %}
+    {% include '_partials/nav.html.twig' with {active: 'play'} %}
+
+    {# Одна форма на всё лобби: выбранная колода уходит с любой кнопкой (formaction) #}
+    <form method="post" class="lobby">
+        <input type="hidden" name="_token" value="{{ csrf_token('play') }}">
+
+        <section class="lobby-section">
+            <div class="section-header">
+                <h2 class="section-title">◈ Колода <span class="badge">{{ lobby.decks|length }}</span></h2>
+            </div>
+
+            {% if lobby.decks is empty %}
+                <div class="empty-state">
+                    <div class="icon">🂠</div>
+                    <h3>Колод нет</h3>
+                    <p>Загрузите контент: <code>php bin/console app:content:import</code></p>
+                </div>
+            {% else %}
+                <div class="deck-list">
+                    {% for deck in lobby.decks %}
+                        <label class="deck-option">
+                            <input type="radio" name="deck" value="{{ deck.id }}" {{ loop.first ? 'checked' }}>
+                            <span class="deck-option-body">
+                                <span class="deck-option-name">{{ deck.name }}</span>
+                                <span class="deck-option-kind">{{ deck.base ? 'Базовая' : 'Своя' }}</span>
+                                {% if deck.description %}
+                                    <span class="deck-option-description">{{ deck.description }}</span>
+                                {% endif %}
+                                <span class="deck-option-cards">
+                                    {% for deckCard in deck.cards %}
+                                        <span class="deck-card-chip" title="{{ deckCard.card.description }}">
+                                            {{ deckCard.card.name }} <b>×{{ deckCard.quantity }}</b>
+                                        </span>
+                                    {% endfor %}
+                                </span>
+                            </span>
+                        </label>
+                    {% endfor %}
+                </div>
+
+                <div class="lobby-actions">
+                    <button type="submit" formaction="{{ path('app_play_computer') }}" class="lobby-button lobby-button--main">
+                        ⚔️ Играть с компьютером
+                    </button>
+                    <button type="submit" formaction="{{ path('app_play_create') }}" class="lobby-button">
+                        ✦ Создать партию для игроков
+                    </button>
+                </div>
+            {% endif %}
+        </section>
+
+        <section class="lobby-section">
+            <div class="section-header">
+                <h2 class="section-title">◈ Ждут соперника <span class="badge">{{ lobby.waitingGames|length }}</span></h2>
+            </div>
+
+            {% if lobby.waitingGames is empty %}
+                <p class="lobby-empty">Свободных партий нет — создайте свою.</p>
+            {% else %}
+                <ul class="game-list">
+                    {% for game in lobby.waitingGames %}
+                        <li class="game-row">
+                            <span class="game-row-title">{{ game.player0.nickname }}</span>
+                            <span class="game-row-meta">создана {{ game.createdAt|date('d.m H:i') }}</span>
+                            <button type="submit" formaction="{{ path('app_play_join', {id: game.id}) }}" class="lobby-button lobby-button--small" {{ lobby.decks is empty ? 'disabled' }}>
+                                Принять вызов выбранной колодой
+                            </button>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </section>
+
+        <section class="lobby-section">
+            <div class="section-header">
+                <h2 class="section-title">◈ Мои партии <span class="badge">{{ lobby.myGames|length }}</span></h2>
+            </div>
+
+            {% if lobby.myGames is empty %}
+                <p class="lobby-empty">Незавершённых партий нет.</p>
+            {% else %}
+                <ul class="game-list">
+                    {% for game in lobby.myGames %}
+                        {% set you = game.playerIndexOf(app.user) %}
+                        {% set opponent = you is not null ? game.playerAt(1 - you) : null %}
+                        <li class="game-row">
+                            <span class="game-row-title">
+                                {% if game.status.value == 'waiting' %}
+                                    Ждём соперника…
+                                {% elseif game.computerPlayer is not null %}
+                                    против Компьютера
+                                {% else %}
+                                    против {{ opponent ? opponent.nickname : '—' }}
+                                {% endif %}
+                            </span>
+                            <span class="game-row-meta">обновлена {{ game.updatedAt|date('d.m H:i') }}</span>
+                            <a href="{{ path('app_play_game', {id: game.id}) }}" class="lobby-button lobby-button--small">Открыть</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </section>
+    </form>
+{% endblock %}

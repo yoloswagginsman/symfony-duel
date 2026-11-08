@@ -1,0 +1,13 @@
+cards:
+  - vendorCode: DUEL-CRE-DRA-PALADIN-SVETA
+    name: 'Паладин Света'
+    description: 'Святой воин, исцеляющий союзников.Страж цитадели'
+    imagePath: ludi-s-severa/paladin-sveta.webp
+    manaCost: 4
+    attack: 3
+    health: 5
+    race: people-from-the-north
+    type: creature
+    rarity: rare
+    tags: []
+    abilities: [Heal]

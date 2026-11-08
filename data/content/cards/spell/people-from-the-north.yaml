@@ -1,0 +1,12 @@
+cards:
+  - vendorCode: DUEL-SPE-PEO-MOLNIA-NEBES
+    name: 'Молния Небес'
+    description: 'Мощное заклинание, поражающее всех врагов.'
+    manaCost: 6
+    attack: 1
+    race: people-from-the-north
+    type: spell
+    rarity: epic
+    isActive: false
+    tags: [epic]
+    abilities: [AoE_Damage]

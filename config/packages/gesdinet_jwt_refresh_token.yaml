@@ -1,0 +1,6 @@
+# Refresh-токен: POST /api/token/refresh {refresh_token} → новый JWT
+gesdinet_jwt_refresh_token:
+    refresh_token_class: App\Entity\RefreshToken
+    ttl: 2592000          # 30 дней
+    single_use: true      # при обновлении выдаётся новый refresh-токен, старый сгорает
+    hash_tokens: true     # в базе — хеш, как у API-токенов

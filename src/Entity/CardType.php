@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
+use App\Contract\Entity\ReferenceInterface;
 use App\Repository\CardTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CardTypeRepository::class)]
-class CardType
+class CardType implements ReferenceInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

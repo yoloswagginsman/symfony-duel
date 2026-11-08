@@ -1,0 +1,30 @@
+cards:
+  - vendorCode: DUEL-BUI-NEU-KUZNICA
+    name: Кузница
+    description: 'Владелец точки куёт оружие: его существа сильнее.'
+    manaCost: 0
+    race: neutral
+    type: building
+    rarity: common
+    tags: []
+    abilities: [{ name: Forge, value: 1 }]
+
+  - vendorCode: DUEL-BUI-NEU-STOROZEVAA-BASNA
+    name: 'Сторожевая башня'
+    description: 'Обстреливает крепость противника в начале хода владельца точки.'
+    manaCost: 0
+    race: neutral
+    type: building
+    rarity: common
+    tags: []
+    abilities: [{ name: Watchtower, value: 1 }]
+
+  - vendorCode: DUEL-BUI-NEU-KOLODEC-MANY
+    name: 'Колодец маны'
+    description: 'Дополнительная мана владельцу точки в начале его хода.'
+    manaCost: 0
+    race: neutral
+    type: building
+    rarity: common
+    tags: []
+    abilities: [{ name: Mana_Well, value: 1 }]

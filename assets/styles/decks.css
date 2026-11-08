@@ -1,0 +1,235 @@
+/* assets/styles/decks.css — список колод и конструктор */
+
+.deck-tile {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 18px 20px;
+    background: rgba(20, 12, 15, 0.55);
+    border: 1px solid rgba(180, 140, 100, 0.12);
+    border-radius: 6px;
+}
+
+.deck-tile-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 8px;
+}
+
+/* ─── Конструктор ────────────────────────────── */
+
+.builder {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 20px 16px 60px;
+}
+
+.builder-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.builder-errors {
+    margin-bottom: 16px;
+    padding: 12px 18px 12px 34px;
+    border: 1px solid rgba(217, 74, 74, 0.4);
+    border-radius: 6px;
+    background: rgba(60, 16, 16, 0.4);
+    color: #f0c0c0;
+}
+
+.builder-layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 20px;
+    align-items: start;
+}
+
+.builder-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.builder-filters input,
+.builder-filters select,
+.builder-field input,
+.builder-field textarea {
+    padding: 8px 12px;
+    color: #e8dcc8;
+    font: inherit;
+    background: rgba(10, 6, 8, 0.6);
+    border: 1px solid rgba(180, 140, 100, 0.25);
+    border-radius: 4px;
+}
+
+.builder-filters input {
+    flex: 1;
+    min-width: 180px;
+}
+
+.builder-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+}
+
+.builder-card[hidden] {
+    display: none;
+}
+
+.builder-card .builder-card-count {
+    font-family: 'Cinzel', serif;
+    font-size: 15px;
+    color: #f0d8a0;
+    text-shadow: 0 1px 3px #000;
+}
+
+.builder-card[data-rarity="legendary"] { border-color: rgba(240, 180, 60, 0.7); }
+.builder-card[data-rarity="epic"] { border-color: rgba(170, 100, 230, 0.6); }
+.builder-card[data-rarity="rare"] { border-color: rgba(80, 140, 230, 0.6); }
+
+.builder-card.is-denied {
+    animation: builderDenied 0.35s ease;
+}
+
+@keyframes builderDenied {
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+
+/* ─── Колода (справа) ────────────────────────── */
+
+.builder-deck {
+    position: sticky;
+    top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    background: rgba(20, 12, 15, 0.6);
+    border: 1px solid rgba(180, 140, 100, 0.15);
+    border-radius: 8px;
+}
+
+.builder-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    color: #a09080;
+    font-size: 13px;
+}
+
+.builder-total {
+    font-family: 'Cinzel', serif;
+    color: #c8b8a0;
+}
+
+.builder-total b {
+    font-size: 22px;
+    color: #e8a0a0;
+}
+
+.builder-total b.is-complete {
+    color: #9ad89a;
+}
+
+.builder-curve {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 4px;
+    height: 70px;
+    padding-bottom: 16px;
+}
+
+.builder-curve-bar {
+    position: relative;
+    align-self: end;
+    height: var(--height);
+    min-height: 2px;
+    background: linear-gradient(#f0d8a0, #8a6a3a);
+    border-radius: 2px 2px 0 0;
+}
+
+.builder-curve-bar::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: -16px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 11px;
+    color: #a09080;
+}
+
+.builder-curve-bar::before {
+    content: attr(data-count);
+    position: absolute;
+    top: -15px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 11px;
+    color: #f0d8a0;
+}
+
+.builder-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    max-height: 45vh;
+    overflow-y: auto;
+}
+
+.builder-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 6px;
+    border-radius: 4px;
+    background: rgba(180, 140, 100, 0.06);
+}
+
+.builder-row-mana {
+    min-width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #2a4a8a;
+    color: #fff;
+    font-size: 12px;
+    line-height: 22px;
+    text-align: center;
+}
+
+.builder-row-name {
+    flex: 1;
+    color: #e8dcc8;
+    font-size: 14px;
+}
+
+.builder-row b {
+    color: #f0d8a0;
+    min-width: 26px;
+    text-align: center;
+}
+
+.builder-row-button {
+    width: 24px;
+    height: 24px;
+    color: #f0d8a0;
+    background: rgba(180, 140, 100, 0.12);
+    border: 1px solid rgba(180, 140, 100, 0.25);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+@media (max-width: 900px) {
+    .builder-layout { grid-template-columns: 1fr; }
+    .builder-deck { position: static; }
+}

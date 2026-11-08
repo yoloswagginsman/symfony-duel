@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
+use App\Contract\Entity\ReferenceInterface;
 use App\Repository\RarityRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RarityRepository::class)]
 #[ORM\Table(name: 'rarities')]
-class Rarity
+class Rarity implements ReferenceInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

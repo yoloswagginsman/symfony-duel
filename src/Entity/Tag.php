@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Contract\Entity\ReferenceInterface;
 use App\Enum\TagCategory;
 use App\Repository\TagRepository;
 use Doctrine\Common\Collections\Collection;
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TagRepository::class)]
 #[ORM\Table(name: 'tags')]
-class Tag
+class Tag implements ReferenceInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
